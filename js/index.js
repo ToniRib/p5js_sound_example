@@ -87,5 +87,9 @@ function mousePressed() {
 function draw() {
   const level = amplitude.getLevel();
   const size = map(level, 0, 1, 0, 300);
-  ellipse(width / 2, height / 2, size, size);
+  let randomMultiplier = random(800);
+
+  if (level > 0) {
+    ellipse((width / 2) + randomMultiplier - 200, (height / 2), size, size);
+  }
 }
