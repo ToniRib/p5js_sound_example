@@ -1,10 +1,14 @@
 const Square = class {
-  constructor(sound, x, y, width = 50, height = 50) {
+  constructor(sound, x, y, color = 'blue', width = 50, height = 50) {
     this.sound = sound;
     this.x = x;
     this.y = y;
+    this.color = color;
     this.width = width;
     this.height = height;
+
+    this.amplitude = new p5.Amplitude();
+    this.amplitude.setInput(this.sound);
   }
 
   isClicked(mouseX, mouseY) {
@@ -31,6 +35,14 @@ const Square = class {
   isPlaying() {
     return this.sound.isLooping();
   }
+
+  visualize(level) {
+    const size = map(level, 0, 1, 0, 300);
+    let randomMultiplier = random(800);
+    stroke(this.color);
+
+    ellipse((width / 2) + randomMultiplier - 200, (height / 2), size, size);
+  }
 };
 
 let squares, amplitude;
@@ -46,20 +58,18 @@ function preload() {
   let taiko = loadSound('sounds/bass_drum_120.wav');
 
   squares = [
-    new Square(hiHat, 0, 0),
-    new Square(jazzRide, 0, 50),
-    new Square(tomFloor2Bar, 0, 100),
-    new Square(kickHit, 0, 150),
-    new Square(tomFloorRoll, 0, 200),
-    new Square(tomLeftHit, 0, 250),
-    new Square(bassDrum, 0, 300),
-    new Square(taiko, 0, 350),
+    new Square(hiHat, 0, 0, '#3cffce'),
+    new Square(jazzRide, 0, 50, '#cdee76'),
+    new Square(tomFloor2Bar, 0, 100, '#3c00ff'),
+    new Square(kickHit, 0, 150, '#aeff8c'),
+    new Square(tomFloorRoll, 0, 200, '#aeff23'),
+    new Square(tomLeftHit, 0, 250, '#40beff'),
+    new Square(bassDrum, 0, 300, '#1976d2'),
+    new Square(taiko, 0, 350, '#ee9aee'),
   ];
 }
 
 function setup() {
-  amplitude = new p5.Amplitude();
-
   createCanvas(800, 400);
   background('black');
 
@@ -85,11 +95,11 @@ function mousePressed() {
 }
 
 function draw() {
-  const level = amplitude.getLevel();
-  const size = map(level, 0, 1, 0, 300);
-  let randomMultiplier = random(800);
+  squares.forEach(square => {
+    if (square.isPlaying()) {
+      const level = square.amplitude.getLevel();
 
-  if (level > 0) {
-    ellipse((width / 2) + randomMultiplier - 200, (height / 2), size, size);
-  }
+      if (level > 0) square.visualize(level);
+    }
+  });
 }
