@@ -1,6 +1,6 @@
 # p5js Beat Mixer Example
 
-Example app using p5js sound to loop short audio files so that a user can create their own beats.
+Example app using p5js sound to loop short audio files so that a user can create their own beats. Also visualizes the sounds in the rest of the canvas.
 
 ## How to Use
 

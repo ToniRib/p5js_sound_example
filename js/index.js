@@ -33,7 +33,7 @@ const Square = class {
   }
 };
 
-let squares;
+let squares, amplitude;
 
 function preload() {
   let hiHat = loadSound('sounds/Raw_Drums_HiHat_100bpm_1bar_Roll.wav');
@@ -58,6 +58,8 @@ function preload() {
 }
 
 function setup() {
+  amplitude = new p5.Amplitude();
+
   createCanvas(800, 400);
   background('black');
 
@@ -80,4 +82,10 @@ function mousePressed() {
       square.toggle();
     }
   });
+}
+
+function draw() {
+  const level = amplitude.getLevel();
+  const size = map(level, 0, 1, 0, 300);
+  ellipse(width / 2, height / 2, size, size);
 }
