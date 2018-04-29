@@ -11,7 +11,7 @@ Click on a square on the left side of the canvas to start playing a sound. It wi
 ## Running Locally
 
 - Clone this repo
-- Run `npm i -g http-server`
-- Run `http-server`
-- Visit `localhost:8080`
+- Run `npm install`
+- Run `npm start`
+- Visit `localhost:3000`
 
