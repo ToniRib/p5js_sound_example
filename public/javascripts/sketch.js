@@ -1,9 +1,27 @@
+const FanVisualization = class {
+  visualize(level) {
+    let randomMultiplier = random(150);
+
+    triangle(130 + randomMultiplier, 70, 158, 120, 186, 175);
+  }
+};
+
+const EllipseVisualization = class {
+  visualize(level) {
+    const size = map(level, 0, 1, 0, 300);
+    let randomMultiplier = random(800);
+
+    ellipse((width / 2) + randomMultiplier - 200, (height / 2), size, size);
+  }
+};
+
 const Square = class {
-  constructor(sound, x, y, color = 'blue', width = 50, height = 50) {
+  constructor(sound, x, y, color = 'blue', visualization = new EllipseVisualization, width = 50, height = 50) {
     this.sound = sound;
     this.x = x;
     this.y = y;
     this.color = color;
+    this.visualization = visualization;
     this.width = width;
     this.height = height;
 
@@ -36,12 +54,14 @@ const Square = class {
     return this.sound.isLooping();
   }
 
-  visualize(level) {
-    const size = map(level, 0, 1, 0, 300);
-    let randomMultiplier = random(800);
-    stroke(this.color);
+  visualize() {
+    if (!this.isPlaying()) return;
 
-    ellipse((width / 2) + randomMultiplier - 200, (height / 2), size, size);
+    const level = this.amplitude.getLevel();
+    if (level === 0) return;
+
+    stroke(this.color);
+    this.visualization.visualize(level);
   }
 };
 
@@ -58,7 +78,7 @@ function preload() {
   let taiko = loadSound('sounds/bass_drum_120.wav');
 
   squares = [
-    new Square(hiHat, 0, 0, '#3cffce'),
+    new Square(hiHat, 0, 0, '#3cffce', new FanVisualization),
     new Square(jazzRide, 0, 50, '#cdee76'),
     new Square(tomFloor2Bar, 0, 100, '#3c00ff'),
     new Square(kickHit, 0, 150, '#aeff8c'),
@@ -95,11 +115,5 @@ function mousePressed() {
 }
 
 function draw() {
-  squares.forEach(square => {
-    if (square.isPlaying()) {
-      const level = square.amplitude.getLevel();
-
-      if (level > 0) square.visualize(level);
-    }
-  });
+  squares.forEach(square => square.visualize());
 }
