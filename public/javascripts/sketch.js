@@ -67,7 +67,7 @@ const Square = class {
   }
 };
 
-let squares, amplitude;
+let squares, amplitude, recorder, soundFile;
 
 function preload() {
   let hiHat = loadSound('sounds/Raw_Drums_HiHat_100bpm_1bar_Roll.wav');
@@ -89,6 +89,18 @@ function preload() {
     new Square(bassDrum, 0, 300, '#1976d2'),
     new Square(taiko, 0, 350, '#ee9aee'),
   ];
+
+  recorder = new p5.SoundRecorder();
+  soundFile = new p5.SoundFile();
+
+  const masterGain = new p5.Gain();
+  masterGain.connect();
+
+  squares.forEach(square => {
+    gain = new p5.Gain();
+    gain.setInput(square.sound);
+    gain.connect(masterGain);
+  })
 }
 
 function setup() {
@@ -106,6 +118,14 @@ function setup() {
   rect(0, 250, 50, 50);
   rect(0, 300, 50, 50);
   rect(0, 350, 50, 50);
+
+  const recordButton = createButton('Record');
+  recordButton.position(19, 19);
+  recordButton.mousePressed(recordSound);
+
+  const stopButton = createButton('Stop/Save Recording');
+  stopButton.position(80, 19);
+  stopButton.mousePressed(stopRecording);
 }
 
 function mousePressed() {
@@ -114,6 +134,18 @@ function mousePressed() {
       square.toggle();
     }
   });
+}
+
+function recordSound() {
+  console.log('RECORDING');
+  recorder.record(soundFile);
+}
+
+function stopRecording() {
+  console.log('STOPPING');
+  recorder.stop();
+  console.log('SAVING');
+  save(soundFile, 'mySound.wav');
 }
 
 function draw() {
