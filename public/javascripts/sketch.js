@@ -2,6 +2,7 @@ const FanVisualization = class {
   visualize(level) {
     let randomMultiplier = random(150);
 
+    strokeWeight(2);
     triangle(130 + randomMultiplier, 70, 158, 120, 186, 175);
   }
 };
@@ -11,6 +12,7 @@ const EllipseVisualization = class {
     const size = map(level, 0, 1, 0, 300);
     let randomMultiplier = random(800);
 
+    strokeWeight(4);
     ellipse((width / 2) + randomMultiplier - 200, (height / 2), size, size);
   }
 };
