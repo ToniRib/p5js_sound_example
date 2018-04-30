@@ -70,25 +70,59 @@ const Square = class {
 let squares, amplitude, recorder, soundFile;
 
 function preload() {
-  let hiHat = loadSound('sounds/Raw_Drums_HiHat_100bpm_1bar_Roll.wav');
-  let tomFloor2Bar = loadSound('sounds/Raw_Drums_Tom_Floor_100bpm_2bar_02.wav');
-  let jazzRide = loadSound('sounds/Raw_Drums_Jazz_Ride_03.wav');
-  let kickHit = loadSound('sounds/Raw_Drums_Kick_Hit_04.wav');
-  let tomFloorRoll = loadSound('sounds/Raw_Drums_Tom_Floor_100bpm_Roll_01.wav');
-  let tomLeftHit = loadSound('sounds/Raw_Drums_Tom_Left_Hit_01.wav');
-  let bassDrum = loadSound('sounds/taiko.wav');
-  let taiko = loadSound('sounds/bass_drum_120.wav');
+  const squareDefs = {
+    hihat: {
+      file: loadSound('sounds/Raw_Drums_HiHat_100bpm_1bar_Roll.wav'),
+      color: '#3cffce',
+      coords: [0, 0],
+      viz: () => new FanVisualization()
+    },
 
-  squares = [
-    new Square(hiHat, 0, 0, '#3cffce', new FanVisualization),
-    new Square(jazzRide, 0, 50, '#cdee76'),
-    new Square(tomFloor2Bar, 0, 100, '#3c00ff'),
-    new Square(kickHit, 0, 150, '#aeff8c'),
-    new Square(tomFloorRoll, 0, 200, '#aeff23'),
-    new Square(tomLeftHit, 0, 250, '#40beff'),
-    new Square(bassDrum, 0, 300, '#1976d2'),
-    new Square(taiko, 0, 350, '#ee9aee'),
-  ];
+    jazzRide: {
+      file: loadSound('sounds/Raw_Drums_Jazz_Ride_03.wav'),
+      color: '#cdee76',
+      coords: [0, 50]
+    },
+
+    tomFloor2Bar: {
+      file: loadSound('sounds/Raw_Drums_Tom_Floor_100bpm_2bar_02.wav'),
+      color: '#3c00ff',
+      coords: [0, 100]
+    },
+
+    kickHit: {
+      file: loadSound('sounds/Raw_Drums_Kick_Hit_04.wav'),
+      color: '#aeff8c',
+      coords: [0, 150]
+    },
+
+    tomFloorRoll: {
+      file: loadSound('sounds/Raw_Drums_Tom_Floor_100bpm_Roll_01.wav'),
+      color: '#aeff23',
+      coords: [0, 200]
+    },
+
+    tomLeftHit: {
+      file: loadSound('sounds/Raw_Drums_Tom_Left_Hit_01.wav'),
+      color: '#40beff',
+      coords: [0, 250]
+    },
+
+    bassDrum: {
+      file: loadSound('sounds/taiko.wav'),
+      color: '#1976d2',
+      coords: [0, 300]
+    },
+
+    taiko: {
+      file: loadSound('sounds/bass_drum_120.wav'),
+      color: '#ee9aee',
+      coords: [0, 350]
+    }
+  };
+
+  squares = Object.values(squareDefs).map((def) =>
+    new Square(def.file, def.coords[0], def.coords[1], def.color, def.viz && def.viz()));
 
   recorder = new p5.SoundRecorder();
   soundFile = new p5.SoundFile();
@@ -119,13 +153,15 @@ function setup() {
   rect(0, 300, 50, 50);
   rect(0, 350, 50, 50);
 
-  const recordButton = createButton('Record');
-  recordButton.position(19, 19);
-  recordButton.mousePressed(recordSound);
+  // Move canvas into manipulable container
+  document.querySelector('#canvasContainer')
+    .appendChild(document.querySelector('#defaultCanvas0'))
 
-  const stopButton = createButton('Stop/Save Recording');
-  stopButton.position(80, 19);
-  stopButton.mousePressed(stopRecording);
+  document.querySelector('#startRecording')
+    .addEventListener('click', recordSound)
+
+  document.querySelector('#stopRecording')
+    .addEventListener('click', stopRecording)
 }
 
 function mousePressed() {
@@ -151,3 +187,4 @@ function stopRecording() {
 function draw() {
   squares.forEach(square => square.visualize());
 }
+

@@ -1,10 +1,19 @@
 body {
     margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 canvas {
     margin-top: 50px;
+}
+
+#controls {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+#canvasContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
