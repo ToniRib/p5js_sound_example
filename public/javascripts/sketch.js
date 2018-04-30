@@ -84,12 +84,12 @@ function preload() {
     },
 
     bassDrum: {
-      sound: loadSound('sounds/taiko.wav'),
+      sound: loadSound('sounds/bass_drum_120.wav'),
       color: '#1976d2',
     },
 
     taiko: {
-      sound: loadSound('sounds/bass_drum_120.wav'),
+      sound: loadSound('sounds/taiko.wav'),
       color: '#ee9aee',
     }
   };
@@ -191,7 +191,7 @@ function setup() {
  */
 function toggleLockGroove() {
   const introSound = soundDefs.tomFloorRoll.sound;
-  const loopSound = soundDefs.tomLeftHit.sound;
+  const loopSound = soundDefs.hihat.sound;
 
   introSound.setLoop(false);
   loopSound.setLoop(false);
