@@ -49,8 +49,19 @@ let recorder;
 let soundFile;
 let soundDefs;
 let lockGrooveToggleEl;
+let ambientSound;
 
 function preload() {
+  //const introSound = loadSound('sounds/industro-ambient-1178_1198-lq.mp3')
+  ambientSound = loadSound(
+    'sounds/193692_3056623-lq.mp3',
+    (soundFile) => {
+      soundFile.setVolume(0);
+      soundFile.loop();
+      soundFile.setVolume(.25, 10);
+    }
+  )
+
   soundDefs = {
     hihat: {
       sound: loadSound('sounds/Raw_Drums_HiHat_100bpm_1bar_Roll.wav'),
@@ -185,6 +196,7 @@ function setup() {
   canvas.style.height = '100%'
   canvas.style.width = '100%'
 }
+
 
 /**
  * Currently only plays one hardcoded intro + lock-groove set for exemplification
