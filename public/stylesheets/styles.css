@@ -20,6 +20,13 @@ body {
     margin: 0 10px;
 }
 
+#lockGrooveToggle:after {
+    content: '\25B6';
+}
+#lockGrooveToggle.active:after {
+    content: '\25FC';
+}
+
 #soundBoardContainer {
     display: flex;
     justify-content: center;
