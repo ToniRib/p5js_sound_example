@@ -67,62 +67,59 @@ const Square = class {
   }
 };
 
-let squares, amplitude, recorder, soundFile;
+let squares, amplitude, recorder, soundFile, squareDefs;
 
 function preload() {
-  const squareDefs = {
+  squareDefs = {
     hihat: {
-      file: loadSound('sounds/Raw_Drums_HiHat_100bpm_1bar_Roll.wav'),
+      sound: loadSound('sounds/Raw_Drums_HiHat_100bpm_1bar_Roll.wav'),
       color: '#3cffce',
       coords: [0, 0],
       viz: () => new FanVisualization()
     },
 
     jazzRide: {
-      file: loadSound('sounds/Raw_Drums_Jazz_Ride_03.wav'),
+      sound: loadSound('sounds/Raw_Drums_Jazz_Ride_03.wav'),
       color: '#cdee76',
       coords: [0, 50]
     },
 
     tomFloor2Bar: {
-      file: loadSound('sounds/Raw_Drums_Tom_Floor_100bpm_2bar_02.wav'),
+      sound: loadSound('sounds/Raw_Drums_Tom_Floor_100bpm_2bar_02.wav'),
       color: '#3c00ff',
       coords: [0, 100]
     },
 
     kickHit: {
-      file: loadSound('sounds/Raw_Drums_Kick_Hit_04.wav'),
+      sound: loadSound('sounds/Raw_Drums_Kick_Hit_04.wav'),
       color: '#aeff8c',
       coords: [0, 150]
     },
 
     tomFloorRoll: {
-      file: loadSound('sounds/Raw_Drums_Tom_Floor_100bpm_Roll_01.wav'),
+      sound: loadSound('sounds/Raw_Drums_Tom_Floor_100bpm_Roll_01.wav'),
       color: '#aeff23',
       coords: [0, 200]
     },
 
     tomLeftHit: {
-      file: loadSound('sounds/Raw_Drums_Tom_Left_Hit_01.wav'),
+      sound: loadSound('sounds/Raw_Drums_Tom_Left_Hit_01.wav'),
       color: '#40beff',
       coords: [0, 250]
     },
 
     bassDrum: {
-      file: loadSound('sounds/taiko.wav'),
+      sound: loadSound('sounds/taiko.wav'),
       color: '#1976d2',
       coords: [0, 300]
     },
 
     taiko: {
-      file: loadSound('sounds/bass_drum_120.wav'),
+      sound: loadSound('sounds/bass_drum_120.wav'),
       color: '#ee9aee',
       coords: [0, 350]
     }
   };
-
-  squares = Object.values(squareDefs).map((def) =>
-    new Square(def.file, def.coords[0], def.coords[1], def.color, def.viz && def.viz()));
 
   recorder = new p5.SoundRecorder();
   soundFile = new p5.SoundFile();
@@ -130,11 +127,14 @@ function preload() {
   const masterGain = new p5.Gain();
   masterGain.connect();
 
-  squares.forEach(square => {
-    gain = new p5.Gain();
-    gain.setInput(square.sound);
-    gain.connect(masterGain);
-  })
+  // squares = Object.values(squareDefs).map((def) =>
+  //   new Square(def.file, def.coords[0], def.coords[1], def.color, def.viz && def.viz()));
+
+  // squares.forEach(square => {
+  //   gain = new p5.Gain();
+  //   gain.setInput(square.sound);
+  //   gain.connect(masterGain);
+  // })
 }
 
 function setup() {
@@ -144,14 +144,58 @@ function setup() {
   stroke('white');
   strokeWeight(4);
   fill('black');
-  rect(0, 0, 50, 50);
-  rect(0, 50, 50, 50);
-  rect(0, 100, 50, 50);
-  rect(0, 150, 50, 50);
-  rect(0, 200, 50, 50);
-  rect(0, 250, 50, 50);
-  rect(0, 300, 50, 50);
-  rect(0, 350, 50, 50);
+
+  const soundBoard = document.querySelector('#soundBoard')
+
+  const toggleSound = (sound) => {
+    if (sound.isPlaying()) {
+      sound.stop();
+    } else {
+      sound.loop();
+    }
+  }
+
+  const toggleSoundTrigger = (el) => {
+    if (el.classList.contains('active')) {
+      el.classList.remove('active')
+    } else {
+      el.classList.add('active')
+    }
+  }
+  
+  const createSoundButton = (name, def) => {
+    const container = document.createElement('div');
+
+    container.classList.add('soundTriggerContainer');
+
+    const button = document.createElement('button');
+    
+    button.classList.add('soundTrigger');
+
+    button.addEventListener('click', () => {
+      toggleSound(def.sound)
+      toggleSoundTrigger(button)
+    });
+
+    const textNode = document.createTextNode(name);
+
+    button.appendChild(textNode);
+    container.appendChild(button);
+    soundBoard.appendChild(container);
+  }
+
+  Object.entries(squareDefs).forEach(([key, def]) => {
+    createSoundButton(key, def)
+  })
+
+  // rect(0, 0, 50, 50);
+  // rect(0, 50, 50, 50);
+  // rect(0, 100, 50, 50);
+  // rect(0, 150, 50, 50);
+  // rect(0, 200, 50, 50);
+  // rect(0, 250, 50, 50);
+  // rect(0, 300, 50, 50);
+  // rect(0, 350, 50, 50);
 
   // Move canvas into manipulable container
   document.querySelector('#canvasContainer')
@@ -164,13 +208,13 @@ function setup() {
     .addEventListener('click', stopRecording)
 }
 
-function mousePressed() {
-  squares.forEach(square => {
-    if (square.isClicked(mouseX, mouseY)) {
-      square.toggle();
-    }
-  });
-}
+// function mousePressed() {
+//   squares.forEach(square => {
+//     if (square.isClicked(mouseX, mouseY)) {
+//       square.toggle();
+//     }
+//   });
+// }
 
 function recordSound() {
   console.log('RECORDING');
@@ -184,7 +228,7 @@ function stopRecording() {
   save(soundFile, 'mySound.wav');
 }
 
-function draw() {
-  squares.forEach(square => square.visualize());
-}
+// function draw() {
+//   squares.forEach(square => square.visualize());
+// }
 
