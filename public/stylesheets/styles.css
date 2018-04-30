@@ -9,10 +9,6 @@ body {
     margin: 0;
 }
 
-canvas {
-    margin-top: 50px;
-}
-
 #controls {
     display: flex;
     justify-content: center;

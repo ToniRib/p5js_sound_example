@@ -18,38 +18,13 @@ const EllipseVisualization = class {
 };
 
 const Square = class {
-  constructor(sound, x, y, color = 'blue', visualization = new EllipseVisualization, width = 50, height = 50) {
-    this.sound = sound;
-    this.x = x;
-    this.y = y;
+  constructor(sound, color = 'blue', visualization = new EllipseVisualization) {
     this.color = color;
-    this.visualization = visualization;
-    this.width = width;
-    this.height = height;
+    this.viz = visualization;
+    this.sound = sound
 
     this.amplitude = new p5.Amplitude();
     this.amplitude.setInput(this.sound);
-  }
-
-  isClicked(mouseX, mouseY) {
-    return mouseX >= this.x && mouseX < this.x + this.width &&
-      mouseY >= this.y && mouseY < this.y + this.height;
-  }
-
-  toggle() {
-    if (this.isPlaying()) {
-      this.stop();
-    } else {
-      this.play();
-    }
-  }
-
-  play() {
-    this.sound.loop();
-  }
-
-  stop() {
-    this.sound.stop();
   }
 
   isPlaying() {
@@ -60,64 +35,57 @@ const Square = class {
     if (!this.isPlaying()) return;
 
     const level = this.amplitude.getLevel();
-    if (level === 0) return;
-
-    stroke(this.color);
-    this.visualization.visualize(level);
+    
+    if (level) {
+      stroke(this.color);
+      this.viz.visualize(level);
+    }
   }
 };
 
-let squares, amplitude, recorder, soundFile, squareDefs;
+let visualizations, amplitude, recorder, soundFile, soundDefs;
 
 function preload() {
-  squareDefs = {
+  soundDefs = {
     hihat: {
       sound: loadSound('sounds/Raw_Drums_HiHat_100bpm_1bar_Roll.wav'),
       color: '#3cffce',
-      coords: [0, 0],
       viz: () => new FanVisualization()
     },
 
     jazzRide: {
       sound: loadSound('sounds/Raw_Drums_Jazz_Ride_03.wav'),
       color: '#cdee76',
-      coords: [0, 50]
     },
 
     tomFloor2Bar: {
       sound: loadSound('sounds/Raw_Drums_Tom_Floor_100bpm_2bar_02.wav'),
       color: '#3c00ff',
-      coords: [0, 100]
     },
 
     kickHit: {
       sound: loadSound('sounds/Raw_Drums_Kick_Hit_04.wav'),
       color: '#aeff8c',
-      coords: [0, 150]
     },
 
     tomFloorRoll: {
       sound: loadSound('sounds/Raw_Drums_Tom_Floor_100bpm_Roll_01.wav'),
       color: '#aeff23',
-      coords: [0, 200]
     },
 
     tomLeftHit: {
       sound: loadSound('sounds/Raw_Drums_Tom_Left_Hit_01.wav'),
       color: '#40beff',
-      coords: [0, 250]
     },
 
     bassDrum: {
       sound: loadSound('sounds/taiko.wav'),
       color: '#1976d2',
-      coords: [0, 300]
     },
 
     taiko: {
       sound: loadSound('sounds/bass_drum_120.wav'),
       color: '#ee9aee',
-      coords: [0, 350]
     }
   };
 
@@ -127,14 +95,57 @@ function preload() {
   const masterGain = new p5.Gain();
   masterGain.connect();
 
-  // squares = Object.values(squareDefs).map((def) =>
-  //   new Square(def.file, def.coords[0], def.coords[1], def.color, def.viz && def.viz()));
+  visualizations = Object.entries(soundDefs).reduce((accum, [key, def]) => {
+    accum[key] = new Square(def.sound, def.color, def.viz && def.viz());
+    
+    return accum
+  }, {})
 
   // squares.forEach(square => {
   //   gain = new p5.Gain();
   //   gain.setInput(square.sound);
   //   gain.connect(masterGain);
   // })
+}
+
+const toggleSound = (id) => {
+  const sound = soundDefs[id].sound
+  const viz = visualizations[id]
+
+  if (sound.isPlaying()) {
+    sound.stop();
+  } else {
+    sound.loop();
+  }
+}
+
+const toggleSoundTrigger = (el) => {
+  if (el.classList.contains('active')) {
+    el.classList.remove('active')
+  } else {
+    el.classList.add('active')
+  }
+}
+
+const createSoundButton = (key, def) => {
+  const container = document.createElement('div');
+
+  container.classList.add('soundTriggerContainer');
+
+  const button = document.createElement('button');
+  
+  button.classList.add('soundTrigger');
+
+  button.addEventListener('click', () => {
+    toggleSound(key)
+    toggleSoundTrigger(button)
+  });
+
+  const textNode = document.createTextNode(key);
+
+  button.appendChild(textNode);
+  container.appendChild(button);
+  soundBoard.appendChild(container);
 }
 
 function setup() {
@@ -147,55 +158,9 @@ function setup() {
 
   const soundBoard = document.querySelector('#soundBoard')
 
-  const toggleSound = (sound) => {
-    if (sound.isPlaying()) {
-      sound.stop();
-    } else {
-      sound.loop();
-    }
-  }
-
-  const toggleSoundTrigger = (el) => {
-    if (el.classList.contains('active')) {
-      el.classList.remove('active')
-    } else {
-      el.classList.add('active')
-    }
-  }
-  
-  const createSoundButton = (name, def) => {
-    const container = document.createElement('div');
-
-    container.classList.add('soundTriggerContainer');
-
-    const button = document.createElement('button');
-    
-    button.classList.add('soundTrigger');
-
-    button.addEventListener('click', () => {
-      toggleSound(def.sound)
-      toggleSoundTrigger(button)
-    });
-
-    const textNode = document.createTextNode(name);
-
-    button.appendChild(textNode);
-    container.appendChild(button);
-    soundBoard.appendChild(container);
-  }
-
-  Object.entries(squareDefs).forEach(([key, def]) => {
+  Object.entries(soundDefs).forEach(([key, def]) => {
     createSoundButton(key, def)
   })
-
-  // rect(0, 0, 50, 50);
-  // rect(0, 50, 50, 50);
-  // rect(0, 100, 50, 50);
-  // rect(0, 150, 50, 50);
-  // rect(0, 200, 50, 50);
-  // rect(0, 250, 50, 50);
-  // rect(0, 300, 50, 50);
-  // rect(0, 350, 50, 50);
 
   // Move canvas into manipulable container
   document.querySelector('#canvasContainer')
@@ -206,15 +171,21 @@ function setup() {
 
   document.querySelector('#stopRecording')
     .addEventListener('click', stopRecording)
+
+  const canvas = document.querySelector('#defaultCanvas0')
+  
+  canvas.style.height = '100%'
+  canvas.style.width = '100%'
 }
 
-// function mousePressed() {
-//   squares.forEach(square => {
-//     if (square.isClicked(mouseX, mouseY)) {
-//       square.toggle();
-//     }
-//   });
-// }
+function playLockGroove(introSound, loopSound) {
+  introSound.onended(() => loopSound.loop())
+  introSound.play()
+}
+
+function stopLockGroove(sound) {
+  sound.stop();
+}
 
 function recordSound() {
   console.log('RECORDING');
@@ -228,7 +199,6 @@ function stopRecording() {
   save(soundFile, 'mySound.wav');
 }
 
-// function draw() {
-//   squares.forEach(square => square.visualize());
-// }
-
+function draw() {
+  Object.values(visualizations).forEach(viz => viz.visualize());
+}
