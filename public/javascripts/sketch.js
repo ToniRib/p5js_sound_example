@@ -43,7 +43,12 @@ const Square = class {
   }
 };
 
-let visualizations, amplitude, recorder, soundFile, soundDefs;
+let visualizations;
+let amplitude;
+let recorder;
+let soundFile;
+let soundDefs;
+let lockGrooveToggleEl;
 
 function preload() {
   soundDefs = {
@@ -79,12 +84,12 @@ function preload() {
     },
 
     bassDrum: {
-      sound: loadSound('sounds/taiko.wav'),
+      sound: loadSound('sounds/bass_drum_120.wav'),
       color: '#1976d2',
     },
 
     taiko: {
-      sound: loadSound('sounds/bass_drum_120.wav'),
+      sound: loadSound('sounds/taiko.wav'),
       color: '#ee9aee',
     }
   };
@@ -171,6 +176,9 @@ function setup() {
 
   document.querySelector('#stopRecording')
     .addEventListener('click', stopRecording)
+  
+  lockGrooveToggleEl = document.querySelector('#lockGrooveToggle')
+  lockGrooveToggleEl.addEventListener('click', toggleLockGroove)
 
   const canvas = document.querySelector('#defaultCanvas0')
   
@@ -178,13 +186,26 @@ function setup() {
   canvas.style.width = '100%'
 }
 
-function playLockGroove(introSound, loopSound) {
-  introSound.onended(() => loopSound.loop())
-  introSound.play()
-}
+/**
+ * Currently only plays one hardcoded intro + lock-groove set for exemplification
+ */
+function toggleLockGroove() {
+  const introSound = soundDefs.tomFloorRoll.sound;
+  const loopSound = soundDefs.hihat.sound;
 
-function stopLockGroove(sound) {
-  sound.stop();
+  introSound.setLoop(false);
+  loopSound.setLoop(false);
+
+  if (introSound.isPlaying() || loopSound.isPlaying()) {
+    lockGrooveToggleEl.classList.remove('active');
+    introSound.onended = () => {};
+    introSound.stop();
+    loopSound.stop();
+  } else {
+    lockGrooveToggleEl.classList.add('active');
+    introSound.onended(() => loopSound.loop());
+    introSound.play();
+  }
 }
 
 function recordSound() {
