@@ -154,7 +154,7 @@ const createSoundButton = (key, def) => {
 }
 
 function setup() {
-  createCanvas(800, 400);
+  createCanvas(window.innerWidth, window.innerHeight);
   background('black');
 
   stroke('white');
