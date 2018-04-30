@@ -49,9 +49,34 @@ let recorder;
 let soundFile;
 let soundDefs;
 let lockGrooveToggleEl;
+let ambientSound;
+let lgIntroSound;
+let lgLoopSound;
 
 function preload() {
+  ambientSound = loadSound(
+    'sounds/193692_3056623-lq.mp3',
+    (soundFile) => {
+      soundFile.setVolume(0);
+      soundFile.loop();
+      soundFile.setVolume(.25, 10);
+    }
+  )
+
+  lgIntroSound = loadSound('sounds/dubstep-atmo-269422_4976728-lq.mp3')
+  lgLoopSound = loadSound('sounds/7958_16644-lq-loopable.mp3')
+
   soundDefs = {
+    // dubstep_atmo: {
+    //   sound: loadSound('sounds/dubstep-atmo-269422_4976728-lq.mp3'),
+    //   color: '#999900'
+    // },
+    
+    // gremlinish: {
+    //   sound: loadSound('sounds/gremlinish-113512_1015240-lq.mp3'),
+    //   color: '#ccddcc'
+    // },
+
     hihat: {
       sound: loadSound('sounds/Raw_Drums_HiHat_100bpm_1bar_Roll.wav'),
       color: '#3cffce',
@@ -154,7 +179,7 @@ const createSoundButton = (key, def) => {
 }
 
 function setup() {
-  createCanvas(800, 400);
+  createCanvas(window.innerWidth, window.innerHeight);
   background('black');
 
   stroke('white');
@@ -186,25 +211,31 @@ function setup() {
   canvas.style.width = '100%'
 }
 
+const messageEl = document.querySelector('#messages')
+const isLockGroovePlaying = () => lockGrooveToggleEl.classList.contains('active');
+
 /**
  * Currently only plays one hardcoded intro + lock-groove set for exemplification
  */
 function toggleLockGroove() {
-  const introSound = soundDefs.tomFloorRoll.sound;
-  const loopSound = soundDefs.hihat.sound;
+  messageEl.innerHTML = ''
+  lgIntroSound.setLoop(false);
+  lgLoopSound.setLoop(false);
 
-  introSound.setLoop(false);
-  loopSound.setLoop(false);
-
-  if (introSound.isPlaying() || loopSound.isPlaying()) {
+  if (lgIntroSound.isPlaying() || lgLoopSound.isPlaying()) {
     lockGrooveToggleEl.classList.remove('active');
-    introSound.onended = () => {};
-    introSound.stop();
-    loopSound.stop();
+    lgIntroSound.stop();
+    lgLoopSound.stop();
   } else {
+    messageEl.innerHTML = 'Playing lock-groove intro'
     lockGrooveToggleEl.classList.add('active');
-    introSound.onended(() => loopSound.loop());
-    introSound.play();
+    lgIntroSound.onended(() => {
+      if (isLockGroovePlaying()) {
+        messageEl.innerHTML = 'Looping lock-groove'
+        lgLoopSound.loop()
+      }
+    });
+    lgIntroSound.play();
   }
 }
 
