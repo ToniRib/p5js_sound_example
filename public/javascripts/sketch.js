@@ -21,7 +21,7 @@ const Square = class {
   constructor(sound, color = 'blue', visualization = new EllipseVisualization) {
     this.color = color;
     this.viz = visualization;
-    this.sound = sound
+    this.sound = sound;
 
     this.amplitude = new p5.Amplitude();
     this.amplitude.setInput(this.sound);
@@ -35,7 +35,7 @@ const Square = class {
     if (!this.isPlaying()) return;
 
     const level = this.amplitude.getLevel();
-    
+
     if (level) {
       stroke(this.color);
       this.viz.visualize(level);
@@ -61,17 +61,17 @@ function preload() {
       soundFile.loop();
       soundFile.setVolume(.25, 10);
     }
-  )
+  );
 
-  lgIntroSound = loadSound('sounds/dubstep-atmo-269422_4976728-lq.mp3')
-  lgLoopSound = loadSound('sounds/7958_16644-lq-loopable.mp3')
+  lgIntroSound = loadSound('sounds/dubstep-atmo-269422_4976728-lq.mp3');
+  lgLoopSound = loadSound('sounds/7958_16644-lq-loopable.mp3');
 
   soundDefs = {
     // dubstep_atmo: {
     //   sound: loadSound('sounds/dubstep-atmo-269422_4976728-lq.mp3'),
     //   color: '#999900'
     // },
-    
+
     // gremlinish: {
     //   sound: loadSound('sounds/gremlinish-113512_1015240-lq.mp3'),
     //   color: '#ccddcc'
@@ -127,7 +127,7 @@ function preload() {
 
   visualizations = Object.entries(soundDefs).reduce((accum, [key, def]) => {
     accum[key] = new Square(def.sound, def.color, def.viz && def.viz());
-    
+
     return accum
   }, {})
 
@@ -139,15 +139,15 @@ function preload() {
 }
 
 const toggleSound = (id) => {
-  const sound = soundDefs[id].sound
-  const viz = visualizations[id]
+  const sound = soundDefs[id].sound;
+  const viz = visualizations[id];
 
   if (sound.isPlaying()) {
     sound.stop();
   } else {
     sound.loop();
   }
-}
+};
 
 const toggleSoundTrigger = (el) => {
   if (el.classList.contains('active')) {
@@ -155,7 +155,7 @@ const toggleSoundTrigger = (el) => {
   } else {
     el.classList.add('active')
   }
-}
+};
 
 const createSoundButton = (key, def) => {
   const container = document.createElement('div');
@@ -163,12 +163,12 @@ const createSoundButton = (key, def) => {
   container.classList.add('soundTriggerContainer');
 
   const button = document.createElement('button');
-  
+
   button.classList.add('soundTrigger');
 
   button.addEventListener('click', () => {
-    toggleSound(key)
-    toggleSoundTrigger(button)
+    toggleSound(key);
+    toggleSoundTrigger(button);
   });
 
   const textNode = document.createTextNode(key);
@@ -176,7 +176,7 @@ const createSoundButton = (key, def) => {
   button.appendChild(textNode);
   container.appendChild(button);
   soundBoard.appendChild(container);
-}
+};
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
@@ -186,39 +186,39 @@ function setup() {
   strokeWeight(4);
   fill('black');
 
-  const soundBoard = document.querySelector('#soundBoard')
+  const soundBoard = document.querySelector('#soundBoard');
 
   Object.entries(soundDefs).forEach(([key, def]) => {
     createSoundButton(key, def)
-  })
+  });
 
   // Move canvas into manipulable container
   document.querySelector('#canvasContainer')
-    .appendChild(document.querySelector('#defaultCanvas0'))
+    .appendChild(document.querySelector('#defaultCanvas0'));
 
   document.querySelector('#startRecording')
-    .addEventListener('click', recordSound)
+    .addEventListener('click', recordSound);
 
   document.querySelector('#stopRecording')
-    .addEventListener('click', stopRecording)
-  
-  lockGrooveToggleEl = document.querySelector('#lockGrooveToggle')
-  lockGrooveToggleEl.addEventListener('click', toggleLockGroove)
+    .addEventListener('click', stopRecording);
 
-  const canvas = document.querySelector('#defaultCanvas0')
-  
-  canvas.style.height = '100%'
-  canvas.style.width = '100%'
+  lockGrooveToggleEl = document.querySelector('#lockGrooveToggle');
+  lockGrooveToggleEl.addEventListener('click', toggleLockGroove);
+
+  const canvas = document.querySelector('#defaultCanvas0');
+
+  canvas.style.height = '100%';
+  canvas.style.width = '100%';
 }
 
-const messageEl = document.querySelector('#messages')
+const messageEl = document.querySelector('#messages');
 const isLockGroovePlaying = () => lockGrooveToggleEl.classList.contains('active');
 
 /**
  * Currently only plays one hardcoded intro + lock-groove set for exemplification
  */
 function toggleLockGroove() {
-  messageEl.innerHTML = ''
+  messageEl.innerHTML = '';
   lgIntroSound.setLoop(false);
   lgLoopSound.setLoop(false);
 
@@ -227,11 +227,11 @@ function toggleLockGroove() {
     lgIntroSound.stop();
     lgLoopSound.stop();
   } else {
-    messageEl.innerHTML = 'Playing lock-groove intro'
+    messageEl.innerHTML = 'Playing lock-groove intro';
     lockGrooveToggleEl.classList.add('active');
     lgIntroSound.onended(() => {
       if (isLockGroovePlaying()) {
-        messageEl.innerHTML = 'Looping lock-groove'
+        messageEl.innerHTML = 'Looping lock-groove';
         lgLoopSound.loop()
       }
     });
