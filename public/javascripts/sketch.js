@@ -17,8 +17,8 @@ const AmpVisulization = class {
 
     beginShape();
     for (let i = 1; i < this.levelHistory.length; i++) {
-      const y = map(this.levelHistory[i], 0, 1, height, 0);
-      vertex(i, y);
+      const y = map(this.levelHistory[i], 0, 0.5, height, 0);
+      vertex(i, y - 200);
     }
     endShape();
 

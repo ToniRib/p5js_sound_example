@@ -60,7 +60,12 @@ body {
 
 #soundBoard {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+}
+
+.soundTriggerContainer {
+    width: 115px;
 }
 
 .soundTrigger {
@@ -97,7 +102,8 @@ body {
     align-items: center;
     width: 100%;
     position: absolute;
-    top: 0;
+    top: 130px;
+    max-height: 650px;
     left: 0;
     z-index: 0;
 }
