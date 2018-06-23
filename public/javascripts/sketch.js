@@ -77,46 +77,71 @@ function preload() {
     //   color: '#ccddcc'
     // },
 
-    hihat: {
-      sound: loadSound('sounds/Raw_Drums_HiHat_100bpm_1bar_Roll.wav'),
+    lockGroove1: {
+      sound: loadSound('sounds/LockGroove-1.m4a'),
       color: '#3cffce',
       viz: () => new FanVisualization()
     },
 
-    jazzRide: {
-      sound: loadSound('sounds/Raw_Drums_Jazz_Ride_03.wav'),
+    lockGroove2: {
+      sound: loadSound('sounds/LockGroove-2.m4a'),
       color: '#cdee76',
     },
 
-    tomFloor2Bar: {
-      sound: loadSound('sounds/Raw_Drums_Tom_Floor_100bpm_2bar_02.wav'),
-      color: '#3c00ff',
+    lockGroove3: {
+      sound: loadSound('sounds/LockGroove-3.m4a'),
+      color: '#cdee76',
     },
 
-    kickHit: {
-      sound: loadSound('sounds/Raw_Drums_Kick_Hit_04.wav'),
-      color: '#aeff8c',
+    lockGroove4: {
+      sound: loadSound('sounds/LockGroove-4.m4a'),
+      color: '#cdee76',
     },
 
-    tomFloorRoll: {
-      sound: loadSound('sounds/Raw_Drums_Tom_Floor_100bpm_Roll_01.wav'),
-      color: '#aeff23',
+    lockGroove5: {
+      sound: loadSound('sounds/LockGroove-5.m4a'),
+      color: '#cdee76',
     },
 
-    tomLeftHit: {
-      sound: loadSound('sounds/Raw_Drums_Tom_Left_Hit_01.wav'),
-      color: '#40beff',
+    lockGroove6: {
+      sound: loadSound('sounds/LockGroove-6.m4a'),
+      color: '#cdee76',
     },
 
-    bassDrum: {
-      sound: loadSound('sounds/bass_drum_120.wav'),
-      color: '#1976d2',
+    lockGroove7: {
+      sound: loadSound('sounds/LockGroove-7.m4a'),
+      color: '#cdee76',
     },
 
-    taiko: {
-      sound: loadSound('sounds/taiko.wav'),
-      color: '#ee9aee',
-    }
+    lockGroove8: {
+      sound: loadSound('sounds/LockGroove-8.m4a'),
+      color: '#cdee76',
+    },
+
+    lockGroove9: {
+      sound: loadSound('sounds/LockGroove-9.m4a'),
+      color: '#cdee76',
+    },
+
+    lockGroove10: {
+      sound: loadSound('sounds/LockGroove-10.m4a'),
+      color: '#cdee76',
+    },
+    //
+    // lockGroove11: {
+    //   sound: loadSound('sounds/LockGroove-11.m4a'),
+    //   color: '#cdee76',
+    // },
+
+    lockGroove12: {
+      sound: loadSound('sounds/LockGroove-12.m4a'),
+      color: '#cdee76',
+    },
+
+    lockGroove13: {
+      sound: loadSound('sounds/LockGroove-13.m4a'),
+      color: '#cdee76',
+    },
   };
 
   recorder = new p5.SoundRecorder();
