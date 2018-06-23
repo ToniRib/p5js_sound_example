@@ -1,7 +1,18 @@
 textarea, input, button { outline: none; }
 
 body {
+    background-color: black;
     margin: 0;
+}
+
+#p5_loading {
+    color: white;
+    display: flex;
+    font-family: 'arial';
+    font-size: 35px;
+    justify-content: center;
+    width: 100%;
+    text-transform: uppercase;
 }
 
 #topLayer {
