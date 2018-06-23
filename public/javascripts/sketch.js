@@ -7,6 +7,27 @@ const FanVisualization = class {
   }
 };
 
+const AmpVisulization = class {
+  constructor() {
+    this.levelHistory = [];
+  }
+
+  visualize(level) {
+    this.levelHistory.push(level);
+
+    beginShape();
+    for (let i = 1; i < this.levelHistory.length; i++) {
+      const y = map(this.levelHistory[i], 0, 1, height, 0);
+      vertex(i, y);
+    }
+    endShape();
+
+    if (this.levelHistory.length > width) {
+      this.levelHistory.shift();
+    }
+  }
+};
+
 const EllipseVisualization = class {
   visualize(level) {
     const size = map(level, 0, 1, 0, 300);
@@ -79,8 +100,8 @@ function preload() {
 
     lockGroove1: {
       sound: loadSound('sounds/LockGroove-1.m4a'),
-      color: '#3cffce',
-      viz: () => new FanVisualization()
+      color: '#aa0200',
+      viz: () => new AmpVisulization()
     },
 
     lockGroove2: {
@@ -277,5 +298,6 @@ function stopRecording() {
 }
 
 function draw() {
+  background('black');
   Object.values(visualizations).forEach(viz => viz.visualize());
 }
