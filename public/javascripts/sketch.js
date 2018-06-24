@@ -7,7 +7,7 @@ const FanVisualization = class {
   }
 };
 
-const AmpVisulization = class {
+const AmpVisualization = class {
   constructor() {
     this.levelHistory = [];
   }
@@ -101,7 +101,7 @@ function preload() {
     lockGroove1: {
       sound: loadSound('sounds/LockGroove-1.m4a'),
       color: '#aa0200',
-      viz: () => new AmpVisulization()
+      viz: () => new AmpVisualization()
     },
 
     lockGroove2: {
