@@ -7,6 +7,15 @@ const FanVisualization = class {
   }
 };
 
+const ArcVisualization = class {
+  visualize(level) {
+    const size = map(level, 0, 1, 0, 400);
+    stroke('#aa0200');
+    strokeWeight(3);
+    ellipse(width / 2, height / 2, width, size * 10)
+  }
+};
+
 const AmpVisualization = class {
   constructor() {
     this.levelHistory = [];
@@ -122,6 +131,7 @@ function preload() {
 
     lockGroove3: {
       sound: loadSound('sounds/LockGroove-3.m4a'),
+      viz: new ArcVisualization,
     },
 
     lockGroove4: {
