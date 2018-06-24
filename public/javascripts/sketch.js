@@ -137,6 +137,21 @@ const StationaryCircleVisualization = class {
   }
 };
 
+const SpectrumVisualization = class {
+  visualize(level, spectrum) {
+    noStroke();
+    const color = map(level, 0, 1, 100, 255);
+    fill(0, 50, color, 90);
+
+    for (let i = 0; i < spectrum.length; i++) {
+      const x = map(i, 0, spectrum.length, 0, width);
+      const h = -height + map(spectrum[i], 0, 255, height, 0);
+
+      rect(x, height, width / spectrum.length, h)
+    }
+  }
+};
+
 const Square = class {
   constructor(sound, visualization = new EllipseVisualization) {
     this.viz = visualization;
@@ -266,6 +281,7 @@ function preload() {
 
     lockGroove12: {
       sound: loadSound('sounds/LockGroove-12.m4a'),
+      viz: new SpectrumVisualization,
       displayName: '12',
     },
 
