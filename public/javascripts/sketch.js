@@ -30,7 +30,7 @@ const RadialVisualization = class {
     angleMode(DEGREES);
 
     beginShape();
-    for (let i = 1; i < 360; i++) {
+    for (let i = 1; i < this.levelHistory.length; i++) {
       const r = map(this.levelHistory[i], 0, 0.6, 10, 1000);
       const x = (width / 2) + (r * cos(i));
       const y = (height / 2) +r * sin(i);
