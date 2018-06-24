@@ -69,11 +69,12 @@ body {
 }
 
 .soundTrigger {
+    background-color: black;
     border: 2px solid white;
+    color: white;
+    cursor: pointer;
     font-size: 14px;
     margin: 0 10px;
-    background-color: black;
-    color: white;
 }
 
 @keyframes activeButton {
