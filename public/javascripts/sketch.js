@@ -25,8 +25,6 @@ const CurveVisualization = class {
     const scaledSpectrum = spectrum;
     const length = scaledSpectrum.length;
 
-    // console.log(parseInt(random(length)));
-    console.log(spectrum[590]);
     const color = map(spectrum[590], 0, 1, 10, 150);
     stroke(150, color, color);
 
