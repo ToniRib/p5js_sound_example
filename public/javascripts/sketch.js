@@ -15,6 +15,7 @@ const AmpVisualization = class {
   visualize(level) {
     this.levelHistory.push(level);
 
+    stroke('#aa0200');
     beginShape();
     strokeWeight(3);
     for (let i = 1; i < this.levelHistory.length; i++) {
@@ -42,15 +43,16 @@ const EllipseVisualization = class {
 const StationaryCircleVisualization = class {
   visualize(level) {
     const size = map(level, 0, 1, 0, 450);
+    const color = map(level, 0, 1, 100, 255);
 
     strokeWeight(level * 50);
+    stroke(0, 0, color);
     ellipse((width / 2), (height / 2), size * 4, size * 4);
   }
 };
 
 const Square = class {
-  constructor(sound, color = 'blue', visualization = new EllipseVisualization) {
-    this.color = color;
+  constructor(sound, visualization) {
     this.viz = visualization;
     this.sound = sound;
 
@@ -68,7 +70,6 @@ const Square = class {
     const level = this.amplitude.getLevel();
 
     if (level) {
-      stroke(this.color);
       noFill();
       this.viz.visualize(level);
     }
@@ -111,69 +112,56 @@ function preload() {
 
     lockGroove1: {
       sound: loadSound('sounds/LockGroove-1.m4a'),
-      color: '#aa0200',
-      viz: () => new AmpVisualization(),
+      viz: new AmpVisualization,
     },
 
     lockGroove2: {
       sound: loadSound('sounds/LockGroove-2.m4a'),
-      color: '#160081',
-      viz: () => new StationaryCircleVisualization(),
+      viz: new StationaryCircleVisualization,
     },
 
     lockGroove3: {
       sound: loadSound('sounds/LockGroove-3.m4a'),
-      color: '#cdee76',
     },
 
     lockGroove4: {
       sound: loadSound('sounds/LockGroove-4.m4a'),
-      color: '#cdee76',
     },
 
     lockGroove5: {
       sound: loadSound('sounds/LockGroove-5.m4a'),
-      color: '#cdee76',
     },
 
     lockGroove6: {
       sound: loadSound('sounds/LockGroove-6.m4a'),
-      color: '#cdee76',
     },
 
     lockGroove7: {
       sound: loadSound('sounds/LockGroove-7.m4a'),
-      color: '#cdee76',
     },
 
     lockGroove8: {
       sound: loadSound('sounds/LockGroove-8.m4a'),
-      color: '#cdee76',
     },
 
     lockGroove9: {
       sound: loadSound('sounds/LockGroove-9.m4a'),
-      color: '#cdee76',
     },
 
     lockGroove10: {
       sound: loadSound('sounds/LockGroove-10.m4a'),
-      color: '#cdee76',
     },
     //
     // lockGroove11: {
     //   sound: loadSound('sounds/LockGroove-11.m4a'),
-    //   color: '#cdee76',
     // },
 
     lockGroove12: {
       sound: loadSound('sounds/LockGroove-12.m4a'),
-      color: '#cdee76',
     },
 
     lockGroove13: {
       sound: loadSound('sounds/LockGroove-13.m4a'),
-      color: '#cdee76',
     },
   };
 
@@ -184,7 +172,7 @@ function preload() {
   masterGain.connect();
 
   visualizations = Object.entries(soundDefs).reduce((accum, [key, def]) => {
-    accum[key] = new Square(def.sound, def.color, def.viz && def.viz());
+    accum[key] = new Square(def.sound, def.viz);
 
     return accum
   }, {})
