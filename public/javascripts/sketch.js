@@ -38,6 +38,15 @@ const EllipseVisualization = class {
   }
 };
 
+const StationaryCircleVisualization = class {
+  visualize(level) {
+    const size = map(level, 0, 1, 0, 450);
+
+    strokeWeight(level * 40);
+    ellipse((width / 2), (height / 2), size * 4, size * 4);
+  }
+};
+
 const Square = class {
   constructor(sound, color = 'blue', visualization = new EllipseVisualization) {
     this.color = color;
@@ -101,12 +110,13 @@ function preload() {
     lockGroove1: {
       sound: loadSound('sounds/LockGroove-1.m4a'),
       color: '#aa0200',
-      viz: () => new AmpVisualization()
+      viz: () => new AmpVisualization(),
     },
 
     lockGroove2: {
       sound: loadSound('sounds/LockGroove-2.m4a'),
       color: '#cdee76',
+      viz: () => new StationaryCircleVisualization(),
     },
 
     lockGroove3: {
