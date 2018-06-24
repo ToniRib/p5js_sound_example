@@ -128,7 +128,7 @@ const StationaryCircleVisualization = class {
 };
 
 const Square = class {
-  constructor(sound, visualization) {
+  constructor(sound, visualization = new EllipseVisualization) {
     this.viz = visualization;
     this.sound = sound;
 
