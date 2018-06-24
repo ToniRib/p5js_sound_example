@@ -129,9 +129,9 @@ const EllipseVisualization = class {
 const StationaryCircleVisualization = class {
   visualize(level) {
     const size = map(level, 0, 1, 0, 450);
-    const color = map(level, 0, 1, 100, 255);
+    const color = map(level, 0, 1, 50, 255);
 
-    strokeWeight(level * 50);
+    strokeWeight(level * 100);
     stroke(0, 0, color);
     ellipse((width / 2), (height / 2), size * 4, size * 4);
   }
