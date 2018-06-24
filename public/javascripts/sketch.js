@@ -143,69 +143,84 @@ function preload() {
   soundDefs = {
     // dubstep_atmo: {
     //   sound: loadSound('sounds/dubstep-atmo-269422_4976728-lq.mp3'),
-    //   color: '#999900'
+    //   color: '#999900',
+    //   displayName: 'dubstep',
     // },
 
     // gremlinish: {
     //   sound: loadSound('sounds/gremlinish-113512_1015240-lq.mp3'),
-    //   color: '#ccddcc'
+    //   color: '#ccddcc',
+    //   displayName: 'gremlinish',
     // },
 
     lockGroove1: {
       sound: loadSound('sounds/LockGroove-1.m4a'),
       viz: new AmpVisualization,
+      displayName: '1',
     },
 
     lockGroove2: {
       sound: loadSound('sounds/LockGroove-2.m4a'),
       viz: new StationaryCircleVisualization,
+      displayName: '2',
     },
 
     lockGroove3: {
       sound: loadSound('sounds/LockGroove-3.m4a'),
       viz: new ArcVisualization,
+      displayName: '3',
     },
 
     lockGroove4: {
       sound: loadSound('sounds/LockGroove-4.m4a'),
       viz: new RadialVisualization,
+      displayName: '4',
     },
 
     lockGroove5: {
       sound: loadSound('sounds/LockGroove-5.m4a'),
       viz: new EllipseVisualization,
+      displayName: '5',
     },
 
     lockGroove6: {
       sound: loadSound('sounds/LockGroove-6.m4a'),
+      displayName: '6',
     },
 
     lockGroove7: {
       sound: loadSound('sounds/LockGroove-7.m4a'),
+      displayName: '7',
     },
 
     lockGroove8: {
       sound: loadSound('sounds/LockGroove-8.m4a'),
+      displayName: '8',
     },
 
     lockGroove9: {
       sound: loadSound('sounds/LockGroove-9.m4a'),
+      displayName: '9',
     },
 
     lockGroove10: {
       sound: loadSound('sounds/LockGroove-10.m4a'),
+      displayName: '10',
     },
     //
     // lockGroove11: {
     //   sound: loadSound('sounds/LockGroove-11.m4a'),
+    //   displayName: '11',
     // },
 
     lockGroove12: {
       sound: loadSound('sounds/LockGroove-12.m4a'),
+      displayName: '12',
     },
 
     lockGroove13: {
       sound: loadSound('sounds/LockGroove-13.m4a'),
+      displayName: '13',
     },
   };
 
@@ -247,7 +262,7 @@ const toggleSoundTrigger = (el) => {
   }
 };
 
-const createSoundButton = (key, def) => {
+const createSoundButton = (key, displayName) => {
   const container = document.createElement('div');
 
   container.classList.add('soundTriggerContainer');
@@ -261,7 +276,7 @@ const createSoundButton = (key, def) => {
     toggleSoundTrigger(button);
   });
 
-  const textNode = document.createTextNode(key);
+  const textNode = document.createTextNode(displayName);
 
   button.appendChild(textNode);
   container.appendChild(button);
@@ -278,8 +293,8 @@ function setup() {
 
   const soundBoard = document.querySelector('#soundBoard');
 
-  Object.entries(soundDefs).forEach(([key, def]) => {
-    createSoundButton(key, def)
+  Object.entries(soundDefs).forEach(([key, soundDefinition]) => {
+    createSoundButton(key, soundDefinition.displayName)
   });
 
   // Move canvas into manipulable container
