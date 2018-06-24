@@ -29,12 +29,11 @@ const RadialVisualization = class {
     strokeWeight(2);
     angleMode(DEGREES);
 
-    translate(width / 2, height / 2);
     beginShape();
     for (let i = 1; i < 360; i++) {
       const r = map(this.levelHistory[i], 0, 0.6, 10, 1000);
-      const x = r * cos(i);
-      const y = r * sin(i);
+      const x = (width / 2) + (r * cos(i));
+      const y = (height / 2) +r * sin(i);
 
       vertex(x, y);
     }
@@ -72,11 +71,13 @@ const AmpVisualization = class {
 
 const EllipseVisualization = class {
   visualize(level) {
-    const size = map(level, 0, 1, 0, 300);
-    let randomMultiplier = random(800);
+    const size = map(level, 0, 1, 0, 700);
+    const randomMultiplier = random(-(width / 2), width / 2);
+    const x = width / 2;
 
+    stroke('white');
     strokeWeight(4);
-    ellipse((width / 2) + randomMultiplier - 200, (height / 2), size, size);
+    ellipse(x + randomMultiplier, height / 2, size, size);
   }
 };
 
@@ -172,6 +173,7 @@ function preload() {
 
     lockGroove5: {
       sound: loadSound('sounds/LockGroove-5.m4a'),
+      viz: new EllipseVisualization,
     },
 
     lockGroove6: {
