@@ -16,6 +16,7 @@ const AmpVisualization = class {
     this.levelHistory.push(level);
 
     beginShape();
+    strokeWeight(3);
     for (let i = 1; i < this.levelHistory.length; i++) {
       const y = map(this.levelHistory[i], 0, 0.5, height, 0);
       vertex(i, y - 200);
@@ -42,7 +43,7 @@ const StationaryCircleVisualization = class {
   visualize(level) {
     const size = map(level, 0, 1, 0, 450);
 
-    strokeWeight(level * 40);
+    strokeWeight(level * 50);
     ellipse((width / 2), (height / 2), size * 4, size * 4);
   }
 };
@@ -68,6 +69,7 @@ const Square = class {
 
     if (level) {
       stroke(this.color);
+      noFill();
       this.viz.visualize(level);
     }
   }
@@ -115,7 +117,7 @@ function preload() {
 
     lockGroove2: {
       sound: loadSound('sounds/LockGroove-2.m4a'),
-      color: '#cdee76',
+      color: '#160081',
       viz: () => new StationaryCircleVisualization(),
     },
 
