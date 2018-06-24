@@ -1,9 +1,46 @@
-const FanVisualization = class {
-  visualize(level) {
-    let randomMultiplier = random(150);
+// Credit to The Coding Train YouTube channel
+// and https://github.com/therewasaguy for some inspiration/code for these visualizations
+
+function smoothPoint(spectrum, index) {
+  const neighbors = 2;
+  const len = spectrum.length;
+
+  let val = 0;
+
+  const indexMinusNeighbors = index - neighbors;
+  let smoothedPoints = 0;
+
+  for (let i = indexMinusNeighbors; i < (index + neighbors) && i < len; i++) {
+    if (spectrum[i] !== undefined) {
+      val += spectrum[i];
+      smoothedPoints++;
+    }
+  }
+
+  return val / smoothedPoints;
+}
+
+const CurveVisualization = class {
+  visualize(_, spectrum) {
+    const scaledSpectrum = spectrum;
+    const length = scaledSpectrum.length;
+
+    // console.log(parseInt(random(length)));
+    console.log(spectrum[590]);
+    const color = map(spectrum[590], 0, 1, 10, 150);
+    stroke(150, color, color);
 
     strokeWeight(2);
-    triangle(130 + randomMultiplier, 70, 158, 120, 186, 175);
+
+    beginShape();
+    for (let i = 0; i < length; i++) {
+      const point = smoothPoint(scaledSpectrum, i);
+      const x = map(i, 0, length - 1, 0, width);
+      const y = map(point, 0, 255, height / 5, 0);
+
+      curveVertex(x, y + (height - 250));
+    }
+    endShape();
   }
 };
 
@@ -33,7 +70,7 @@ const RadialVisualization = class {
     for (let i = 1; i < this.levelHistory.length; i++) {
       const r = map(this.levelHistory[i], 0, 0.6, 10, 1000);
       const x = (width / 2) + (r * cos(i));
-      const y = (height / 2) +r * sin(i);
+      const y = (height / 2) + r * sin(i);
 
       vertex(x, y);
     }
@@ -99,6 +136,9 @@ const Square = class {
 
     this.amplitude = new p5.Amplitude();
     this.amplitude.setInput(this.sound);
+
+    this.fft = new p5.FFT();
+    this.fft.setInput(this.sound);
   }
 
   isPlaying() {
@@ -109,10 +149,11 @@ const Square = class {
     if (!this.isPlaying()) return;
 
     const level = this.amplitude.getLevel();
+    const spectrum = this.fft.analyze();
 
-    if (level) {
+    if (level || spectrum) {
       noFill();
-      this.viz.visualize(level);
+      this.viz.visualize(level, spectrum);
     }
   }
 };
@@ -185,6 +226,7 @@ function preload() {
 
     lockGroove6: {
       sound: loadSound('sounds/LockGroove-6.m4a'),
+      viz: new CurveVisualization,
       displayName: '6',
     },
 
