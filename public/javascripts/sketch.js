@@ -42,6 +42,16 @@ const CurveVisualization = class {
   }
 };
 
+const LineVibrationVisualization = class {
+  visualize(level) {
+    const y = 100 + map(level, 0, 1, 0, 400);
+
+    stroke('#aa0200');
+    strokeWeight(7);
+    line(0, y, width, y);
+  }
+};
+
 const ArcVisualization = class {
   visualize(level) {
     const size = map(level, 0, 1, 0, 400);
@@ -230,6 +240,7 @@ function preload() {
 
     lockGroove7: {
       sound: loadSound('sounds/LockGroove-7.m4a'),
+      viz: new LineVibrationVisualization,
       displayName: '7',
     },
 
