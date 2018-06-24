@@ -42,6 +42,49 @@ const CurveVisualization = class {
   }
 };
 
+const Particle = function(position) {
+  this.position = position;
+  this.scale = random(0, 1);
+  this.speed = createVector(random(0, 10), 0);
+};
+
+const ParticleScurryVisualization = class {
+  constructor() {
+    this.particles = new Array(256);
+
+    for (let i = 0; i < this.particles.length; i++) {
+      const x = random(0, width);
+      const y = random(0, height);
+      const position = createVector(x, y);
+      this.particles[i] = new Particle(position);
+    }
+  }
+
+  visualize(level, spectrum) {
+    noStroke();
+
+    for (let i = 0; i < 256; i++) {
+      const thisLevel = map(spectrum[i], 0, 255, 0, 1) * 2;
+
+      this.particles[i].position.y = spectrum[i] * 3;
+      this.particles[i].position.x += this.particles[i].speed.x / (thisLevel);
+      if (this.particles[i].position.x > width) this.particles[i].position.x = 0;
+      this.particles[i].diameter = map(thisLevel, 0, 1, 0, 100) * this.particles[i].scale;
+      const opacity = map(level, 0, 1, 150, 220);
+      this.particles[i].color = [0, 0, 100, opacity];
+
+
+      fill(this.particles[i].color);
+      ellipse(
+        this.particles[i].position.x,
+        this.particles[i].position.y,
+        this.particles[i].diameter,
+        this.particles[i].diameter,
+      );
+    }
+  }
+};
+
 const LineVibrationVisualization = class {
   visualize(level) {
     const y = 100 + map(level, 0, 1, 0, 400);
@@ -287,6 +330,7 @@ function preload() {
 
     lockGroove13: {
       sound: loadSound('sounds/LockGroove-13.m4a'),
+      viz: new ParticleScurryVisualization,
       displayName: '13',
     },
   };
