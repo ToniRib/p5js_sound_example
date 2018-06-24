@@ -16,6 +16,36 @@ const ArcVisualization = class {
   }
 };
 
+const RadialVisualization = class {
+  constructor() {
+    this.levelHistory = [];
+  }
+
+  visualize(level) {
+    this.levelHistory.push(level);
+    const color = map(level, 0, 1, 10, 150);
+
+    stroke(150, color, color);
+    strokeWeight(2);
+    angleMode(DEGREES);
+
+    translate(width / 2, height / 2);
+    beginShape();
+    for (let i = 1; i < 360; i++) {
+      const r = map(this.levelHistory[i], 0, 0.6, 10, 1000);
+      const x = r * cos(i);
+      const y = r * sin(i);
+
+      vertex(x, y);
+    }
+    endShape();
+
+    if (this.levelHistory.length > 360) {
+      this.levelHistory.shift();
+    }
+  }
+};
+
 const AmpVisualization = class {
   constructor() {
     this.levelHistory = [];
@@ -25,8 +55,9 @@ const AmpVisualization = class {
     this.levelHistory.push(level);
 
     stroke('#aa0200');
-    beginShape();
     strokeWeight(3);
+
+    beginShape();
     for (let i = 1; i < this.levelHistory.length; i++) {
       const y = map(this.levelHistory[i], 0, 0.5, height, 0);
       vertex(i, y - 200);
@@ -136,6 +167,7 @@ function preload() {
 
     lockGroove4: {
       sound: loadSound('sounds/LockGroove-4.m4a'),
+      viz: new RadialVisualization,
     },
 
     lockGroove5: {
