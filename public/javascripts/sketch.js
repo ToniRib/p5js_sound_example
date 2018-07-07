@@ -235,31 +235,10 @@ let lgIntroSound;
 let lgLoopSound;
 
 function preload() {
-  ambientSound = loadSound(
-    'sounds/193692_3056623-lq.mp3',
-    (soundFile) => {
-      soundFile.setVolume(0);
-      soundFile.loop();
-      soundFile.setVolume(.25, 10);
-    }
-  );
-
   lgIntroSound = loadSound('sounds/dubstep-atmo-269422_4976728-lq.mp3');
   lgLoopSound = loadSound('sounds/7958_16644-lq-loopable.mp3');
 
   soundDefs = {
-    // dubstep_atmo: {
-    //   sound: loadSound('sounds/dubstep-atmo-269422_4976728-lq.mp3'),
-    //   color: '#999900',
-    //   displayName: 'dubstep',
-    // },
-
-    // gremlinish: {
-    //   sound: loadSound('sounds/gremlinish-113512_1015240-lq.mp3'),
-    //   color: '#ccddcc',
-    //   displayName: 'gremlinish',
-    // },
-
     lockGroove1: {
       sound: loadSound('sounds/LockGroove-1.m4a'),
       viz: new AmpVisualization,
