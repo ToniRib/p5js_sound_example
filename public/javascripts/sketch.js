@@ -1,6 +1,12 @@
 // Credit to The Coding Train YouTube channel
 // and https://github.com/therewasaguy for some inspiration/code for these visualizations
 
+const black = '#010711';
+const darkGray = '#13171F';
+const mediumGray = '#1C2026';
+const lightGray = '#24272D';
+const red = '#94152A';
+
 function smoothPoint(spectrum, index) {
   const neighbors = 2;
   const len = spectrum.length;
@@ -26,7 +32,7 @@ const CurveVisualization = class {
     const length = scaledSpectrum.length;
 
     const color = map(spectrum[590], 0, 1, 10, 150);
-    stroke(150, color, color);
+    stroke(148, color, color);
 
     strokeWeight(2);
 
@@ -71,8 +77,7 @@ const ParticleScurryVisualization = class {
       if (this.particles[i].position.x > width) this.particles[i].position.x = 0;
       this.particles[i].diameter = map(thisLevel, 0, 1, 0, 100) * this.particles[i].scale;
       const opacity = map(level, 0, 1, 150, 220);
-      this.particles[i].color = [0, 0, 100, opacity];
-
+      this.particles[i].color = [19, 23, 31, opacity];
 
       fill(this.particles[i].color);
       ellipse(
@@ -89,7 +94,7 @@ const LineVibrationVisualization = class {
   visualize(level) {
     const y = 100 + map(level, 0, 1, 0, 400);
 
-    stroke('#aa0200');
+    stroke(red);
     strokeWeight(7);
     line(0, y, width, y);
   }
@@ -98,7 +103,7 @@ const LineVibrationVisualization = class {
 const ArcVisualization = class {
   visualize(level) {
     const size = map(level, 0, 1, 0, 400);
-    stroke('#aa0200');
+    stroke(mediumGray);
     strokeWeight(3);
     ellipse(width / 2, height / 2, width, size * 10)
   }
@@ -111,9 +116,8 @@ const RadialVisualization = class {
 
   visualize(level) {
     this.levelHistory.push(level);
-    const color = map(level, 0, 1, 10, 150);
 
-    stroke(150, color, color);
+    stroke(lightGray);
     strokeWeight(2);
     angleMode(DEGREES);
 
@@ -141,7 +145,7 @@ const AmpVisualization = class {
   visualize(level) {
     this.levelHistory.push(level);
 
-    stroke('#aa0200');
+    stroke(red);
     strokeWeight(3);
 
     beginShape();
@@ -172,10 +176,10 @@ const EllipseVisualization = class {
 const StationaryCircleVisualization = class {
   visualize(level) {
     const size = map(level, 0, 1, 0, 450);
-    const color = map(level, 0, 1, 50, 255);
+    const color = map(level, 0, 1, 50, 200);
 
     strokeWeight(level * 100);
-    stroke(0, 0, color);
+    stroke(color, 21, 42);
     ellipse((width / 2), (height / 2), size * 4, size * 4);
   }
 };
@@ -184,7 +188,7 @@ const SpectrumVisualization = class {
   visualize(level, spectrum) {
     noStroke();
     const color = map(level, 0, 1, 100, 255);
-    fill(0, 50, color, 90);
+    fill(color, 21, 42, 90);
 
     for (let i = 0; i < spectrum.length; i++) {
       const x = map(i, 0, spectrum.length, 0, width);
