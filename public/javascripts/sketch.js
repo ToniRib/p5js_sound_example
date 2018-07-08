@@ -282,7 +282,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-1-loop.mp3'),
       ),
       viz: new AmpVisualization,
-      displayName: '1',
+      displayIcon: '/images/icon-1.svg',
     },
 
     lockGroove2: {
@@ -291,7 +291,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-2-loop.mp3'),
       ),
       viz: new StationaryCircleVisualization,
-      displayName: '2',
+      displayIcon: '/images/icon-2.svg',
     },
 
     lockGroove3: {
@@ -300,7 +300,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-3-loop.mp3'),
       ),
       viz: new ArcVisualization,
-      displayName: '3',
+      displayIcon: '/images/icon-3.svg',
     },
 
     lockGroove4: {
@@ -309,7 +309,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-4-loop.mp3'),
       ),
       viz: new RadialVisualization,
-      displayName: '4',
+      displayIcon: '/images/icon-4.svg',
     },
 
     lockGroove5: {
@@ -318,7 +318,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-5-loop.mp3'),
       ),
       viz: new EllipseVisualization,
-      displayName: '5',
+      displayIcon: '/images/icon-5.svg',
     },
 
     // lockGroove6: {
@@ -327,7 +327,7 @@ function preload() {
     //     loadSound('sounds/loops/lock-groove-6-loop.mp3'),
     //   ),
     //   viz: new CurveVisualization,
-    //   displayName: '6',
+    //   displayIcon: '/images/icon-6.svg',
     // },
 
     // lockGroove7: {
@@ -336,7 +336,7 @@ function preload() {
     //     loadSound('sounds/loops/lock-groove-7-loop.mp3'),
     //   ),
     //   viz: new LineVibrationVisualization,
-    //   displayName: '7',
+    //   displayIcon: '/images/icon-7.svg',
     // },
 
     lockGroove8: {
@@ -344,7 +344,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-8-noise.mp3'),
         loadSound('sounds/loops/lock-groove-8-loop.mp3'),
       ),
-      displayName: '8',
+      displayIcon: '/images/icon-8.svg',
     },
 
     lockGroove9: {
@@ -352,7 +352,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-9-noise.mp3'),
         loadSound('sounds/loops/lock-groove-9-loop.mp3'),
       ),
-      displayName: '9',
+      displayIcon: '/images/icon-9.svg',
     },
 
     lockGroove10: {
@@ -360,7 +360,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-10-noise.mp3'),
         loadSound('sounds/loops/lock-groove-10-loop.mp3'),
       ),
-      displayName: '10',
+      displayIcon: '/images/icon-10.svg',
     },
 
     lockGroove11: {
@@ -368,7 +368,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-11-noise.mp3'),
         loadSound('sounds/loops/lock-groove-11-loop.mp3'),
       ),
-      displayName: '11',
+      displayIcon: '/images/icon-11.svg',
     },
 
     lockGroove12: {
@@ -377,7 +377,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-12-loop.mp3'),
       ),
       viz: new SpectrumVisualization,
-      displayName: '12',
+      displayIcon: '/images/icon-12.svg',
     },
 
     lockGroove13: {
@@ -386,7 +386,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-13-loop.mp3'),
       ),
       viz: new ParticleScurryVisualization,
-      displayName: '13',
+      displayIcon: '/images/icon-13.svg',
     },
 
     // lockGroove14: {
@@ -394,7 +394,7 @@ function preload() {
     //     loadSound('sounds/noise/lock-groove-14-noise.mp3'),
     //     loadSound('sounds/loops/lock-groove-14-loop.mp3'),
     //   ),
-    //   displayName: '14',
+    //   displayIcon: '/images/icon-14.svg',
     // },
 
     lockGroove15: {
@@ -402,7 +402,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-15-noise.mp3'),
         loadSound('sounds/loops/lock-groove-15-loop.mp3'),
       ),
-      displayName: '15',
+      displayIcon: '/images/icon-14.svg',
     },
   };
 
@@ -443,7 +443,7 @@ const toggleSoundTrigger = (el) => {
   }
 };
 
-const createSoundButton = (key, displayName) => {
+const createSoundButton = (key, displayName, displayIcon) => {
   const container = document.createElement('div');
 
   container.classList.add('soundTriggerContainer');
@@ -457,9 +457,10 @@ const createSoundButton = (key, displayName) => {
     toggleSoundTrigger(button);
   });
 
-  const textNode = document.createTextNode(displayName);
+  const image = new Image(24, 24);
+  image.src = displayIcon;
+  button.appendChild(image);
 
-  button.appendChild(textNode);
   container.appendChild(button);
   soundBoard.appendChild(container);
 };
@@ -475,7 +476,7 @@ function setup() {
   const soundBoard = document.querySelector('#soundBoard');
 
   Object.entries(soundDefs).forEach(([key, soundDefinition]) => {
-    createSoundButton(key, soundDefinition.displayName)
+    createSoundButton(key, soundDefinition.displayName, soundDefinition.displayIcon)
   });
 
   // Move canvas into manipulable container

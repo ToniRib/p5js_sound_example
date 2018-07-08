@@ -58,7 +58,7 @@ body {
 }
 
 .soundTriggerContainer {
-    width: 50px;
+    width: 60px;
 }
 
 .soundTrigger {
@@ -68,6 +68,10 @@ body {
     cursor: pointer;
     font-size: 14px;
     margin: 0 10px;
+}
+
+.soundTrigger img {
+    padding-top: 3px;
 }
 
 @keyframes activeButton {
