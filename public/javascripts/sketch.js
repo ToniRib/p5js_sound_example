@@ -496,14 +496,19 @@ function setup() {
 }
 
 function recordSound() {
-  console.log('RECORDING');
+  const recordButton = document.querySelector('#startRecording');
+  recordButton.classList.add('active');
+  recordButton.innerHTML = 'Recording...';
+
   recorder.record(soundFile);
 }
 
 function stopRecording() {
-  console.log('STOPPING');
+  const recordButton = document.querySelector('#startRecording');
+  recordButton.classList.remove('active');
+  recordButton.innerHTML = 'Start Recording';
+
   recorder.stop();
-  console.log('SAVING');
   save(soundFile, 'mySound.wav');
 }
 

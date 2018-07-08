@@ -61,7 +61,7 @@ body {
     width: 60px;
 }
 
-.soundTrigger {
+.soundTrigger, #startRecording, #stopRecording {
     background-color: black;
     border: 2px solid white;
     color: white;
@@ -84,7 +84,7 @@ body {
   }
 }
 
-.soundTrigger.active {
+.soundTrigger.active, #startRecording.active {
     border-color: rgb(255, 0, 0);
 
     animation-duration: 2s;
