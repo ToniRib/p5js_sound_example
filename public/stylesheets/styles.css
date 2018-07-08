@@ -80,12 +80,12 @@ body {
   }
 
   100% {
-    color: rgb(255, 0, 0);
+    color: #94152A;
   }
 }
 
 .soundTrigger.active, #startRecording.active {
-    border-color: rgb(255, 0, 0);
+    border-color: #94152A;
 
     animation-duration: 2s;
     animation-name: activeButton;
