@@ -6,6 +6,7 @@ const darkGray = '#13171F';   // (19,  23, 31)
 const mediumGray = '#1C2026'; // (28,  32, 38)
 const lightGray = '#24272D';  // (36,  39, 45)
 const red = '#94152A';        // (148, 21, 42)
+const dullWhite = '#b6b6b6';
 
 function smoothPoint(spectrum, index) {
   const neighbors = 2;
@@ -76,8 +77,9 @@ const ParticleScurryVisualization = class {
       this.particles[i].position.x += this.particles[i].speed.x / (thisLevel);
       if (this.particles[i].position.x > width) this.particles[i].position.x = 0;
       this.particles[i].diameter = map(thisLevel, 0, 1, 0, 100) * this.particles[i].scale;
+
       const opacity = map(level, 0, 1, 150, 220);
-      this.particles[i].color = [19, 23, 31, opacity];
+      this.particles[i].color = [36, 39, 45, opacity];
 
       fill(this.particles[i].color);
       ellipse(
@@ -103,7 +105,8 @@ const LineVibrationVisualization = class {
 const ArcVisualization = class {
   visualize(level) {
     const size = map(level, 0, 1, 0, 400);
-    stroke(mediumGray);
+
+    stroke(lightGray);
     strokeWeight(3);
     ellipse(width / 2, height / 2, width, size * 10)
   }
@@ -117,7 +120,7 @@ const RadialVisualization = class {
   visualize(level) {
     this.levelHistory.push(level);
 
-    stroke(lightGray);
+    stroke(red);
     strokeWeight(2);
     angleMode(DEGREES);
 
@@ -167,7 +170,7 @@ const EllipseVisualization = class {
     const randomMultiplier = random(-(width / 2), width / 2);
     const x = width / 2;
 
-    stroke('white');
+    stroke(dullWhite);
     strokeWeight(4);
     ellipse(x + randomMultiplier, height / 2, size, size);
   }
