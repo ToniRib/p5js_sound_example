@@ -199,27 +199,68 @@ const SpectrumVisualization = class {
   }
 };
 
+const LockGroove = class {
+  constructor(noise, groove) {
+    this.noise = noise;
+    this.groove = groove;
+
+    this.noiseAmplitude = new p5.Amplitude();
+    this.noiseAmplitude.setInput(this.noise);
+    this.noiseFFT = new p5.FFT();
+    this.noiseFFT.setInput(this.noise);
+
+    this.grooveAmplitude = new p5.Amplitude();
+    this.grooveAmplitude.setInput(this.groove);
+    this.grooveFFT = new p5.FFT();
+    this.grooveFFT.setInput(this.groove);
+
+    this.noise.setLoop(false);
+    this.groove.setLoop(false);
+
+    this.noise.onended(() => {
+      this.groove.loop()
+    });
+  }
+
+  isPlaying() {
+    return this.noise.isPlaying() || this.groove.isLooping();
+  }
+
+  loop() {
+    this.noise.play();
+  }
+
+  stop() {
+    this.noise.stop();
+    this.groove.stop();
+  }
+
+  amplitude() {
+    if (this.noise.isPlaying()) return this.noiseAmplitude;
+    if (this.groove.isLooping()) return this.grooveAmplitude;
+  }
+
+  fft() {
+    if (this.noise.isPlaying()) return this.noiseFFT;
+    if (this.groove.isLooping()) return this.grooveFFT;
+  }
+};
+
 const Square = class {
   constructor(sound, visualization = new EllipseVisualization) {
     this.viz = visualization;
     this.sound = sound;
-
-    this.amplitude = new p5.Amplitude();
-    this.amplitude.setInput(this.sound);
-
-    this.fft = new p5.FFT();
-    this.fft.setInput(this.sound);
   }
 
   isPlaying() {
-    return this.sound.isLooping();
+    return this.sound.isPlaying();
   }
 
   visualize() {
     if (!this.isPlaying()) return;
 
-    const level = this.amplitude.getLevel();
-    const spectrum = this.fft.analyze();
+    const level = this.sound.amplitude().getLevel();
+    const spectrum = this.sound.fft().analyze();
 
     if (level || spectrum) {
       noFill();
@@ -229,12 +270,10 @@ const Square = class {
 };
 
 let visualizations;
-let amplitude;
 let recorder;
 let soundFile;
 let soundDefs;
 let lockGrooveToggleEl;
-let ambientSound;
 let lgIntroSound;
 let lgLoopSound;
 
@@ -244,78 +283,81 @@ function preload() {
 
   soundDefs = {
     lockGroove1: {
-      sound: loadSound('sounds/LockGroove-1.m4a'),
+      sound: new LockGroove(
+        loadSound('sounds/noise/lock-groove-1-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-1-loop.mp3'),
+      ),
       viz: new AmpVisualization,
       displayName: '1',
     },
-
-    lockGroove2: {
-      sound: loadSound('sounds/LockGroove-2.m4a'),
-      viz: new StationaryCircleVisualization,
-      displayName: '2',
-    },
-
-    lockGroove3: {
-      sound: loadSound('sounds/LockGroove-3.m4a'),
-      viz: new ArcVisualization,
-      displayName: '3',
-    },
-
-    lockGroove4: {
-      sound: loadSound('sounds/LockGroove-4.m4a'),
-      viz: new RadialVisualization,
-      displayName: '4',
-    },
-
-    lockGroove5: {
-      sound: loadSound('sounds/LockGroove-5.m4a'),
-      viz: new EllipseVisualization,
-      displayName: '5',
-    },
-
-    lockGroove6: {
-      sound: loadSound('sounds/LockGroove-6.m4a'),
-      viz: new CurveVisualization,
-      displayName: '6',
-    },
-
-    lockGroove7: {
-      sound: loadSound('sounds/LockGroove-7.m4a'),
-      viz: new LineVibrationVisualization,
-      displayName: '7',
-    },
-
-    lockGroove8: {
-      sound: loadSound('sounds/LockGroove-8.m4a'),
-      displayName: '8',
-    },
-
-    lockGroove9: {
-      sound: loadSound('sounds/LockGroove-9.m4a'),
-      displayName: '9',
-    },
-
-    lockGroove10: {
-      sound: loadSound('sounds/LockGroove-10.m4a'),
-      displayName: '10',
-    },
     //
-    // lockGroove11: {
-    //   sound: loadSound('sounds/LockGroove-11.m4a'),
-    //   displayName: '11',
+    // lockGroove2: {
+    //   sound: loadSound('sounds/LockGroove-2.m4a'),
+    //   viz: new StationaryCircleVisualization,
+    //   displayName: '2',
     // },
-
-    lockGroove12: {
-      sound: loadSound('sounds/LockGroove-12.m4a'),
-      viz: new SpectrumVisualization,
-      displayName: '12',
-    },
-
-    lockGroove13: {
-      sound: loadSound('sounds/LockGroove-13.m4a'),
-      viz: new ParticleScurryVisualization,
-      displayName: '13',
-    },
+    //
+    // lockGroove3: {
+    //   sound: loadSound('sounds/LockGroove-3.m4a'),
+    //   viz: new ArcVisualization,
+    //   displayName: '3',
+    // },
+    //
+    // lockGroove4: {
+    //   sound: loadSound('sounds/LockGroove-4.m4a'),
+    //   viz: new RadialVisualization,
+    //   displayName: '4',
+    // },
+    //
+    // lockGroove5: {
+    //   sound: loadSound('sounds/LockGroove-5.m4a'),
+    //   viz: new EllipseVisualization,
+    //   displayName: '5',
+    // },
+    //
+    // lockGroove6: {
+    //   sound: loadSound('sounds/LockGroove-6.m4a'),
+    //   viz: new CurveVisualization,
+    //   displayName: '6',
+    // },
+    //
+    // lockGroove7: {
+    //   sound: loadSound('sounds/LockGroove-7.m4a'),
+    //   viz: new LineVibrationVisualization,
+    //   displayName: '7',
+    // },
+    //
+    // lockGroove8: {
+    //   sound: loadSound('sounds/LockGroove-8.m4a'),
+    //   displayName: '8',
+    // },
+    //
+    // lockGroove9: {
+    //   sound: loadSound('sounds/LockGroove-9.m4a'),
+    //   displayName: '9',
+    // },
+    //
+    // lockGroove10: {
+    //   sound: loadSound('sounds/LockGroove-10.m4a'),
+    //   displayName: '10',
+    // },
+    // //
+    // // lockGroove11: {
+    // //   sound: loadSound('sounds/LockGroove-11.m4a'),
+    // //   displayName: '11',
+    // // },
+    //
+    // lockGroove12: {
+    //   sound: loadSound('sounds/LockGroove-12.m4a'),
+    //   viz: new SpectrumVisualization,
+    //   displayName: '12',
+    // },
+    //
+    // lockGroove13: {
+    //   sound: loadSound('sounds/LockGroove-13.m4a'),
+    //   viz: new ParticleScurryVisualization,
+    //   displayName: '13',
+    // },
   };
 
   recorder = new p5.SoundRecorder();
@@ -339,7 +381,6 @@ function preload() {
 
 const toggleSound = (id) => {
   const sound = soundDefs[id].sound;
-  const viz = visualizations[id];
 
   if (sound.isPlaying()) {
     sound.stop();
