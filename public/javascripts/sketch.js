@@ -344,7 +344,7 @@ function preload() {
     //   displayIcon: '/images/icon-7.svg',
     // },
 
-    lockGroove8: {
+    lockGroove8: { // NEEDS VISUALIZATION
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-8-noise.mp3'),
         loadSound('sounds/loops/lock-groove-8-loop.mp3'),
@@ -352,7 +352,7 @@ function preload() {
       displayIcon: '/images/icon-8.svg',
     },
 
-    lockGroove9: {
+    lockGroove9: { // NEEDS VISUALIZATION
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-9-noise.mp3'),
         loadSound('sounds/loops/lock-groove-9-loop.mp3'),
@@ -360,7 +360,7 @@ function preload() {
       displayIcon: '/images/icon-9.svg',
     },
 
-    lockGroove10: {
+    lockGroove10: { // NEEDS VISUALIZATION
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-10-noise.mp3'),
         loadSound('sounds/loops/lock-groove-10-loop.mp3'),
@@ -368,7 +368,7 @@ function preload() {
       displayIcon: '/images/icon-10.svg',
     },
 
-    lockGroove11: {
+    lockGroove11: { // NEEDS VISUALIZATION
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-11-noise.mp3'),
         loadSound('sounds/loops/lock-groove-11-loop.mp3'),
@@ -394,7 +394,7 @@ function preload() {
       displayIcon: '/images/icon-13.svg',
     },
 
-    // lockGroove14: {
+    // lockGroove14: { // NEEDS VISUALIZATION
     //   sound: new LockGroove(
     //     loadSound('sounds/noise/lock-groove-14-noise.mp3'), MISSING
     //     loadSound('sounds/loops/lock-groove-14-loop.mp3'), MISSING
@@ -402,7 +402,7 @@ function preload() {
     //   displayIcon: '/images/icon-14.svg',
     // },
 
-    lockGroove15: {
+    lockGroove15: { // NEEDS VISUALIZATION
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-15-noise.mp3'),
         loadSound('sounds/loops/lock-groove-15-loop.mp3'),
