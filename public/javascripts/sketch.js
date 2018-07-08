@@ -273,14 +273,8 @@ let visualizations;
 let recorder;
 let soundFile;
 let soundDefs;
-let lockGrooveToggleEl;
-let lgIntroSound;
-let lgLoopSound;
 
 function preload() {
-  lgIntroSound = loadSound('sounds/dubstep-atmo-269422_4976728-lq.mp3');
-  lgLoopSound = loadSound('sounds/7958_16644-lq-loopable.mp3');
-
   soundDefs = {
     lockGroove1: {
       sound: new LockGroove(
@@ -442,41 +436,10 @@ function setup() {
   document.querySelector('#stopRecording')
     .addEventListener('click', stopRecording);
 
-  lockGrooveToggleEl = document.querySelector('#lockGrooveToggle');
-  lockGrooveToggleEl.addEventListener('click', toggleLockGroove);
-
   const canvas = document.querySelector('#defaultCanvas0');
 
   canvas.style.height = '100%';
   canvas.style.width = '100%';
-}
-
-const messageEl = document.querySelector('#messages');
-const isLockGroovePlaying = () => lockGrooveToggleEl.classList.contains('active');
-
-/**
- * Currently only plays one hardcoded intro + lock-groove set for exemplification
- */
-function toggleLockGroove() {
-  messageEl.innerHTML = '';
-  lgIntroSound.setLoop(false);
-  lgLoopSound.setLoop(false);
-
-  if (lgIntroSound.isPlaying() || lgLoopSound.isPlaying()) {
-    lockGrooveToggleEl.classList.remove('active');
-    lgIntroSound.stop();
-    lgLoopSound.stop();
-  } else {
-    messageEl.innerHTML = 'Playing lock-groove intro';
-    lockGrooveToggleEl.classList.add('active');
-    lgIntroSound.onended(() => {
-      if (isLockGroovePlaying()) {
-        messageEl.innerHTML = 'Looping lock-groove';
-        lgLoopSound.loop()
-      }
-    });
-    lgIntroSound.play();
-  }
 }
 
 function recordSound() {
