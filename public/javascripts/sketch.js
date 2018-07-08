@@ -1,11 +1,11 @@
 // Credit to The Coding Train YouTube channel
 // and https://github.com/therewasaguy for some inspiration/code for these visualizations
 
-const black = '#010711';
-const darkGray = '#13171F';
-const mediumGray = '#1C2026';
-const lightGray = '#24272D';
-const red = '#94152A';
+const black = '#010711';      // (1,   7,  17)
+const darkGray = '#13171F';   // (19,  23, 31)
+const mediumGray = '#1C2026'; // (28,  32, 38)
+const lightGray = '#24272D';  // (36,  39, 45)
+const red = '#94152A';        // (148, 21, 42)
 
 function smoothPoint(spectrum, index) {
   const neighbors = 2;
