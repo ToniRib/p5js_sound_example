@@ -1,14 +1,21 @@
 textarea, input, button { outline: none; }
 
+@font-face {
+    font-family: 'CoutureBold';
+    src: url('fonts/COUTURE-Bold.woff') format('woff'),
+         url('fonts/COUTURE-Bold.ttf') format('truetype');
+}
+
 body {
     background-color: black;
+    /*font-family: 'CoutureBold';*/
     margin: 0;
 }
 
 #p5_loading {
     color: white;
     display: flex;
-    font-family: 'arial';
+    font-family: 'CoutureBold';
     font-size: 35px;
     justify-content: center;
     width: 100%;
@@ -48,7 +55,7 @@ body {
 #soundBoardContainer {
     display: flex;
     justify-content: center;
-    margin: 20px 0;
+    margin: 5px 0;
 }
 
 #soundBoard {
@@ -61,13 +68,24 @@ body {
     width: 60px;
 }
 
-.soundTrigger, #startRecording, #stopRecording {
+.soundTrigger {
     background-color: black;
     border: 2px solid white;
     color: white;
     cursor: pointer;
-    font-size: 14px;
     margin: 0 10px;
+}
+
+#startRecording,
+#stopRecording {
+    background-color: black;
+    border: 2px solid white;
+    color: white;
+    cursor: pointer;
+    font-family: 'CoutureBold';
+    margin: 0 10px;
+    padding-top: 9px;
+    width: 180px;
 }
 
 .soundTrigger img {
