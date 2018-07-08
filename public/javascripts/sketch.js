@@ -323,7 +323,7 @@ function preload() {
 
     // lockGroove6: {
     //   sound: new LockGroove(
-    //     loadSound('sounds/noise/lock-groove-6-noise.mp3'),
+    //     loadSound('sounds/noise/lock-groove-6-noise.mp3'), MISSING
     //     loadSound('sounds/loops/lock-groove-6-loop.mp3'),
     //   ),
     //   viz: new CurveVisualization,
@@ -332,7 +332,7 @@ function preload() {
 
     // lockGroove7: {
     //   sound: new LockGroove(
-    //     loadSound('sounds/noise/lock-groove-7-noise.mp3'),
+    //     loadSound('sounds/noise/lock-groove-7-noise.mp3'), MISSING
     //     loadSound('sounds/loops/lock-groove-7-loop.mp3'),
     //   ),
     //   viz: new LineVibrationVisualization,
@@ -391,8 +391,8 @@ function preload() {
 
     // lockGroove14: {
     //   sound: new LockGroove(
-    //     loadSound('sounds/noise/lock-groove-14-noise.mp3'),
-    //     loadSound('sounds/loops/lock-groove-14-loop.mp3'),
+    //     loadSound('sounds/noise/lock-groove-14-noise.mp3'), MISSING
+    //     loadSound('sounds/loops/lock-groove-14-loop.mp3'), MISSING
     //   ),
     //   displayIcon: '/images/icon-14.svg',
     // },
