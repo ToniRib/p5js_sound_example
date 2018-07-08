@@ -284,74 +284,126 @@ function preload() {
       viz: new AmpVisualization,
       displayName: '1',
     },
-    //
-    // lockGroove2: {
-    //   sound: loadSound('sounds/LockGroove-2.m4a'),
-    //   viz: new StationaryCircleVisualization,
-    //   displayName: '2',
-    // },
-    //
-    // lockGroove3: {
-    //   sound: loadSound('sounds/LockGroove-3.m4a'),
-    //   viz: new ArcVisualization,
-    //   displayName: '3',
-    // },
-    //
-    // lockGroove4: {
-    //   sound: loadSound('sounds/LockGroove-4.m4a'),
-    //   viz: new RadialVisualization,
-    //   displayName: '4',
-    // },
-    //
-    // lockGroove5: {
-    //   sound: loadSound('sounds/LockGroove-5.m4a'),
-    //   viz: new EllipseVisualization,
-    //   displayName: '5',
-    // },
-    //
+
+    lockGroove2: {
+      sound: new LockGroove(
+        loadSound('sounds/noise/lock-groove-2-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-2-loop.mp3'),
+      ),
+      viz: new StationaryCircleVisualization,
+      displayName: '2',
+    },
+
+    lockGroove3: {
+      sound: new LockGroove(
+        loadSound('sounds/noise/lock-groove-3-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-3-loop.mp3'),
+      ),
+      viz: new ArcVisualization,
+      displayName: '3',
+    },
+
+    lockGroove4: {
+      sound: new LockGroove(
+        loadSound('sounds/noise/lock-groove-4-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-4-loop.mp3'),
+      ),
+      viz: new RadialVisualization,
+      displayName: '4',
+    },
+
+    lockGroove5: {
+      sound: new LockGroove(
+        loadSound('sounds/noise/lock-groove-5-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-5-loop.mp3'),
+      ),
+      viz: new EllipseVisualization,
+      displayName: '5',
+    },
+
     // lockGroove6: {
-    //   sound: loadSound('sounds/LockGroove-6.m4a'),
+    //   sound: new LockGroove(
+    //     loadSound('sounds/noise/lock-groove-6-noise.mp3'),
+    //     loadSound('sounds/loops/lock-groove-6-loop.mp3'),
+    //   ),
     //   viz: new CurveVisualization,
     //   displayName: '6',
     // },
-    //
+
     // lockGroove7: {
-    //   sound: loadSound('sounds/LockGroove-7.m4a'),
+    //   sound: new LockGroove(
+    //     loadSound('sounds/noise/lock-groove-7-noise.mp3'),
+    //     loadSound('sounds/loops/lock-groove-7-loop.mp3'),
+    //   ),
     //   viz: new LineVibrationVisualization,
     //   displayName: '7',
     // },
-    //
-    // lockGroove8: {
-    //   sound: loadSound('sounds/LockGroove-8.m4a'),
-    //   displayName: '8',
+
+    lockGroove8: {
+      sound: new LockGroove(
+        loadSound('sounds/noise/lock-groove-8-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-8-loop.mp3'),
+      ),
+      displayName: '8',
+    },
+
+    lockGroove9: {
+      sound: new LockGroove(
+        loadSound('sounds/noise/lock-groove-9-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-9-loop.mp3'),
+      ),
+      displayName: '9',
+    },
+
+    lockGroove10: {
+      sound: new LockGroove(
+        loadSound('sounds/noise/lock-groove-10-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-10-loop.mp3'),
+      ),
+      displayName: '10',
+    },
+
+    lockGroove11: {
+      sound: new LockGroove(
+        loadSound('sounds/noise/lock-groove-11-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-11-loop.mp3'),
+      ),
+      displayName: '11',
+    },
+
+    lockGroove12: {
+      sound: new LockGroove(
+        loadSound('sounds/noise/lock-groove-12-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-12-loop.mp3'),
+      ),
+      viz: new SpectrumVisualization,
+      displayName: '12',
+    },
+
+    lockGroove13: {
+      sound: new LockGroove(
+        loadSound('sounds/noise/lock-groove-13-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-13-loop.mp3'),
+      ),
+      viz: new ParticleScurryVisualization,
+      displayName: '13',
+    },
+
+    // lockGroove14: {
+    //   sound: new LockGroove(
+    //     loadSound('sounds/noise/lock-groove-14-noise.mp3'),
+    //     loadSound('sounds/loops/lock-groove-14-loop.mp3'),
+    //   ),
+    //   displayName: '14',
     // },
-    //
-    // lockGroove9: {
-    //   sound: loadSound('sounds/LockGroove-9.m4a'),
-    //   displayName: '9',
-    // },
-    //
-    // lockGroove10: {
-    //   sound: loadSound('sounds/LockGroove-10.m4a'),
-    //   displayName: '10',
-    // },
-    // //
-    // // lockGroove11: {
-    // //   sound: loadSound('sounds/LockGroove-11.m4a'),
-    // //   displayName: '11',
-    // // },
-    //
-    // lockGroove12: {
-    //   sound: loadSound('sounds/LockGroove-12.m4a'),
-    //   viz: new SpectrumVisualization,
-    //   displayName: '12',
-    // },
-    //
-    // lockGroove13: {
-    //   sound: loadSound('sounds/LockGroove-13.m4a'),
-    //   viz: new ParticleScurryVisualization,
-    //   displayName: '13',
-    // },
+
+    lockGroove15: {
+      sound: new LockGroove(
+        loadSound('sounds/noise/lock-groove-15-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-15-loop.mp3'),
+      ),
+      displayName: '15',
+    },
   };
 
   recorder = new p5.SoundRecorder();
