@@ -287,7 +287,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-1-loop.mp3'),
       ),
       viz: new AmpVisualization,
-      displayIcon: '/images/icon-1.svg',
+      displayIcon: 'images/icon-1.svg',
     },
 
     lockGroove2: {
@@ -296,7 +296,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-2-loop.mp3'),
       ),
       viz: new StationaryCircleVisualization,
-      displayIcon: '/images/icon-2.svg',
+      displayIcon: 'images/icon-2.svg',
     },
 
     lockGroove3: {
@@ -305,7 +305,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-3-loop.mp3'),
       ),
       viz: new ArcVisualization,
-      displayIcon: '/images/icon-3.svg',
+      displayIcon: 'images/icon-3.svg',
     },
 
     lockGroove4: {
@@ -314,7 +314,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-4-loop.mp3'),
       ),
       viz: new RadialVisualization,
-      displayIcon: '/images/icon-4.svg',
+      displayIcon: 'images/icon-4.svg',
     },
 
     lockGroove5: {
@@ -323,7 +323,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-5-loop.mp3'),
       ),
       viz: new EllipseVisualization,
-      displayIcon: '/images/icon-5.svg',
+      displayIcon: 'images/icon-5.svg',
     },
 
     lockGroove6: {
@@ -332,7 +332,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-6-loop.mp3'),
       ),
       viz: new CurveVisualization,
-      displayIcon: '/images/icon-6.svg',
+      displayIcon: 'images/icon-6.svg',
     },
 
     lockGroove7: {
@@ -341,7 +341,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-7-loop.mp3'),
       ),
       viz: new LineVibrationVisualization,
-      displayIcon: '/images/icon-7.svg',
+      displayIcon: 'images/icon-7.svg',
     },
 
     lockGroove8: { // NEEDS VISUALIZATION
@@ -349,7 +349,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-8-noise.mp3'),
         loadSound('sounds/loops/lock-groove-8-loop.mp3'),
       ),
-      displayIcon: '/images/icon-8.svg',
+      displayIcon: 'images/icon-8.svg',
     },
 
     lockGroove9: { // NEEDS VISUALIZATION
@@ -357,7 +357,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-9-noise.mp3'),
         loadSound('sounds/loops/lock-groove-9-loop.mp3'),
       ),
-      displayIcon: '/images/icon-9.svg',
+      displayIcon: 'images/icon-9.svg',
     },
 
     lockGroove10: { // NEEDS VISUALIZATION
@@ -365,7 +365,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-10-noise.mp3'),
         loadSound('sounds/loops/lock-groove-10-loop.mp3'),
       ),
-      displayIcon: '/images/icon-10.svg',
+      displayIcon: 'images/icon-10.svg',
     },
 
     lockGroove11: { // NEEDS VISUALIZATION
@@ -373,7 +373,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-11-noise.mp3'),
         loadSound('sounds/loops/lock-groove-11-loop.mp3'),
       ),
-      displayIcon: '/images/icon-11.svg',
+      displayIcon: 'images/icon-11.svg',
     },
 
     lockGroove12: {
@@ -382,7 +382,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-12-loop.mp3'),
       ),
       viz: new SpectrumVisualization,
-      displayIcon: '/images/icon-12.svg',
+      displayIcon: 'images/icon-12.svg',
     },
 
     lockGroove13: {
@@ -391,7 +391,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-13-loop.mp3'),
       ),
       viz: new ParticleScurryVisualization,
-      displayIcon: '/images/icon-13.svg',
+      displayIcon: 'images/icon-13.svg',
     },
 
     lockGroove14: { // NEEDS VISUALIZATION
@@ -399,7 +399,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-14-noise.mp3'),
         loadSound('sounds/loops/lock-groove-14-loop.mp3'),
       ),
-      displayIcon: '/images/icon-14.svg',
+      displayIcon: 'images/icon-14.svg',
     },
 
     lockGroove15: { // NEEDS VISUALIZATION
@@ -407,7 +407,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-15-noise.mp3'),
         loadSound('sounds/loops/lock-groove-15-loop.mp3'),
       ),
-      displayIcon: '/images/icon-1.svg',
+      displayIcon: 'images/icon-1.svg',
     },
   };
 
