@@ -32,7 +32,7 @@ const CurveVisualization = class {
     const scaledSpectrum = spectrum;
     const length = scaledSpectrum.length;
 
-    const color = map(spectrum[590], 0, 1, 10, 150);
+    const color = map(spectrum[950], 0, 1, 10, 150);
     stroke(148, color, color);
 
     strokeWeight(2);
