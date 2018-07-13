@@ -252,10 +252,14 @@ const LockGroove = class {
     this.noise.play();
   }
 
-  fadeAndStop() {
+  /**
+   * 
+   * @param {Number} durationMs Fade duration in milliseconds
+   */
+  fadeAndStop(durationMs=this.fadeTimeMs) {
     if (this.noise.isPlaying() || this.groove.isLooping()) {
-      this.noiseGain.amp(0, this.fadeTimeMs/1000);
-      this.grooveGain.amp(0, this.fadeTimeMs/1000);
+      this.noiseGain.amp(0, durationMs/1000);
+      this.grooveGain.amp(0, durationMs/1000);
 
       function delayedStop() {
         this.noise.stop();
@@ -263,7 +267,7 @@ const LockGroove = class {
         this.resetGainLevels();
       }
 
-      setTimeout(delayedStop.bind(this), this.fadeTimeMs);
+      setTimeout(delayedStop.bind(this), durationMs);
     }
   }
 
@@ -315,7 +319,7 @@ const Square = class {
   }
 };
 
-let visualizations;
+let squares;
 let recorder;
 let soundFile;
 let soundDefs;
@@ -457,7 +461,7 @@ function preload() {
   };
 
 
-  visualizations = Object.entries(soundDefs).reduce((accum, [key, def]) => {
+  squares = Object.entries(soundDefs).reduce((accum, [key, def]) => {
     accum[key] = new Square(def.sound, def.viz);
 
     return accum
@@ -481,6 +485,10 @@ const toggleSoundTrigger = (el, fadeOut) => {
     el.classList.add('active')
   }
 };
+
+function stopAll() {
+  Object.values(squares).forEach((square) => square.sound.fadeAndStop(250));
+}
 
 const createSoundButton = (key, displayName, displayIcon) => {
   const container = document.createElement('div');
@@ -528,23 +536,31 @@ function setup() {
 
   canvas.style.height = '100%';
   canvas.style.width = '100%';
+
+  initEventListeners();
 }
 
-const recordButton = document.querySelector('#toggleRecord');
-recordButton.addEventListener('click', toggleRecordState);
+function initEventListeners() {
+  const recordButton = document.querySelector('#toggleRecord');
+  recordButton.addEventListener('click', toggleRecordState);
 
-function toggleRecordState() {
-  const recordingActive = recordButton.classList.contains('active');
+  const stopAllButton = document.querySelector('#stopAll');
+  stopAllButton.addEventListener('click', stopAll);
+}
+
+function toggleRecordState(event) {
+  const triggerEl = event.currentTarget;
+  const recordingActive = triggerEl.classList.contains('active');
 
   if (recordingActive ) {
     recorder.stop();
     save(soundFile, 'locked-groove-mix.wav');
-    recordButton.classList.remove('active');
+    triggerEl.classList.remove('active');
 
     return
   }
 
-  recordButton.classList.add('active');
+  triggerEl.classList.add('active');
 
   recorder = new p5.SoundRecorder();
   soundFile = new p5.SoundFile();
@@ -554,5 +570,5 @@ function toggleRecordState() {
 
 function draw() {
   background('black');
-  Object.values(visualizations).forEach(viz => viz.visualize());
+  Object.values(squares).forEach(viz => viz.visualize());
 }
