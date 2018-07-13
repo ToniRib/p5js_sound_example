@@ -208,11 +208,14 @@ const LockGroove = class {
   constructor(noise, groove) {
     this.noise = noise;
     this.groove = groove;
+    this.fadeTimeMs = 3000;
+    this.defaultGainValue = 1;
 
     this.noise.setLoop(false);
     this.groove.setLoop(false);
 
     this.noise.onended(() => {
+      console.info('Intro track ending. Groove track starting.');
       this.groove.loop()
     });
 
@@ -221,8 +224,8 @@ const LockGroove = class {
 
     this.noiseGain = new p5.Gain();
     this.grooveGain = new p5.Gain();
-    this.noiseGain.amp(1);
-    this.grooveGain.amp(1);
+    this.noiseGain.amp(this.defaultGainValue);
+    this.grooveGain.amp(this.defaultGainValue);
 
     this.noiseGain.setInput(this.noise);
     this.grooveGain.setInput(this.groove);
@@ -249,9 +252,33 @@ const LockGroove = class {
     this.noise.play();
   }
 
-  stop() {
-    this.noise.stop();
-    this.groove.stop();
+  fadeAndStop() {
+    if (this.noise.isPlaying() || this.groove.isLooping()) {
+      this.noiseGain.amp(0, this.fadeTimeMs/1000);
+      this.grooveGain.amp(0, this.fadeTimeMs/1000);
+
+      function delayedStop() {
+        this.noise.stop();
+        this.groove.stop();
+        this.resetGainLevels();
+      }
+
+      setTimeout(delayedStop.bind(this), this.fadeTimeMs);
+    }
+  }
+
+  stop(fadeOut) {
+    if (fadeOut) {
+      this.fadeAndStop();
+    } else {
+      this.noise.stop();
+      this.groove.stop();
+    }
+  }
+
+  resetGainLevels() {
+    this.noiseGain.amp(this.defaultGainValue);
+    this.grooveGain.amp(this.defaultGainValue);
   }
 
   amplitude() {
@@ -437,17 +464,17 @@ function preload() {
   }, {});
 }
 
-const toggleSound = (id) => {
+const toggleSound = (id, fadeOut) => {
   const sound = soundDefs[id].sound;
 
   if (sound.isPlaying()) {
-    sound.stop();
+    sound.stop(fadeOut);
   } else {
     sound.loop();
   }
 };
 
-const toggleSoundTrigger = (el) => {
+const toggleSoundTrigger = (el, fadeOut) => {
   if (el.classList.contains('active')) {
     el.classList.remove('active')
   } else {
@@ -464,9 +491,11 @@ const createSoundButton = (key, displayName, displayIcon) => {
 
   button.classList.add('soundTrigger');
 
-  button.addEventListener('click', () => {
-    toggleSound(key);
-    toggleSoundTrigger(button);
+  button.addEventListener('click', (event) => {
+    const fadeOut = event.shiftKey
+
+    toggleSound(key, fadeOut);
+    toggleSoundTrigger(button, fadeOut);
   });
 
   const image = new Image();
