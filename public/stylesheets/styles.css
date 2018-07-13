@@ -77,7 +77,7 @@ body {
 }
 
 .soundTrigger {
-    background-color: black;
+    background-color: transparent;
     border: none;
     cursor: url(/images/cursor-pointer-active.png) 23 23, auto;
     margin: 0 10px;
