@@ -294,7 +294,7 @@ let soundFile;
 let soundDefs;
 
 const masterGain = new p5.Gain();
-masterGain.amp(0.5);
+masterGain.amp(1);
 masterGain.connect();
 
 function preload() {
@@ -495,36 +495,32 @@ function setup() {
   document.querySelector('#canvasContainer')
     .appendChild(document.querySelector('#defaultCanvas0'));
 
-  document.querySelector('#startRecording')
-    .addEventListener('click', recordSound);
-
-  document.querySelector('#stopRecording')
-    .addEventListener('click', stopRecording);
-
   const canvas = document.querySelector('#defaultCanvas0');
 
   canvas.style.height = '100%';
   canvas.style.width = '100%';
 }
 
-function recordSound() {
-  const recordButton = document.querySelector('#startRecording');
+const recordButton = document.querySelector('#toggleRecord');
+recordButton.addEventListener('click', toggleRecordState);
+
+function toggleRecordState() {
+  const recordingActive = recordButton.classList.contains('active');
+
+  if (recordingActive ) {
+    recorder.stop();
+    save(soundFile, 'mySound.wav');
+    recordButton.classList.remove('active');
+
+    return
+  }
+
   recordButton.classList.add('active');
-  recordButton.innerHTML = 'Recording...';
 
   recorder = new p5.SoundRecorder();
   soundFile = new p5.SoundFile();
 
   recorder.record(soundFile);
-}
-
-function stopRecording() {
-  const recordButton = document.querySelector('#startRecording');
-  recordButton.classList.remove('active');
-  recordButton.innerHTML = 'Start Recording';
-
-  recorder.stop();
-  save(soundFile, 'mySound.wav');
 }
 
 function draw() {
