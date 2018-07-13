@@ -533,9 +533,6 @@ function setup() {
 const recordButton = document.querySelector('#toggleRecord');
 recordButton.addEventListener('click', toggleRecordState);
 
-const stopAllButton = document.querySelector('#stopAll');
-stopAllButton.addEventListener('click', toggleRecordState);
-
 function toggleRecordState() {
   const recordingActive = recordButton.classList.contains('active');
 
