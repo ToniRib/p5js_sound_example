@@ -10,7 +10,7 @@ body {
     background-color: black;
     /*font-family: 'CoutureBold';*/
     margin: 0;
-    cursor: url(/images/cursor-pointer.png) 23 23, auto;
+    cursor: url(/images/cursor-pointer-inactive.png) 23 23, auto;
 }
 
 #p5_loading {
