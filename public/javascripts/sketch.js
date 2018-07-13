@@ -32,7 +32,7 @@ const CurveVisualization = class {
     const scaledSpectrum = spectrum;
     const length = scaledSpectrum.length;
 
-    const color = map(spectrum[950], 0, 1, 10, 150);
+    const color = map(spectrum[940], 0, 1, 10, 150);
     stroke(148, color, color);
 
     strokeWeight(2);
@@ -43,7 +43,7 @@ const CurveVisualization = class {
       const x = map(i, 0, length - 1, 0, width);
       const y = map(point, 0, 255, height / 5, 0);
 
-      curveVertex(x, y + (height - 250));
+      curveVertex(x, y + (height - 450));
     }
     endShape();
   }
@@ -71,9 +71,9 @@ const ParticleScurryVisualization = class {
     noStroke();
 
     for (let i = 0; i < 256; i++) {
-      const thisLevel = map(spectrum[i], 0, 255, 0, 1) * 2;
+      const thisLevel = map(spectrum[i], 0, 255, 0, 1) * 2.5;
 
-      this.particles[i].position.y = spectrum[i] * 3;
+      this.particles[i].position.y = (spectrum[i] * 5) - 200;
       this.particles[i].position.x += this.particles[i].speed.x / (thisLevel);
       if (this.particles[i].position.x > width) this.particles[i].position.x = 0;
       this.particles[i].diameter = map(thisLevel, 0, 1, 0, 100) * this.particles[i].scale;
@@ -94,20 +94,20 @@ const ParticleScurryVisualization = class {
 
 const LineVibrationVisualization = class {
   visualize(level) {
-    const y = 100 + map(level, 0, 1, 0, 400);
+    const y = 100 + map(level, 0, 1, 0, 800);
 
     stroke(red);
-    strokeWeight(7);
+    strokeWeight(9);
     line(0, y, width, y);
   }
 };
 
 const ArcVisualization = class {
   visualize(level) {
-    const size = map(level, 0, 1, 0, 400);
+    const size = map(level, 0, 1, 0, 1000);
 
     stroke(lightGray);
-    strokeWeight(3);
+    strokeWeight(4);
     ellipse(width / 2, height / 2, width, size * 10)
   }
 };
@@ -118,7 +118,7 @@ const RadialVisualization = class {
   }
 
   visualize(level) {
-    this.levelHistory.push(level);
+    this.levelHistory.push(level * 2.5);
 
     stroke(red);
     strokeWeight(2);
@@ -146,7 +146,7 @@ const AmpVisualization = class {
   }
 
   visualize(level) {
-    this.levelHistory.push(level);
+    this.levelHistory.push(level * 2.5);
 
     stroke(red);
     strokeWeight(3);
@@ -166,7 +166,7 @@ const AmpVisualization = class {
 
 const EllipseVisualization = class {
   visualize(level) {
-    const size = map(level, 0, 1, 0, 700);
+    const size = map(level, 0, 1, 0, 1100);
     const randomMultiplier = random(-(width / 2), width / 2);
     const x = width / 2;
 
@@ -178,12 +178,12 @@ const EllipseVisualization = class {
 
 const StationaryCircleVisualization = class {
   visualize(level) {
-    const size = map(level, 0, 1, 0, 450);
+    const size = map(level, 0, 1, 0, 800);
     const r = map(level, 0, 1, 36, 36 * 3);
     const g = map(level, 0, 1, 39, 39 * 3);
     const b = map(level, 0, 1, 45, 45 * 3);
 
-    strokeWeight(level * 100);
+    strokeWeight(level * 150);
     stroke(r, g, b);
     ellipse((width / 2), (height / 2), size * 4, size * 4);
   }
@@ -193,13 +193,13 @@ const SpectrumVisualization = class {
   visualize(level, spectrum) {
     noStroke();
     const color = map(level, 0, 1, 100, 255);
-    fill(color, 21, 42, 90);
+    fill(color, 21, 42, 100);
 
     for (let i = 0; i < spectrum.length; i++) {
       const x = map(i, 0, spectrum.length, 0, width);
       const h = -height + map(spectrum[i], 0, 255, height, 0);
 
-      rect(x, height, width / spectrum.length, h)
+      rect(x, height - 100, width / spectrum.length, h)
     }
   }
 };
@@ -253,7 +253,7 @@ const LockGroove = class {
   }
 
   /**
-   * 
+   *
    * @param {Number} durationMs Fade duration in milliseconds
    */
   fadeAndStop(durationMs=this.fadeTimeMs) {
