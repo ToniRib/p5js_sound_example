@@ -209,22 +209,36 @@ const LockGroove = class {
     this.noise = noise;
     this.groove = groove;
 
-    this.noiseAmplitude = new p5.Amplitude();
-    this.noiseAmplitude.setInput(this.noise);
-    this.noiseFFT = new p5.FFT();
-    this.noiseFFT.setInput(this.noise);
-
-    this.grooveAmplitude = new p5.Amplitude();
-    this.grooveAmplitude.setInput(this.groove);
-    this.grooveFFT = new p5.FFT();
-    this.grooveFFT.setInput(this.groove);
-
     this.noise.setLoop(false);
     this.groove.setLoop(false);
 
     this.noise.onended(() => {
       this.groove.loop()
     });
+
+    this.noise.disconnect();
+    this.groove.disconnect();
+
+    this.noiseGain = new p5.Gain();
+    this.grooveGain = new p5.Gain();
+    this.noiseGain.amp(1);
+    this.grooveGain.amp(1);
+
+    this.noiseGain.setInput(this.noise);
+    this.grooveGain.setInput(this.groove);
+
+    this.noiseGain.connect(masterGain);
+    this.grooveGain.connect(masterGain);
+
+    this.noiseAmplitude = new p5.Amplitude();
+    this.noiseAmplitude.setInput(this.noiseGain);
+    this.noiseFFT = new p5.FFT();
+    this.noiseFFT.setInput(this.noiseGain);
+
+    this.grooveAmplitude = new p5.Amplitude();
+    this.grooveAmplitude.setInput(this.grooveGain);
+    this.grooveFFT = new p5.FFT();
+    this.grooveFFT.setInput(this.grooveGain);
   }
 
   isPlaying() {
@@ -278,6 +292,10 @@ let visualizations;
 let recorder;
 let soundFile;
 let soundDefs;
+
+const masterGain = new p5.Gain();
+masterGain.amp(0.5);
+masterGain.connect();
 
 function preload() {
   soundDefs = {
@@ -394,40 +412,29 @@ function preload() {
       displayIcon: 'images/icon-13.svg',
     },
 
-    lockGroove14: { // NEEDS VISUALIZATION
-      sound: new LockGroove(
-        loadSound('sounds/noise/lock-groove-14-noise.mp3'),
-        loadSound('sounds/loops/lock-groove-14-loop.mp3'),
-      ),
-      displayIcon: 'images/icon-14.svg',
-    },
+    // lockGroove14: { // NEEDS VISUALIZATION
+    //   sound: new LockGroove(
+    //     loadSound('sounds/noise/lock-groove-14-noise.mp3'),
+    //     loadSound('sounds/loops/lock-groove-14-loop.mp3'),
+    //   ),
+    //   displayIcon: 'images/icon-14.svg',
+    // },
 
     lockGroove15: { // NEEDS VISUALIZATION
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-15-noise.mp3'),
         loadSound('sounds/loops/lock-groove-15-loop.mp3'),
       ),
-      displayIcon: 'images/icon-1.svg',
+      displayIcon: 'images/icon-14.svg',
     },
   };
 
-  recorder = new p5.SoundRecorder();
-  soundFile = new p5.SoundFile();
-
-  const masterGain = new p5.Gain();
-  masterGain.connect();
 
   visualizations = Object.entries(soundDefs).reduce((accum, [key, def]) => {
     accum[key] = new Square(def.sound, def.viz);
 
     return accum
-  }, {})
-
-  // squares.forEach(square => {
-  //   gain = new p5.Gain();
-  //   gain.setInput(square.sound);
-  //   gain.connect(masterGain);
-  // })
+  }, {});
 }
 
 const toggleSound = (id) => {
@@ -504,6 +511,9 @@ function recordSound() {
   const recordButton = document.querySelector('#startRecording');
   recordButton.classList.add('active');
   recordButton.innerHTML = 'Recording...';
+
+  recorder = new p5.SoundRecorder();
+  soundFile = new p5.SoundFile();
 
   recorder.record(soundFile);
 }
