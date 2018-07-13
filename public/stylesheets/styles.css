@@ -10,6 +10,7 @@ body {
     background-color: black;
     /*font-family: 'CoutureBold';*/
     margin: 0;
+    cursor: url(/images/cursor-pointer.png) 23 23, auto;
 }
 
 #p5_loading {
@@ -39,6 +40,7 @@ body {
 #controls button {
     font-size: 16px;
     margin: 0 10px;
+    cursor: url(/images/cursor-pointer-active.png) 23 23, auto;
 }
 
 #lockGrooveToggle:before {
@@ -72,13 +74,12 @@ body {
 .soundTriggerContainer img {
     width: 100%;
     height: 100%;
-    over
 }
 
 .soundTrigger {
     background-color: black;
     border: none;
-    cursor: pointer;
+    cursor: url(/images/cursor-pointer-active.png) 23 23, auto;
     margin: 0 10px;
 }
 
