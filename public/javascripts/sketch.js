@@ -469,7 +469,7 @@ const createSoundButton = (key, displayName, displayIcon) => {
     toggleSoundTrigger(button);
   });
 
-  const image = new Image(24, 24);
+  const image = new Image();
   image.src = displayIcon;
   button.appendChild(image);
 
