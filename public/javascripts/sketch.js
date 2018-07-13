@@ -509,7 +509,7 @@ function toggleRecordState() {
 
   if (recordingActive ) {
     recorder.stop();
-    save(soundFile, 'mySound.wav');
+    save(soundFile, 'locked-groove-mix.wav');
     recordButton.classList.remove('active');
 
     return
