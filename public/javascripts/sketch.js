@@ -478,19 +478,21 @@ const toggleSound = (id, fadeOut) => {
   }
 };
 
-const toggleSoundTrigger = (el, fadeOut) => {
-  if (el.classList.contains('active')) {
-    el.classList.remove('active')
-  } else {
-    el.classList.add('active')
-  }
+/**
+ * 
+ * @param {Element} el sound trigger el
+ * @param {Boolean} force force active state
+ */
+const toggleSoundTrigger = (el, force) => {
+    el.classList.toggle('active', force);
 };
 
 function stopAll() {
   Object.values(squares).forEach((square) => square.sound.fadeAndStop(250));
+  document.querySelectorAll('.soundTrigger').forEach((el) => toggleSoundTrigger(el, false));
 }
 
-const createSoundButton = (key, displayName, displayIcon) => {
+function createSoundButton(key, displayName, displayIcon) {
   const container = document.createElement('div');
 
   container.classList.add('soundTriggerContainer');
@@ -503,12 +505,24 @@ const createSoundButton = (key, displayName, displayIcon) => {
     const fadeOut = event.shiftKey
 
     toggleSound(key, fadeOut);
-    toggleSoundTrigger(button, fadeOut);
+    toggleSoundTrigger(button);
   });
 
-  const image = new Image();
-  image.src = displayIcon;
-  button.appendChild(image);
+  const svgObject = document.createElement('object');
+
+  svgObject.classList.add('svgObject');
+  svgObject.type = 'image/svg+xml';
+  svgObject.data = displayIcon;
+
+  button.appendChild(svgObject);
+
+  svgObject.addEventListener('load', () => {
+    const svgDoc = svgObject.contentDocument;
+    const svgItem = svgDoc.querySelector('svg');
+
+    button.appendChild(svgItem);
+    button.removeChild(svgObject);
+  })
 
   container.appendChild(button);
   soundBoard.appendChild(container);
