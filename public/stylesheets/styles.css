@@ -82,17 +82,18 @@ body {
     color: white;
     cursor: pointer;
     font-family: 'CoutureBold';
+    height: 40px;
     margin: 0 10px;
-    padding-top: 9px;
-    width: 180px;
+    padding-top: 6px;
+    width: 40px;
 }
 
 #toggleRecord:after {
-    content: "Start Recording"
+    content: url('/images/record-icon.svg')
 }
 
 #toggleRecord.active:after {
-    content: "Stop Recording"
+    content: url('/images/stop-icon.svg')
 }
 
 .soundTrigger img {
