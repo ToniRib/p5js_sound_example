@@ -59,8 +59,8 @@ const ParticleScurryVisualization = class {
     this.particles = new Array(256);
 
     for (let i = 0; i < this.particles.length; i++) {
-      const x = random(0, width);
-      const y = random(0, height);
+      const x = random(0, width / 2);
+      const y = random(0, height / 4);
       const position = createVector(x, y);
       this.particles[i] = new Particle(position);
     }
@@ -72,7 +72,7 @@ const ParticleScurryVisualization = class {
     for (let i = 0; i < 256; i++) {
       const thisLevel = map(spectrum[i], 0, 255, 0, 1) * 2.5;
 
-      this.particles[i].position.y = (spectrum[i] * 5) - 200;
+      this.particles[i].position.y = (spectrum[i] * 5) - (height / 8);
       this.particles[i].position.x += this.particles[i].speed.x / (thisLevel);
       if (this.particles[i].position.x > width) this.particles[i].position.x = 0;
       this.particles[i].diameter = map(thisLevel, 0, 1, 0, 100) * this.particles[i].scale;
@@ -93,7 +93,7 @@ const ParticleScurryVisualization = class {
 
 const LineVibrationVisualization = class {
   visualize(level) {
-    const y = 100 + map(level, 0, 1, 0, 800);
+    const y = (height/12) + map(level, 0, 1, 0, 800);
 
     stroke(red);
     strokeWeight(9);
