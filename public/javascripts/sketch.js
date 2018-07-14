@@ -168,11 +168,11 @@ const EllipseVisualization = class {
   visualize(level) {
     const size = map(level, 0, 1, 0, 1100);
     const randomMultiplier = random(-(width / 2), width / 2);
-    const x = width / 2;
+    const x = width / 4;
 
     stroke(dullWhite);
     strokeWeight(4);
-    ellipse(x + randomMultiplier, height / 2, size, size);
+    ellipse(x + randomMultiplier, (height / 4) - 150, size, size);
   }
 };
 
