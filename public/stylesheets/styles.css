@@ -17,8 +17,8 @@ body {
     --text-color: rgba(255, 255, 255, 0.3);
     --sound-trigger-color: rgba(255, 255, 255, 0.25);
     --sound-trigger-color-active: rgba(148, 21, 42, 1);
-    --sound-trigger-default-size: 80px;
-    --sound-trigger-active-size: 90px;
+    --sound-trigger-default-size: 50px;
+    --sound-trigger-active-size: 60px;
 }
 
 @keyframes activePathIcon {
@@ -55,7 +55,8 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    position: relative;
+    position: absolute;
+    width: 100%;
     z-index: 10;
 }
 
@@ -155,9 +156,6 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    position: absolute;
-    top: 130px;
     height: 100%;
-    left: 0;
     z-index: 0;
 }
