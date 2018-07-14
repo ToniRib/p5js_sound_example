@@ -185,7 +185,7 @@ const StationaryCircleVisualization = class {
 
     strokeWeight(level * 150);
     stroke(r, g, b);
-    ellipse((width / 2), (height / 2), size * 4, size * 4);
+    ellipse((width / 4), (height / 4), size * 4, size * 4);
   }
 };
 
