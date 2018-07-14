@@ -146,19 +146,19 @@ const AmpVisualization = class {
   }
 
   visualize(level) {
-    this.levelHistory.push(level * 2.5);
+    this.levelHistory.push(level * 2);
 
     stroke(red);
-    strokeWeight(3);
+    strokeWeight(2);
 
     beginShape();
     for (let i = 1; i < this.levelHistory.length; i++) {
-      const y = map(this.levelHistory[i], 0, 0.5, height, 0);
-      vertex(i, y - 200);
+      const y = map(this.levelHistory[i], 0, 0.5, height / 2, 0);
+      vertex(i, y);
     }
     endShape();
 
-    if (this.levelHistory.length > width) {
+    if (this.levelHistory.length > width / 2) {
       this.levelHistory.shift();
     }
   }
@@ -480,7 +480,7 @@ const toggleSound = (id, fadeOut = 0) => {
 };
 
 /**
- * 
+ *
  * @param {Element} el sound trigger el
  * @param {Boolean} force force active state
  */
@@ -523,11 +523,11 @@ function createSoundButton(key, displayName, displayIcon) {
 
     button.appendChild(svgItem);
     button.removeChild(svgObject);
-  })
+  });
 
   container.appendChild(button);
   soundBoard.appendChild(container);
-};
+}
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
@@ -547,7 +547,7 @@ function setup() {
   document.querySelector('#canvasContainer')
     .appendChild(document.querySelector('#defaultCanvas0'));
 
-  setCanvasDimensions()
+  setCanvasDimensions();
 
   initEventListeners();
 }
@@ -562,7 +562,7 @@ function setCanvasDimensions() {
 }
 
 function initEventListeners() {
-  window.addEventListener('resize', setCanvasDimensions)
+  window.addEventListener('resize', setCanvasDimensions);
 
   const recordButton = document.querySelector('#toggleRecord');
   recordButton.addEventListener('click', toggleRecordState);
