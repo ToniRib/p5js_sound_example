@@ -25,12 +25,12 @@ body {
     0% {
         fill: var(--sound-trigger-color);
     }
-  
+
     100% {
         fill: var(--sound-trigger-color-active);
     }
 }
-  
+
 @keyframes activeSoundTrigger {
     0% {
         width: var(--sound-trigger-default-size);
@@ -47,8 +47,9 @@ body {
     font-family: 'CoutureBold';
     font-size: 35px;
     justify-content: center;
-    width: 100%;
+    margin-top: 150px;
     text-transform: uppercase;
+    width: 100%;
 }
 
 #topLayer {
