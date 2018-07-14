@@ -104,11 +104,11 @@ const LineVibrationVisualization = class {
 
 const ArcVisualization = class {
   visualize(level) {
-    const size = map(level, 0, 1, 0, 1000);
+    const size = map(level, 0, 1, 0, 550);
 
     stroke(lightGray);
     strokeWeight(4);
-    ellipse(width / 2, height / 2, width, size * 10)
+    ellipse(width / 4, height / 4, (width / 2) + 10, size * 10)
   }
 };
 
