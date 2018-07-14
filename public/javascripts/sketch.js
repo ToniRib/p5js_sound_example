@@ -273,7 +273,7 @@ const LockGroove = class {
 
   stop(fadeOut) {
     if (fadeOut) {
-      this.fadeAndStop();
+      this.fadeAndStop(fadeOut);
     } else {
       this.noise.stop();
       this.groove.stop();
@@ -323,6 +323,7 @@ let squares;
 let recorder;
 let soundFile;
 let soundDefs;
+const defaultFadeDuration = 250;
 
 const masterGain = new p5.Gain();
 masterGain.amp(1);
@@ -468,7 +469,7 @@ function preload() {
   }, {});
 }
 
-const toggleSound = (id, fadeOut) => {
+const toggleSound = (id, fadeOut = 0) => {
   const sound = soundDefs[id].sound;
 
   if (sound.isPlaying()) {
@@ -488,7 +489,7 @@ const toggleSoundTrigger = (el, force) => {
 };
 
 function stopAll() {
-  Object.values(squares).forEach((square) => square.sound.fadeAndStop(250));
+  Object.values(squares).forEach((square) => square.sound.fadeAndStop(defaultFadeDuration));
   document.querySelectorAll('.soundTrigger').forEach((el) => toggleSoundTrigger(el, false));
 }
 
@@ -502,9 +503,9 @@ function createSoundButton(key, displayName, displayIcon) {
   button.classList.add('soundTrigger');
 
   button.addEventListener('click', (event) => {
-    const fadeOut = event.shiftKey
+    const fadeOut = !event.shiftKey;
 
-    toggleSound(key, fadeOut);
+    toggleSound(key, defaultFadeDuration);
     toggleSoundTrigger(button);
   });
 
