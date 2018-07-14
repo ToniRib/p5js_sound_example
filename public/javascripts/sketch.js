@@ -177,7 +177,7 @@ const EllipseVisualization = class {
 
 const StationaryCircleVisualization = class {
   visualize(level) {
-    const size = map(level, 0, 1, 0, 800);
+    const size = map(level, 0, 1, 0, 600);
     const r = map(level, 0, 1, 36, 36 * 3);
     const g = map(level, 0, 1, 39, 39 * 3);
     const b = map(level, 0, 1, 45, 45 * 3);
