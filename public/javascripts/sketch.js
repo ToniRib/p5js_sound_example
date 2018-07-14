@@ -29,21 +29,20 @@ function smoothPoint(spectrum, index) {
 
 const CurveVisualization = class {
   visualize(_, spectrum) {
-    const scaledSpectrum = spectrum;
-    const length = scaledSpectrum.length;
+    const length = spectrum.length;
 
     const color = map(spectrum[940], 0, 1, 10, 150);
     stroke(148, color, color);
 
-    strokeWeight(2);
+    strokeWeight(1);
 
     beginShape();
     for (let i = 0; i < length; i++) {
-      const point = smoothPoint(scaledSpectrum, i);
-      const x = map(i, 0, length - 1, 0, width);
-      const y = map(point, 0, 255, height / 5, 0);
+      const point = smoothPoint(spectrum, i);
+      const x = map(i, 0, length - 1, 0, width / 2);
+      const y = map(point, 0, 255, height / 2, 0);
 
-      curveVertex(x, y + (height - 450));
+      curveVertex(x, y);
     }
     endShape();
   }
