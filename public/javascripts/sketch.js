@@ -171,7 +171,7 @@ const EllipseVisualization = class {
 
     stroke(dullWhite);
     strokeWeight(4);
-    ellipse(x + randomMultiplier, (height / 4) - 150, size, size);
+    ellipse(x + randomMultiplier, (height / 4) - (height / 6), size, size);
   }
 };
 
