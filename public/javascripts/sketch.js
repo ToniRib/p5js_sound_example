@@ -547,15 +547,23 @@ function setup() {
   document.querySelector('#canvasContainer')
     .appendChild(document.querySelector('#defaultCanvas0'));
 
-  const canvas = document.querySelector('#defaultCanvas0');
-
-  canvas.style.height = '100%';
-  canvas.style.width = '100%';
+  setCanvasDimensions()
 
   initEventListeners();
 }
 
+function setCanvasDimensions() {
+  const canvas = document.querySelector('#canvasContainer canvas');
+
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
+  canvas.style.height = '100%';
+  canvas.style.width = '100%';
+}
+
 function initEventListeners() {
+  window.addEventListener('resize', setCanvasDimensions)
+
   const recordButton = document.querySelector('#toggleRecord');
   recordButton.addEventListener('click', toggleRecordState);
 
