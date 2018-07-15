@@ -329,8 +329,9 @@ const LockGroove = class {
   /**
    *
    * @param {Number} durationMs Fade duration in milliseconds
+   * @param {Visualization} visualization Visualization for this sound
    */
-  fadeAndStop(durationMs = this.fadeTimeMs) {
+  fadeAndStop(durationMs = this.fadeTimeMs, visualization) {
     if (this.noise.isPlaying() || this.groove.isLooping()) {
       this.noiseGain.amp(0, durationMs / 1000);
       this.grooveGain.amp(0, durationMs / 1000);
@@ -339,18 +340,20 @@ const LockGroove = class {
         this.noise.stop();
         this.groove.stop();
         this.resetGainLevels();
+        visualization.reset();
       }
 
       setTimeout(delayedStop.bind(this), durationMs);
     }
   }
 
-  stop(fadeOut) {
+  stop(fadeOut, visualization) {
     if (fadeOut) {
-      this.fadeAndStop(fadeOut);
+      this.fadeAndStop(fadeOut, visualization);
     } else {
       this.noise.stop();
       this.groove.stop();
+      visualization.reset();
     }
   }
 
@@ -549,7 +552,7 @@ const toggleSound = (id, fadeOut = 0) => {
   const sound = soundDefs[id].sound;
 
   if (sound.isPlaying()) {
-    sound.stop(fadeOut);
+    sound.stop(fadeOut, soundDefs[id].viz);
   } else {
     sound.loop();
   }
