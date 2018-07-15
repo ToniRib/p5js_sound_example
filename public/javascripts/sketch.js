@@ -560,7 +560,7 @@ function stopAll() {
   document.querySelectorAll('.soundTrigger').forEach((el) => toggleSoundTrigger(el, false));
 }
 
-function createSoundButton(key, displayName, displayIcon) {
+function createSoundButton(key, displayIcon) {
   const container = document.createElement('div');
 
   container.classList.add('soundTriggerContainer');
@@ -607,7 +607,7 @@ function setup() {
   const soundBoard = document.querySelector('#soundBoard');
 
   Object.entries(soundDefs).forEach(([key, soundDefinition]) => {
-    createSoundButton(key, soundDefinition.displayName, soundDefinition.displayIcon)
+    createSoundButton(key, soundDefinition.displayIcon)
   });
 
   // Move canvas into manipulable container
