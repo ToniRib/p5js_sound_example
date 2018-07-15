@@ -137,6 +137,8 @@ const HelixVisualization = class extends Visualization {
   }
 
   visualize(level) {
+    angleMode(RADIANS);
+
     this.theta += map(level, 0, 0.5, 0, 0.3);
     const w = width / 2;
     this.yvalues = new Array(floor(w / this.spacing));
