@@ -641,7 +641,7 @@ const toggleSoundTrigger = (el, force) => {
 };
 
 function stopAll() {
-  Object.values(soundDefinitions).forEach((square) => square.sound.fadeAndStop(defaultFadeDuration));
+  Object.values(soundDefinitions).forEach((square) => square.sound.fadeAndStop(defaultFadeDuration, square.viz));
   document.querySelectorAll('.soundTrigger').forEach((el) => toggleSoundTrigger(el, false));
 }
 
