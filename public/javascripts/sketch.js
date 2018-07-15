@@ -289,7 +289,6 @@ const LockGroove = class {
     this.groove.setLoop(false);
 
     this.noise.onended(() => {
-      console.info('Intro track ending. Groove track starting.');
       this.groove.loop()
     });
 
