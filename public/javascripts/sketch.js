@@ -31,7 +31,9 @@ const CurveVisualization = class {
   visualize(_, spectrum) {
     const length = spectrum.length;
 
-    const color = map(spectrum[940], 0, 1, 10, 150);
+    const highFreqRange = spectrum.slice(779, 860);
+    const maxFreq = max(highFreqRange);
+    const color = map(maxFreq, 0, 145, 10, 255);
     stroke(148, color, color);
 
     strokeWeight(1);
@@ -40,7 +42,7 @@ const CurveVisualization = class {
     for (let i = 0; i < length; i++) {
       const point = smoothPoint(spectrum, i);
       const x = map(i, 0, length - 1, 0, width / 2);
-      const y = map(point, 0, 255, height / 2, 0);
+      const y = map(point, 0, 255, (height / 2) - 3, 0);
 
       curveVertex(x, y);
     }
