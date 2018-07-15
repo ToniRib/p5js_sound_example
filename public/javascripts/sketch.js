@@ -50,7 +50,7 @@ const CurveVisualization = class {
   }
 };
 
-const Particle = function(position) {
+const Particle = function (position) {
   this.position = position;
   this.scale = random(0, 1);
   this.speed = createVector(random(0, 10), 0);
@@ -95,7 +95,7 @@ const ParticleScurryVisualization = class {
 
 const LineVibrationVisualization = class {
   visualize(level) {
-    const y = (height/12) + map(level, 0, 1, 0, 800);
+    const y = (height / 12) + map(level, 0, 1, 0, 800);
 
     stroke(red);
     strokeWeight(9);
@@ -110,6 +110,35 @@ const ArcVisualization = class {
     stroke(lightGray);
     strokeWeight(4);
     ellipse(width / 4, height / 4, (width / 2) + 10, size * 10)
+  }
+};
+
+const HelixVisualization = class {
+  constructor() {
+    this.spacing = 16;
+    this.theta = 0.0;
+    this.dx = (TWO_PI / 400) * this.spacing;
+  }
+
+  visualize(level) {
+    this.theta += map(level, 0, 0.5, 0, 0.3);
+    const w = width / 2;
+    this.yvalues = new Array(floor(w / this.spacing));
+
+    var x = this.theta;
+    for (let i = 0; i < this.yvalues.length; i++) {
+      this.yvalues[i] = sin(x) * 75;
+      x += this.dx;
+    }
+
+    noStroke();
+    const color = map(level, 0, 0.25, 2, 255);
+    fill(color, color, color);
+    for (let i = 0; i < this.yvalues.length; i++) {
+      ellipse(i * this.spacing, height / 5 + this.yvalues[i], 16, 16);
+      ellipse(i * this.spacing, height / 5 - this.yvalues[i], 16, 16);
+
+    }
   }
 };
 
@@ -266,10 +295,10 @@ const LockGroove = class {
    *
    * @param {Number} durationMs Fade duration in milliseconds
    */
-  fadeAndStop(durationMs=this.fadeTimeMs) {
+  fadeAndStop(durationMs = this.fadeTimeMs) {
     if (this.noise.isPlaying() || this.groove.isLooping()) {
-      this.noiseGain.amp(0, durationMs/1000);
-      this.grooveGain.amp(0, durationMs/1000);
+      this.noiseGain.amp(0, durationMs / 1000);
+      this.grooveGain.amp(0, durationMs / 1000);
 
       function delayedStop() {
         this.noise.stop();
@@ -412,11 +441,12 @@ function preload() {
       displayIcon: 'images/icon-8.svg',
     },
 
-    lockGroove9: { // NEEDS VISUALIZATION
+    lockGroove9: {
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-9-noise.mp3'),
         loadSound('sounds/loops/lock-groove-9-loop.mp3'),
       ),
+      viz: new HelixVisualization,
       displayIcon: 'images/icon-9.svg',
     },
 
@@ -495,7 +525,7 @@ const toggleSound = (id, fadeOut = 0) => {
  * @param {Boolean} force force active state
  */
 const toggleSoundTrigger = (el, force) => {
-    el.classList.toggle('active', force);
+  el.classList.toggle('active', force);
 };
 
 function stopAll() {
@@ -585,7 +615,7 @@ function toggleRecordState(event) {
   const triggerEl = event.currentTarget;
   const recordingActive = triggerEl.classList.contains('active');
 
-  if (recordingActive ) {
+  if (recordingActive) {
     recorder.stop();
     save(soundFile, 'locked-groove-mix.wav');
     triggerEl.classList.remove('active');
