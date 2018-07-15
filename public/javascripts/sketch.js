@@ -602,13 +602,13 @@ function preload() {
       displayIcon: 'images/icon-13.svg',
     },
 
-    // lockGroove14: { // NEEDS VISUALIZATION
-    //   sound: new LockGroove(
-    //     loadSound('sounds/noise/lock-groove-14-noise.mp3'),
-    //     loadSound('sounds/loops/lock-groove-14-loop.mp3'),
-    //   ),
-    //   displayIcon: 'images/icon-14.svg',
-    // },
+    lockGroove14: { // NEEDS VISUALIZATION
+      sound: new LockGroove(
+        loadSound('sounds/noise/lock-groove-14-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-14-loop.mp3'),
+      ),
+      displayIcon: 'images/icon-14.svg',
+    },
 
     lockGroove15: { // NEEDS VISUALIZATION
       sound: new LockGroove(
