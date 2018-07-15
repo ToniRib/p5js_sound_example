@@ -186,27 +186,32 @@ const SpiralVisualization = class extends Visualization {
   constructor() {
     super();
 
-    this.scalar = 0.001;
-    this.speed = 0.001;
+    this.startingPosition = 0.001;
+    this.speed = 0.0005;
   }
 
   visualize(level) {
     this.levelHistory.push(level * 2.5);
 
     stroke(red);
-    strokeWeight(1);
+    strokeWeight(0.5);
     angleMode(DEGREES);
 
     beginShape();
     for (let i = 1; i < this.levelHistory.length; i++) {
-      const r = map(this.levelHistory[i], 0, 0.6, 10, 1000);
-      const x = (width / 4) + (r * cos(i) * this.scalar);
-      const y = (height / 4) + (r * sin(i) * this.scalar);
+      const r = map(this.levelHistory[i], 0, 0.6, 10, 700);
+      const x = (width / 5) + (r * cos(i) * this.startingPosition);
+      const y = (height / 4) + (r * sin(i) * this.startingPosition);
 
       vertex(x, y);
     }
     endShape();
-    this.scalar += this.speed;
+    this.startingPosition += this.speed;
+  }
+
+  reset() {
+    this.levelHistory = [];
+    this.startingPosition = 0.001;
   }
 };
 
