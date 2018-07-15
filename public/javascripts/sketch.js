@@ -370,7 +370,7 @@ const LockGroove = class {
   }
 };
 
-const Square = class {
+const SoundDefinition = class {
   constructor(sound, visualization = new EllipseVisualization) {
     this.viz = visualization;
     this.sound = sound;
@@ -393,7 +393,7 @@ const Square = class {
   }
 };
 
-let squares;
+let soundDefinitions;
 let recorder;
 let soundFile;
 let soundDefs;
@@ -538,8 +538,8 @@ function preload() {
   };
 
 
-  squares = Object.entries(soundDefs).reduce((accum, [key, def]) => {
-    accum[key] = new Square(def.sound, def.viz);
+  soundDefinitions = Object.entries(soundDefs).reduce((accum, [key, def]) => {
+    accum[key] = new SoundDefinition(def.sound, def.viz);
 
     return accum
   }, {});
@@ -565,7 +565,7 @@ const toggleSoundTrigger = (el, force) => {
 };
 
 function stopAll() {
-  Object.values(squares).forEach((square) => square.sound.fadeAndStop(defaultFadeDuration));
+  Object.values(soundDefinitions).forEach((square) => square.sound.fadeAndStop(defaultFadeDuration));
   document.querySelectorAll('.soundTrigger').forEach((el) => toggleSoundTrigger(el, false));
 }
 
@@ -669,5 +669,5 @@ function toggleRecordState(event) {
 
 function draw() {
   background('black');
-  Object.values(squares).forEach(viz => viz.visualize());
+  Object.values(soundDefinitions).forEach(viz => viz.visualize());
 }
