@@ -337,19 +337,13 @@ const SpectrumVisualization = class extends Visualization {
   visualize(level, spectrum) {
     noStroke();
 
-    const modChoices = [20, 40, 50, 80];
-    const randomMod = random(modChoices);
-
     for (let i = 0; i < spectrum.length; i++) {
       const x = map(i, 0, spectrum.length, 0, (width / 2));
       const h = -height + map(spectrum[i], 0, 255, height / 2, 0);
 
 
-      if (i % randomMod === 0) {
-        fill(lightGray);
-      } else {
-        fill(115, 21, 42, 200);
-      }
+      const color = map(i, 0, spectrum.length / 2, 10, 255);
+      fill(148, color, color, 120);
 
       rect(x + i, height, (width / 2) / spectrum.length, h)
     }
