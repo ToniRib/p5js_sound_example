@@ -251,6 +251,25 @@ const EllipseVisualization = class extends Visualization {
   }
 };
 
+const SnowVisualization = class extends Visualization {
+  visualize(level, spectrum) {
+    const totalPts = spectrum.length / 2;
+    const steps = totalPts + 1;
+    let rand = 0;
+
+    for (let i = 1; i < steps; i++) {
+      const x = ((width / 2) / steps) * i;
+      const y = (height / 12) + random(-rand, rand);
+      const color = map(x, 0, width / 2, 80, 240);
+      stroke(color, color, color);
+      point(x, y);
+
+      const range = map(spectrum[i], 0, 200, 1, 25);
+      rand += random(-range, range);
+    }
+  }
+};
+
 const StationaryCircleVisualization = class extends Visualization {
   visualize(level) {
     const size = map(level, 0, 0.5, 0, 300);
@@ -497,11 +516,12 @@ function preload() {
       displayIcon: 'images/icon-9.svg',
     },
 
-    lockGroove10: { // NEEDS VISUALIZATION
+    lockGroove10: {
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-10-noise.mp3'),
         loadSound('sounds/loops/lock-groove-10-loop.mp3'),
       ),
+      viz: new SnowVisualization,
       displayIcon: 'images/icon-10.svg',
     },
 
