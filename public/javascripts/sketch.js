@@ -179,10 +179,11 @@ const EllipseVisualization = class {
 
 const StationaryCircleVisualization = class {
   visualize(level) {
-    const size = map(level, 0, 1, 0, 600);
-    const r = map(level, 0, 1, 36, 36 * 3);
-    const g = map(level, 0, 1, 39, 39 * 3);
-    const b = map(level, 0, 1, 45, 45 * 3);
+    console.log(level);
+    const size = map(level, 0, 0.5, 0, 300);
+    const r = map(level, 0, 0.5, 36, 36 * 3);
+    const g = map(level, 0, 0.5, 39, 39 * 3);
+    const b = map(level, 0, 0.5, 45, 45 * 3);
 
     strokeWeight(level * 150);
     stroke(r, g, b);
