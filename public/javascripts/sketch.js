@@ -170,6 +170,33 @@ const RadialVisualization = class {
   }
 };
 
+const SpiralVisualization = class {
+  constructor() {
+    this.levelHistory = [];
+    this.scalar = 0.001;
+    this.speed = 0.001;
+  }
+
+  visualize(level) {
+    this.levelHistory.push(level * 2.5);
+
+    stroke(red);
+    strokeWeight(1);
+    angleMode(DEGREES);
+
+    beginShape();
+    for (let i = 1; i < this.levelHistory.length; i++) {
+      const r = map(this.levelHistory[i], 0, 0.6, 10, 1000);
+      const x = (width / 4) + (r * cos(i) * this.scalar);
+      const y = (height / 4) + (r * sin(i) * this.scalar);
+
+      vertex(x, y);
+    }
+    endShape();
+    this.scalar += this.speed;
+  }
+};
+
 const AmpVisualization = class {
   constructor() {
     this.levelHistory = [];
@@ -208,7 +235,6 @@ const EllipseVisualization = class {
 
 const StationaryCircleVisualization = class {
   visualize(level) {
-    console.log(level);
     const size = map(level, 0, 0.5, 0, 300);
     const r = map(level, 0, 0.5, 36, 36 * 3);
     const g = map(level, 0, 0.5, 39, 39 * 3);
@@ -433,11 +459,12 @@ function preload() {
       displayIcon: 'images/icon-7.svg',
     },
 
-    lockGroove8: { // NEEDS VISUALIZATION
+    lockGroove8: {
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-8-noise.mp3'),
         loadSound('sounds/loops/lock-groove-8-loop.mp3'),
       ),
+      viz: new SpiralVisualization,
       displayIcon: 'images/icon-8.svg',
     },
 
