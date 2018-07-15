@@ -93,7 +93,7 @@ const ParticleScurryVisualization = class extends Visualization {
       if (this.particles[i].position.x > width) this.particles[i].position.x = 0;
       this.particles[i].diameter = map(thisLevel, 0, 1, 0, 100) * this.particles[i].scale;
 
-      const opacity = map(level, 0, 1, 150, 220);
+      const opacity = map(level, 0, 0.5, 100, 150);
       this.particles[i].color = [36, 39, 45, opacity];
 
       fill(this.particles[i].color);
