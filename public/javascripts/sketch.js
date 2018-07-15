@@ -6,7 +6,7 @@ const darkGray = '#13171F';   // (19,  23, 31)
 const mediumGray = '#1C2026'; // (28,  32, 38)
 const lightGray = '#24272D';  // (36,  39, 45)
 const red = '#94152A';        // (148, 21, 42)
-const dullWhite = '#b6b6b6';
+const dullWhite = '#b6b6b6';  // (182, 182, 182)
 
 class Visualization {
   constructor() {
@@ -270,6 +270,47 @@ const SnowVisualization = class extends Visualization {
   }
 };
 
+const FlowerVisualization = class extends Visualization {
+  constructor() {
+    super();
+    this.angle1 = 0;
+    this.angle2 = 27;
+  }
+
+  visualize(level) {
+    angleMode(RADIANS);
+    const x1 = width / 7;
+    const y1 = (height / 4) - (height / 12);
+    const x2 = width / 3 + (height / 12);
+    const y2 = (height / 3);
+
+    noStroke();
+    fill(0, 102);
+
+    this.angle1 += 5;
+    this.angle2 += 5;
+    const offset = map(level, 0, 0.2, 10, 250);
+    const color = map(level, 0, 0.2, 0, 230);
+    const val1 = cos(radians(this.angle1)) * offset;
+    const val2 = cos(radians(this.angle2)) * offset * 2;
+
+    for (let a = 0; a < 360; a += 75) {
+      const xoff1 = cos(radians(a)) * val1;
+      const yoff1 = sin(radians(a)) * val1;
+      const xoff2 = cos(radians(a)) * val2;
+      const yoff2 = sin(radians(a)) * val2;
+
+      fill(148, color, color, 120);
+      ellipse(x1 + xoff1, y1 + yoff1, 30, 30);
+      ellipse(x2 + xoff2, y2 + yoff2, 30, 30);
+    }
+
+    fill(182, 182, 182, 150);
+    ellipse(x1, y1, 2, 2);
+    ellipse(x2, y2, 2, 2);
+  }
+};
+
 const StationaryCircleVisualization = class extends Visualization {
   visualize(level) {
     const size = map(level, 0, 0.5, 0, 300);
@@ -525,11 +566,12 @@ function preload() {
       displayIcon: 'images/icon-10.svg',
     },
 
-    lockGroove11: { // NEEDS VISUALIZATION
+    lockGroove11: {
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-11-noise.mp3'),
         loadSound('sounds/loops/lock-groove-11-loop.mp3'),
       ),
+      viz: new FlowerVisualization,
       displayIcon: 'images/icon-11.svg',
     },
 
