@@ -8,6 +8,18 @@ const lightGray = '#24272D';  // (36,  39, 45)
 const red = '#94152A';        // (148, 21, 42)
 const dullWhite = '#b6b6b6';
 
+class Visualization {
+  constructor() {
+    this.levelHistory = [];
+  }
+
+  visualize(level, spectrum) {}
+
+  reset() {
+    this.levelHistory = [];
+  }
+}
+
 function smoothPoint(spectrum, index) {
   const neighbors = 2;
   const len = spectrum.length;
@@ -27,7 +39,7 @@ function smoothPoint(spectrum, index) {
   return val / smoothedPoints;
 }
 
-const CurveVisualization = class {
+const CurveVisualization = class extends Visualization {
   visualize(_, spectrum) {
     const length = spectrum.length;
 
@@ -56,8 +68,10 @@ const Particle = function (position) {
   this.speed = createVector(random(0, 10), 0);
 };
 
-const ParticleScurryVisualization = class {
+const ParticleScurryVisualization = class extends Visualization {
   constructor() {
+    super();
+
     this.particles = new Array(256);
 
     for (let i = 0; i < this.particles.length; i++) {
@@ -93,7 +107,7 @@ const ParticleScurryVisualization = class {
   }
 };
 
-const LineVibrationVisualization = class {
+const LineVibrationVisualization = class extends Visualization {
   visualize(level) {
     const y = (height / 12) + map(level, 0, 1, 0, 800);
 
@@ -103,7 +117,7 @@ const LineVibrationVisualization = class {
   }
 };
 
-const ArcVisualization = class {
+const ArcVisualization = class extends Visualization {
   visualize(level) {
     const size = map(level, 0, 1, 0, 550);
 
@@ -113,8 +127,10 @@ const ArcVisualization = class {
   }
 };
 
-const HelixVisualization = class {
+const HelixVisualization = class extends Visualization {
   constructor() {
+    super();
+
     this.spacing = 16;
     this.theta = 0.0;
     this.dx = (TWO_PI / 400) * this.spacing;
@@ -142,11 +158,7 @@ const HelixVisualization = class {
   }
 };
 
-const RadialVisualization = class {
-  constructor() {
-    this.levelHistory = [];
-  }
-
+const RadialVisualization = class extends Visualization {
   visualize(level) {
     this.levelHistory.push(level * 2.5);
 
@@ -170,9 +182,10 @@ const RadialVisualization = class {
   }
 };
 
-const SpiralVisualization = class {
+const SpiralVisualization = class extends Visualization {
   constructor() {
-    this.levelHistory = [];
+    super();
+
     this.scalar = 0.001;
     this.speed = 0.001;
   }
@@ -197,11 +210,7 @@ const SpiralVisualization = class {
   }
 };
 
-const AmpVisualization = class {
-  constructor() {
-    this.levelHistory = [];
-  }
-
+const AmpVisualization = class extends Visualization {
   visualize(level) {
     this.levelHistory.push(level * 2);
 
@@ -221,7 +230,7 @@ const AmpVisualization = class {
   }
 };
 
-const EllipseVisualization = class {
+const EllipseVisualization = class extends Visualization {
   visualize(level) {
     const size = map(level, 0, 1, 0, 1100);
     const randomMultiplier = random(-(width / 2), width / 2);
@@ -233,7 +242,7 @@ const EllipseVisualization = class {
   }
 };
 
-const StationaryCircleVisualization = class {
+const StationaryCircleVisualization = class extends Visualization {
   visualize(level) {
     const size = map(level, 0, 0.5, 0, 300);
     const r = map(level, 0, 0.5, 36, 36 * 3);
@@ -246,7 +255,7 @@ const StationaryCircleVisualization = class {
   }
 };
 
-const SpectrumVisualization = class {
+const SpectrumVisualization = class extends Visualization {
   visualize(level, spectrum) {
     noStroke();
 
