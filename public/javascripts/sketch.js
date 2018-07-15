@@ -277,8 +277,11 @@ const FlowerVisualization = class extends Visualization {
     this.angle2 = 27;
   }
 
-  visualize(level) {
+  visualize(level, spectrum) {
     angleMode(RADIANS);
+    const lowSpectrum = spectrum.slice(0, spectrum.length / 2);
+    const highSpectrum = spectrum.slice(spectrum.length / 2, spectrum.length);
+
     const x1 = width / 7;
     const y1 = (height / 4) - (height / 12);
     const x2 = width / 3 + (height / 12);
@@ -289,20 +292,26 @@ const FlowerVisualization = class extends Visualization {
 
     this.angle1 += 5;
     this.angle2 += 5;
-    const offset = map(level, 0, 0.2, 10, 250);
+    const offset1 = map(max(lowSpectrum), 0, 300, 10, 320);
+    const offset2 = map(max(highSpectrum), 0, 130, 10, 320);
     const color = map(level, 0, 0.2, 0, 230);
-    const val1 = cos(radians(this.angle1)) * offset;
-    const val2 = cos(radians(this.angle2)) * offset * 2;
+    const val1 = cos(radians(this.angle1)) * offset1;
+    const val2 = cos(radians(this.angle2)) * offset2;
 
     for (let a = 0; a < 360; a += 75) {
       const xoff1 = cos(radians(a)) * val1;
       const yoff1 = sin(radians(a)) * val1;
+
+      fill(148, color, color, 150);
+      ellipse(x1 + xoff1, y1 + yoff1, 40, 40);
+    }
+
+    for (let a = 0; a < 360; a += 52) {
       const xoff2 = cos(radians(a)) * val2;
       const yoff2 = sin(radians(a)) * val2;
 
       fill(148, color, color, 120);
-      ellipse(x1 + xoff1, y1 + yoff1, 30, 30);
-      ellipse(x2 + xoff2, y2 + yoff2, 30, 30);
+      ellipse(x2 + xoff2, y2 + yoff2, 20, 20);
     }
 
     fill(182, 182, 182, 150);
