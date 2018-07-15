@@ -193,8 +193,10 @@ const SpiralVisualization = class extends Visualization {
   visualize(level) {
     this.levelHistory.push(level * 2.5);
 
-    stroke(red);
-    strokeWeight(0.5);
+    const color = map(this.startingPosition, 0, 2, 30, 255);
+    stroke(color, color, color);
+
+    strokeWeight(0.3);
     angleMode(DEGREES);
 
     beginShape();
