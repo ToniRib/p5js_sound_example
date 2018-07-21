@@ -682,6 +682,7 @@ function createSoundButton(key, displayIcon) {
 }
 
 function setup() {
+  pixelDensity(2);
   createCanvas(window.innerWidth, window.innerHeight);
   background('black');
 
