@@ -601,7 +601,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-14-noise.mp3'),
         loadSound('sounds/loops/lock-groove-14-loop.mp3'),
       ),
-      viz: new EllipseVisualization,
+      viz: new SpiralVisualization,
       displayIcon: 'images/icon-14.svg',
     },
   };
