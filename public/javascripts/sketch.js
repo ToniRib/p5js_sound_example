@@ -601,14 +601,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-14-noise.mp3'),
         loadSound('sounds/loops/lock-groove-14-loop.mp3'),
       ),
-      displayIcon: 'images/icon-14.svg',
-    },
-
-    lockGroove15: { // NEEDS VISUALIZATION
-      sound: new LockGroove(
-        loadSound('sounds/noise/lock-groove-15-noise.mp3'),
-        loadSound('sounds/loops/lock-groove-15-loop.mp3'),
-      ),
+      viz: new EllipseVisualization,
       displayIcon: 'images/icon-14.svg',
     },
   };
