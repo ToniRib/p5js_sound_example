@@ -1,5 +1,5 @@
 // Credit to The Coding Train YouTube channel, the p5js examples on p5js.org,
-// Daniel Shiffman & The Nature of code,
+// Saskia Freeke and Dexter Shepherd (https://blog.kadenze.com/creative-technology/p5-js-crash-course-recreate-art-you-love/),
 // and https://github.com/therewasaguy for some inspiration and code for these visualizations
 
 const black = '#010711';      // (1,   7,  17)
@@ -273,21 +273,43 @@ const SnowVisualization = class extends Visualization {
 };
 
 
-const RecusiveVisualization = class extends Visualization {
-  visualize(level, spectrum) {
-    noFill();
-    stroke(red);
-    const radius = map(level, 0, 0.15, 500, 800);
-
-    this.drawCircle(width / 4, height / 4, radius);
+const RotatingWaveVisualization = class extends Visualization {
+  constructor() {
+    super();
+    this.phase = 0;
   }
 
-  drawCircle(x, y, radius) {
-    ellipse(x, y, radius);
+  visualize(level, spectrum) {
+    angleMode(RADIANS);
+    let speed = 0.03;
+    let maxCircleSize = 25;
+    let numRows = 10;
+    let numCols = 16;
+    let numStrands = 3;
 
-    if (radius > 2) {
-      this.drawCircle(x + radius / 2, y, radius / 2);
-      this.drawCircle(x - radius / 2, y, radius / 2);
+    let colorA = color(28,  32, 38, 50);
+    let colorB = color(182, 182, 182, 50);
+
+    this.phase = frameCount * speed;
+    const multiplier = map(level,0,  0.3, 1, 10);
+
+    for (let strand = 0; strand < numStrands; strand += 1) {
+      let strandPhase = this.phase + map(strand, 0, numStrands, 0, TWO_PI);
+
+      for (let col = 0; col < numCols; col += 1) {
+        let colOffset = map(col, 0, numCols, 0, TWO_PI);
+        let x = map(col, 0, numCols, 50, width - 50);
+
+        for (let row = 0; row < numRows; row += 1) {
+          let y = height / 4 + row * 10 + sin(strandPhase + colOffset) * 150;
+          let sizeOffset = (cos(strandPhase - (row / numRows) + colOffset) + 1) * 0.5;
+          let circleSize = sizeOffset * maxCircleSize * multiplier;
+
+          noStroke();
+          fill(lerpColor(colorA, colorB, row / numRows));
+          ellipse(x, y, circleSize, circleSize);
+        }
+      }
     }
   }
 };
@@ -569,7 +591,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-8-noise.mp3'),
         loadSound('sounds/loops/lock-groove-8-loop.mp3'),
       ),
-      viz: new RecusiveVisualization,
+      viz: new RotatingWaveVisualization,
       displayIcon: 'images/icon-8.svg',
     },
 
