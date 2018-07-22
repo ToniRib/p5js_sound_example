@@ -641,7 +641,7 @@ function preload() {
       displayIcon: 'images/icon-13.svg',
     },
 
-    lockGroove14: { // NEEDS VISUALIZATION
+    lockGroove14: {
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-14-noise.mp3'),
         loadSound('sounds/loops/lock-groove-14-loop.mp3'),
