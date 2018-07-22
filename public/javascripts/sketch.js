@@ -1,4 +1,5 @@
 // Credit to The Coding Train YouTube channel, the p5js examples on p5js.org,
+// Daniel Shiffman & The Nature of code,
 // and https://github.com/therewasaguy for some inspiration and code for these visualizations
 
 const black = '#010711';      // (1,   7,  17)
@@ -13,7 +14,8 @@ class Visualization {
     this.levelHistory = [];
   }
 
-  visualize(level, spectrum) {}
+  visualize(level, spectrum) {
+  }
 
   reset() {
     this.levelHistory = [];
@@ -266,6 +268,26 @@ const SnowVisualization = class extends Visualization {
 
       const range = map(spectrum[i], 0, 200, 1, 25);
       rand += random(-range, range);
+    }
+  }
+};
+
+
+const RecusiveVisualization = class extends Visualization {
+  visualize(level, spectrum) {
+    noFill();
+    stroke(red);
+    const radius = map(level, 0, 0.15, 500, 800);
+
+    this.drawCircle(width / 4, height / 4, radius);
+  }
+
+  drawCircle(x, y, radius) {
+    ellipse(x, y, radius);
+
+    if (radius > 2) {
+      this.drawCircle(x + radius / 2, y, radius / 2);
+      this.drawCircle(x - radius / 2, y, radius / 2);
     }
   }
 };
@@ -547,7 +569,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-8-noise.mp3'),
         loadSound('sounds/loops/lock-groove-8-loop.mp3'),
       ),
-      viz: new SpiralVisualization,
+      viz: new RecusiveVisualization,
       displayIcon: 'images/icon-8.svg',
     },
 
