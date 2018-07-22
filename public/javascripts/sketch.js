@@ -288,7 +288,7 @@ const RotatingWaveVisualization = class extends Visualization {
     let numStrands = 3;
 
     let colorA = color(28,  32, 38, 50);
-    let colorB = color(182, 182, 182, 50);
+    let colorB = color(120, 120, 120, 50);
 
     this.phase = frameCount * speed;
     const multiplier = map(level, 0,  0.3, 1, 10);
