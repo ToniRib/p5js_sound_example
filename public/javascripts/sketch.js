@@ -1,5 +1,5 @@
-// Credit to The Coding Train YouTube channel
-// and https://github.com/therewasaguy for some inspiration/code for these visualizations
+// Credit to The Coding Train YouTube channel, the p5js examples on p5js.org,
+// and https://github.com/therewasaguy for some inspiration and code for these visualizations
 
 const black = '#010711';      // (1,   7,  17)
 const darkGray = '#13171F';   // (19,  23, 31)
