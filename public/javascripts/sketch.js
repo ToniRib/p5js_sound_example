@@ -263,6 +263,7 @@ const SnowVisualization = class extends Visualization {
       const x = ((width / 2) / steps) * i;
       const y = (height / 12) + random(-rand, rand);
       const color = map(x, 0, width / 2, 80, 240);
+      strokeWeight(1);
       stroke(color, color, color);
       point(x, y);
 
