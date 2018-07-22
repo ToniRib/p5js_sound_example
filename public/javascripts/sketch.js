@@ -282,7 +282,7 @@ const RotatingWaveVisualization = class extends Visualization {
   visualize(level, spectrum) {
     angleMode(RADIANS);
     let speed = 0.03;
-    let maxCircleSize = 25;
+    let maxCircleSize = 15;
     let numRows = 10;
     let numCols = 16;
     let numStrands = 3;
@@ -291,7 +291,7 @@ const RotatingWaveVisualization = class extends Visualization {
     let colorB = color(182, 182, 182, 50);
 
     this.phase = frameCount * speed;
-    const multiplier = map(level,0,  0.3, 1, 10);
+    const multiplier = map(level, 0,  0.3, 1, 10);
 
     for (let strand = 0; strand < numStrands; strand += 1) {
       let strandPhase = this.phase + map(strand, 0, numStrands, 0, TWO_PI);
@@ -302,7 +302,7 @@ const RotatingWaveVisualization = class extends Visualization {
 
         for (let row = 0; row < numRows; row += 1) {
           let y = height / 4 + row * 10 + sin(strandPhase + colOffset) * 150;
-          let sizeOffset = (cos(strandPhase - (row / numRows) + colOffset) + 1) * 0.5;
+          let sizeOffset = (cos(strandPhase - (row / numRows) + colOffset) + 1) * 0.7;
           let circleSize = sizeOffset * maxCircleSize * multiplier;
 
           noStroke();
