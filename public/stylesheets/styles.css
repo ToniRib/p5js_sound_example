@@ -13,7 +13,7 @@ textarea, input, button { outline: none; }
 body {
     /*font-family: 'CoutureBold';*/
     margin: 0;
-    background-color: black;
+    /* background-color: black; */
     cursor: url(../images/cursor-pointer-inactive.png) 23 23, auto;
 }
 
@@ -93,6 +93,16 @@ body {
     
     100% {
         transform: translate(5%, 5%);
+    }
+}
+
+@keyframes soundBoardBgImage {
+    0% {
+        filter: brightness(45%);
+    }
+    
+    100% {
+        filter: brightness(5%);
     }
 }
 
@@ -176,8 +186,12 @@ body {
     animation: soundBoardBgTranslation 12s infinite linear paused;
 }
 
-#soundBoardBg {
-    animation: soundBoardBgTranslation 12s infinite linear running;
+.active #soundBoardBg {
+    animation-play-state: running running;
+}
+
+.active #soundBoardBg img {
+    animation-play-state: running;
 }
 
 .active #soundBoardBg,
@@ -198,6 +212,8 @@ body {
 
 #soundBoardBg img {
     width: 90%;
+    filter: brightness(45%);
+    animation: soundBoardBgImage 3s cubic-bezier(0.165, 0.84, 0.44, 1) alternate infinite paused;
 }
 
 #soundBoard {
@@ -251,6 +267,7 @@ body {
 
 .soundTrigger.active {
     animation-duration: calc(var(--rotationAnimationDuration) / 2);
+    animation-direction: alternate;
 }
 
 /* .soundTrigger.active {
