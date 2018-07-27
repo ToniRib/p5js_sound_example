@@ -24,7 +24,7 @@ body
     --soundBoardContainerZIndex 20
     --controlsZIndex calc(var(--soundBoardContainerZIndex) + 10)
     --rotationAnimationDurationBase 36s
-    --rotationAnimationDuration calc(var(--rotationAnimationDurationBase) * 2)
+    --rotationAnimationDuration calc(var(--rotationAnimationDurationBase) * 3)
     --ease-out-quad cubic-bezier(0.25, 0.46, 0.45, 0.94)
     --ease-out-quart cubic-bezier(0.165, 0.84, 0.44, 1)
     --ease-out-back cubic-bezier(0.175, 0.885, 0.32, 1.275)
@@ -193,9 +193,11 @@ rotationAnimation()
 
     &.even
         animation-direction alternate
+        animation-duration calc(var(--rotationAnimationDurationBase) * 4)
 
         .soundTrigger
             animation-direction alternate-reverse
+            animation-duration calc(var(--rotationAnimationDurationBase) * 4)
 
 .soundTriggerContainer
     width var(--sound-trigger-default-size)
@@ -216,7 +218,7 @@ rotationAnimation()
         fill var(--sound-trigger-color)
 
     &.active
-        animation-duration calc(var(--rotationAnimationDuration) / 2)
+        animation-duration calc(var(--rotationAnimationDuration) / 2) !important
 
         path
             fill red
