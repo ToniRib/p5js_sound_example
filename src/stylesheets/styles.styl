@@ -151,12 +151,10 @@ rotationAnimation()
         animation-play-state running
 
 .active #soundBoardBg,
-.active #soundBoard,
+.active .soundBoardTriggerLayer,
 .active .soundTrigger
     animation-play-state running
 
-#fooBar
-    display none
 
 #soundBoardBg
     display flex
@@ -173,8 +171,7 @@ rotationAnimation()
         animation soundBoardBgImage 5s ease-in-out alternate-reverse infinite paused
 
 
-#soundBoard
-    border-radius 50%
+.soundBoardTriggerLayer
     height 100%
     position absolute
     width 100%
@@ -185,7 +182,18 @@ rotationAnimation()
     justify-content center
 
     rotationAnimation()
-    animation-direction alternate-reverse
+
+    &.odd
+        animation-direction alternate-reverse
+
+        .soundTrigger.active
+            animation-direction alternate
+
+    &.even
+        animation-direction alternate
+
+        .soundTrigger
+            animation-direction alternate-reverse
 
 .soundTriggerContainer
     width var(--sound-trigger-default-size)
@@ -206,7 +214,6 @@ rotationAnimation()
 
     &.active
         animation-duration calc(var(--rotationAnimationDuration) / 2)
-        animation-direction alternate
 
         path
             fill red
