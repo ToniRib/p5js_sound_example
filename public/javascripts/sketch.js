@@ -6,7 +6,19 @@ const darkGray = '#13171F';   // (19,  23, 31)
 const mediumGray = '#1C2026'; // (28,  32, 38)
 const lightGray = '#24272D';  // (36,  39, 45)
 const red = '#94152A';        // (148, 21, 42)
-const dullWhite = '#b6b6b6';
+const dullWhite = '#b6b6b6';  // (182, 182, 182)
+
+class Visualization {
+  constructor() {
+    this.levelHistory = [];
+  }
+
+  visualize(level, spectrum) {}
+
+  reset() {
+    this.levelHistory = [];
+  }
+}
 
 function smoothPoint(spectrum, index) {
   const neighbors = 2;
@@ -27,41 +39,44 @@ function smoothPoint(spectrum, index) {
   return val / smoothedPoints;
 }
 
-const CurveVisualization = class {
+const CurveVisualization = class extends Visualization {
   visualize(_, spectrum) {
-    const scaledSpectrum = spectrum;
-    const length = scaledSpectrum.length;
+    const length = spectrum.length;
 
-    const color = map(spectrum[940], 0, 1, 10, 150);
+    const highFreqRange = spectrum.slice(779, 860);
+    const maxFreq = max(highFreqRange);
+    const color = map(maxFreq, 0, 145, 10, 255);
     stroke(148, color, color);
 
-    strokeWeight(2);
+    strokeWeight(1);
 
     beginShape();
     for (let i = 0; i < length; i++) {
-      const point = smoothPoint(scaledSpectrum, i);
-      const x = map(i, 0, length - 1, 0, width);
-      const y = map(point, 0, 255, height / 5, 0);
+      const point = smoothPoint(spectrum, i);
+      const x = map(i, 0, length - 1, 0, width / 2);
+      const y = map(point, 0, 255, (height / 2) - 3, 0);
 
-      curveVertex(x, y + (height - 450));
+      curveVertex(x, y);
     }
     endShape();
   }
 };
 
-const Particle = function(position) {
+const Particle = function (position) {
   this.position = position;
   this.scale = random(0, 1);
   this.speed = createVector(random(0, 10), 0);
 };
 
-const ParticleScurryVisualization = class {
+const ParticleScurryVisualization = class extends Visualization {
   constructor() {
+    super();
+
     this.particles = new Array(256);
 
     for (let i = 0; i < this.particles.length; i++) {
-      const x = random(0, width);
-      const y = random(0, height);
+      const x = random(0, width / 2);
+      const y = random(0, height / 4);
       const position = createVector(x, y);
       this.particles[i] = new Particle(position);
     }
@@ -73,12 +88,12 @@ const ParticleScurryVisualization = class {
     for (let i = 0; i < 256; i++) {
       const thisLevel = map(spectrum[i], 0, 255, 0, 1) * 2.5;
 
-      this.particles[i].position.y = (spectrum[i] * 5) - 200;
+      this.particles[i].position.y = (spectrum[i] * 5) - (height / 8);
       this.particles[i].position.x += this.particles[i].speed.x / (thisLevel);
       if (this.particles[i].position.x > width) this.particles[i].position.x = 0;
       this.particles[i].diameter = map(thisLevel, 0, 1, 0, 100) * this.particles[i].scale;
 
-      const opacity = map(level, 0, 1, 150, 220);
+      const opacity = map(level, 0, 0.5, 100, 150);
       this.particles[i].color = [36, 39, 45, opacity];
 
       fill(this.particles[i].color);
@@ -92,9 +107,9 @@ const ParticleScurryVisualization = class {
   }
 };
 
-const LineVibrationVisualization = class {
+const LineVibrationVisualization = class extends Visualization {
   visualize(level) {
-    const y = 100 + map(level, 0, 1, 0, 800);
+    const y = (height / 12) + map(level, 0, 1, 0, 800);
 
     stroke(red);
     strokeWeight(9);
@@ -102,21 +117,50 @@ const LineVibrationVisualization = class {
   }
 };
 
-const ArcVisualization = class {
+const ArcVisualization = class extends Visualization {
   visualize(level) {
-    const size = map(level, 0, 1, 0, 1000);
+    const size = map(level, 0, 1, 0, 550);
 
     stroke(lightGray);
     strokeWeight(4);
-    ellipse(width / 2, height / 2, width, size * 10)
+    ellipse(width / 4, height / 4, (width / 2) + 10, size * 10)
   }
 };
 
-const RadialVisualization = class {
+const HelixVisualization = class extends Visualization {
   constructor() {
-    this.levelHistory = [];
+    super();
+
+    this.spacing = 16;
+    this.theta = 0.0;
+    this.dx = (TWO_PI / 400) * this.spacing;
   }
 
+  visualize(level) {
+    angleMode(RADIANS);
+
+    this.theta += map(level, 0, 0.5, 0, 0.3);
+    const w = width / 2;
+    this.yvalues = new Array(floor(w / this.spacing));
+
+    var x = this.theta;
+    for (let i = 0; i < this.yvalues.length; i++) {
+      this.yvalues[i] = sin(x) * 75;
+      x += this.dx;
+    }
+
+    noStroke();
+    const color = map(level, 0, 0.25, 2, 255);
+    fill(color, color, color);
+    for (let i = 0; i < this.yvalues.length; i++) {
+      ellipse(i * this.spacing, height / 5 + this.yvalues[i], 16, 16);
+      ellipse(i * this.spacing, height / 5 - this.yvalues[i], 16, 16);
+
+    }
+  }
+};
+
+const RadialVisualization = class extends Visualization {
   visualize(level) {
     this.levelHistory.push(level * 2.5);
 
@@ -128,7 +172,7 @@ const RadialVisualization = class {
     for (let i = 1; i < this.levelHistory.length; i++) {
       const r = map(this.levelHistory[i], 0, 0.6, 10, 1000);
       const x = (width / 2) + (r * cos(i));
-      const y = (height / 2) + r * sin(i);
+      const y = (height / 4) + (r * sin(i));
 
       vertex(x, y);
     }
@@ -140,66 +184,168 @@ const RadialVisualization = class {
   }
 };
 
-const AmpVisualization = class {
+const SpiralVisualization = class extends Visualization {
   constructor() {
-    this.levelHistory = [];
+    super();
+
+    this.startingPosition = 0.001;
+    this.speed = 0.0005;
   }
 
   visualize(level) {
     this.levelHistory.push(level * 2.5);
 
-    stroke(red);
-    strokeWeight(3);
+    const color = map(this.startingPosition, 0, 2, 30, 255);
+    stroke(color, color, color);
+
+    strokeWeight(0.3);
+    angleMode(DEGREES);
 
     beginShape();
     for (let i = 1; i < this.levelHistory.length; i++) {
-      const y = map(this.levelHistory[i], 0, 0.5, height, 0);
-      vertex(i, y - 200);
+      const r = map(this.levelHistory[i], 0, 0.6, 10, 700);
+      const x = (width / 5) + (r * cos(i) * this.startingPosition);
+      const y = (height / 4) + (r * sin(i) * this.startingPosition);
+
+      vertex(x, y);
+    }
+    endShape();
+    this.startingPosition += this.speed;
+  }
+
+  reset() {
+    this.levelHistory = [];
+    this.startingPosition = 0.001;
+  }
+};
+
+const AmpVisualization = class extends Visualization {
+  visualize(level) {
+    this.levelHistory.push(level * 2);
+
+    stroke(red);
+    strokeWeight(2);
+
+    beginShape();
+    for (let i = 1; i < this.levelHistory.length; i++) {
+      const y = map(this.levelHistory[i], 0, 0.5, height / 2, 0);
+      vertex(i, y);
     }
     endShape();
 
-    if (this.levelHistory.length > width) {
+    if (this.levelHistory.length > width / 2) {
       this.levelHistory.shift();
     }
   }
 };
 
-const EllipseVisualization = class {
+const EllipseVisualization = class extends Visualization {
   visualize(level) {
     const size = map(level, 0, 1, 0, 1100);
     const randomMultiplier = random(-(width / 2), width / 2);
-    const x = width / 2;
+    const x = width / 4;
 
     stroke(dullWhite);
     strokeWeight(4);
-    ellipse(x + randomMultiplier, height / 2, size, size);
+    ellipse(x + randomMultiplier, (height / 4) - (height / 6), size, size);
   }
 };
 
-const StationaryCircleVisualization = class {
+const SnowVisualization = class extends Visualization {
+  visualize(level, spectrum) {
+    const totalPts = spectrum.length / 2;
+    const steps = totalPts + 1;
+    let rand = 0;
+
+    for (let i = 1; i < steps; i++) {
+      const x = ((width / 2) / steps) * i;
+      const y = (height / 12) + random(-rand, rand);
+      const color = map(x, 0, width / 2, 80, 240);
+      stroke(color, color, color);
+      point(x, y);
+
+      const range = map(spectrum[i], 0, 200, 1, 25);
+      rand += random(-range, range);
+    }
+  }
+};
+
+const FlowerVisualization = class extends Visualization {
+  constructor() {
+    super();
+    this.angle1 = 0;
+    this.angle2 = 27;
+  }
+
+  visualize(level, spectrum) {
+    angleMode(RADIANS);
+    const lowSpectrum = spectrum.slice(0, spectrum.length / 2);
+    const highSpectrum = spectrum.slice(spectrum.length / 2, spectrum.length);
+
+    const x1 = width / 7;
+    const y1 = (height / 4) - (height / 12);
+    const x2 = width / 3 + (height / 12);
+    const y2 = (height / 3);
+
+    noStroke();
+    fill(0, 102);
+
+    this.angle1 += 5;
+    this.angle2 += 5;
+    const offset1 = map(max(lowSpectrum), 0, 300, 10, 320);
+    const offset2 = map(max(highSpectrum), 0, 130, 10, 320);
+    const color = map(level, 0, 0.2, 0, 230);
+    const val1 = cos(radians(this.angle1)) * offset1;
+    const val2 = cos(radians(this.angle2)) * offset2;
+
+    for (let a = 0; a < 360; a += 75) {
+      const xoff1 = cos(radians(a)) * val1;
+      const yoff1 = sin(radians(a)) * val1;
+
+      fill(148, color, color, 150);
+      ellipse(x1 + xoff1, y1 + yoff1, 40, 40);
+    }
+
+    for (let a = 0; a < 360; a += 52) {
+      const xoff2 = cos(radians(a)) * val2;
+      const yoff2 = sin(radians(a)) * val2;
+
+      fill(148, color, color, 120);
+      ellipse(x2 + xoff2, y2 + yoff2, 20, 20);
+    }
+
+    fill(182, 182, 182, 150);
+    ellipse(x1, y1, 2, 2);
+    ellipse(x2, y2, 2, 2);
+  }
+};
+
+const StationaryCircleVisualization = class extends Visualization {
   visualize(level) {
-    const size = map(level, 0, 1, 0, 800);
-    const r = map(level, 0, 1, 36, 36 * 3);
-    const g = map(level, 0, 1, 39, 39 * 3);
-    const b = map(level, 0, 1, 45, 45 * 3);
+    const size = map(level, 0, 0.5, 0, 300);
+    const r = map(level, 0, 0.5, 36, 36 * 3);
+    const g = map(level, 0, 0.5, 39, 39 * 3);
+    const b = map(level, 0, 0.5, 45, 45 * 3);
 
     strokeWeight(level * 150);
     stroke(r, g, b);
-    ellipse((width / 2), (height / 2), size * 4, size * 4);
+    ellipse((width / 4), (height / 4), size * 4, size * 4);
   }
 };
 
-const SpectrumVisualization = class {
+const SpectrumVisualization = class extends Visualization {
   visualize(level, spectrum) {
     noStroke();
-    const color = map(level, 0, 1, 100, 255);
-    fill(color, 21, 42, 100);
 
     for (let i = 0; i < spectrum.length; i++) {
-      const x = map(i, 0, spectrum.length, 0, width);
-      const h = -height + map(spectrum[i], 0, 255, height, 0);
+      const x = map(i, 0, spectrum.length, 0, (width / 2));
+      const h = -height + map(spectrum[i], 0, 255, height / 2, 0);
 
-      rect(x, height - 100, width / spectrum.length, h)
+
+      const color = map(i, 0, spectrum.length / 2, 10, 255);
+      fill(148, color, color, 120);
+
+      rect(x + i, height, (width / 2) / spectrum.length, h)
     }
   }
 };
@@ -215,7 +361,6 @@ const LockGroove = class {
     this.groove.setLoop(false);
 
     this.noise.onended(() => {
-      console.info('Intro track ending. Groove track starting.');
       this.groove.loop()
     });
 
@@ -255,28 +400,31 @@ const LockGroove = class {
   /**
    *
    * @param {Number} durationMs Fade duration in milliseconds
+   * @param {Visualization} visualization Visualization for this sound
    */
-  fadeAndStop(durationMs=this.fadeTimeMs) {
+  fadeAndStop(durationMs = this.fadeTimeMs, visualization) {
     if (this.noise.isPlaying() || this.groove.isLooping()) {
-      this.noiseGain.amp(0, durationMs/1000);
-      this.grooveGain.amp(0, durationMs/1000);
+      this.noiseGain.amp(0, durationMs / 1000);
+      this.grooveGain.amp(0, durationMs / 1000);
 
       function delayedStop() {
         this.noise.stop();
         this.groove.stop();
         this.resetGainLevels();
+        visualization.reset();
       }
 
       setTimeout(delayedStop.bind(this), durationMs);
     }
   }
 
-  stop(fadeOut) {
+  stop(fadeOut, visualization) {
     if (fadeOut) {
-      this.fadeAndStop(fadeOut);
+      this.fadeAndStop(fadeOut, visualization);
     } else {
       this.noise.stop();
       this.groove.stop();
+      visualization.reset();
     }
   }
 
@@ -296,7 +444,7 @@ const LockGroove = class {
   }
 };
 
-const Square = class {
+const SoundDefinition = class {
   constructor(sound, visualization = new EllipseVisualization) {
     this.viz = visualization;
     this.sound = sound;
@@ -319,7 +467,7 @@ const Square = class {
   }
 };
 
-let squares;
+let soundDefinitions;
 let recorder;
 let soundFile;
 let soundDefs;
@@ -395,35 +543,39 @@ function preload() {
       displayIcon: 'images/icon-7.svg',
     },
 
-    lockGroove8: { // NEEDS VISUALIZATION
+    lockGroove8: {
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-8-noise.mp3'),
         loadSound('sounds/loops/lock-groove-8-loop.mp3'),
       ),
+      viz: new SpiralVisualization,
       displayIcon: 'images/icon-8.svg',
     },
 
-    lockGroove9: { // NEEDS VISUALIZATION
+    lockGroove9: {
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-9-noise.mp3'),
         loadSound('sounds/loops/lock-groove-9-loop.mp3'),
       ),
+      viz: new HelixVisualization,
       displayIcon: 'images/icon-9.svg',
     },
 
-    lockGroove10: { // NEEDS VISUALIZATION
+    lockGroove10: {
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-10-noise.mp3'),
         loadSound('sounds/loops/lock-groove-10-loop.mp3'),
       ),
+      viz: new SnowVisualization,
       displayIcon: 'images/icon-10.svg',
     },
 
-    lockGroove11: { // NEEDS VISUALIZATION
+    lockGroove11: {
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-11-noise.mp3'),
         loadSound('sounds/loops/lock-groove-11-loop.mp3'),
       ),
+      viz: new FlowerVisualization,
       displayIcon: 'images/icon-11.svg',
     },
 
@@ -445,26 +597,19 @@ function preload() {
       displayIcon: 'images/icon-13.svg',
     },
 
-    // lockGroove14: { // NEEDS VISUALIZATION
-    //   sound: new LockGroove(
-    //     loadSound('sounds/noise/lock-groove-14-noise.mp3'),
-    //     loadSound('sounds/loops/lock-groove-14-loop.mp3'),
-    //   ),
-    //   displayIcon: 'images/icon-14.svg',
-    // },
-
-    lockGroove15: { // NEEDS VISUALIZATION
+    lockGroove14: { // NEEDS VISUALIZATION
       sound: new LockGroove(
-        loadSound('sounds/noise/lock-groove-15-noise.mp3'),
-        loadSound('sounds/loops/lock-groove-15-loop.mp3'),
+        loadSound('sounds/noise/lock-groove-14-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-14-loop.mp3'),
       ),
+      viz: new SpiralVisualization,
       displayIcon: 'images/icon-14.svg',
     },
   };
 
 
-  squares = Object.entries(soundDefs).reduce((accum, [key, def]) => {
-    accum[key] = new Square(def.sound, def.viz);
+  soundDefinitions = Object.entries(soundDefs).reduce((accum, [key, def]) => {
+    accum[key] = new SoundDefinition(def.sound, def.viz);
 
     return accum
   }, {});
@@ -474,33 +619,33 @@ const toggleSound = (id, fadeOut = 0) => {
   const sound = soundDefs[id].sound;
 
   if (sound.isPlaying()) {
-    sound.stop(fadeOut);
+    sound.stop(fadeOut, soundDefs[id].viz);
   } else {
     sound.loop();
   }
 };
 
 /**
- * 
+ *
  * @param {Element} el sound trigger el
  * @param {Boolean} force force active state
  */
 const toggleSoundTrigger = (el, force) => {
-    el.classList.toggle('active', force);
+  el.classList.toggle('active', force);
 
-    if (document.querySelector('.soundTrigger.active')) {
-      soundBoardContainer.classList.add('active');
-    } else {
-      soundBoardContainer.classList.remove('active');
-    }
+  if (document.querySelector('.soundTrigger.active')) {
+    soundBoardContainer.classList.add('active');
+  } else {
+    soundBoardContainer.classList.remove('active');
+  }
 };
 
 function stopAll() {
-  Object.values(squares).forEach((square) => square.sound.fadeAndStop(defaultFadeDuration));
+  Object.values(soundDefinitions).forEach((square) => square.sound.fadeAndStop(defaultFadeDuration, square.viz));
   document.querySelectorAll('.soundTrigger').forEach((el) => toggleSoundTrigger(el, false));
 }
 
-function createSoundButton(key, displayName, displayIcon) {
+function createSoundButton(key, displayIcon) {
   const container = document.createElement('div');
 
   container.classList.add('soundTriggerContainer');
@@ -530,15 +675,16 @@ function createSoundButton(key, displayName, displayIcon) {
 
     button.appendChild(svgItem);
     button.removeChild(svgObject);
-  })
+  });
 
   container.appendChild(button);
   soundBoard.appendChild(container);
-};
+}
 
 let soundBoardContainer;
 
 function setup() {
+  pixelDensity(2);
   createCanvas(window.innerWidth, window.innerHeight);
   background('black');
 
@@ -549,8 +695,8 @@ function setup() {
   soundBoardContainer = document.querySelector('#soundBoardContainer');
   const soundBoard = document.querySelector('#soundBoard');
 
-  Object.entries(soundDefs).slice(0, 7).forEach(([key, soundDefinition]) => {
-    createSoundButton(key, soundDefinition.displayName, soundDefinition.displayIcon)
+  Object.entries(soundDefs).forEach(([key, soundDefinition]) => {
+    createSoundButton(key, soundDefinition.displayIcon)
   });
 
   updateSoundBoardLayout();
@@ -559,7 +705,7 @@ function setup() {
   document.querySelector('#canvasContainer')
     .appendChild(document.querySelector('#defaultCanvas0'));
 
-  setCanvasDimensions()
+  setCanvasDimensions();
 
   initEventListeners();
 
@@ -596,7 +742,7 @@ function setCanvasDimensions() {
 }
 
 function initEventListeners() {
-  window.addEventListener('resize', setCanvasDimensions)
+  window.addEventListener('resize', setCanvasDimensions);
 
   const recordButton = document.querySelector('#toggleRecord');
   recordButton.addEventListener('click', toggleRecordState);
@@ -609,7 +755,7 @@ function toggleRecordState(event) {
   const triggerEl = event.currentTarget;
   const recordingActive = triggerEl.classList.contains('active');
 
-  if (recordingActive ) {
+  if (recordingActive) {
     recorder.stop();
     save(soundFile, 'locked-groove-mix.wav');
     triggerEl.classList.remove('active');
@@ -627,5 +773,5 @@ function toggleRecordState(event) {
 
 function draw() {
   background('black');
-  Object.values(squares).forEach(viz => viz.visualize());
+  Object.values(soundDefinitions).forEach(viz => viz.visualize());
 }
