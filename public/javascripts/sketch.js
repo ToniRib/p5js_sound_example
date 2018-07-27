@@ -524,130 +524,130 @@ masterGain.connect();
 
 function preload() {
   soundDefs = {
-    lockGroove1: { //correct
-      sound: new LockGroove(
-        loadSound('sounds/noise/lock-groove-5-noise.mp3'),
-        loadSound('sounds/loops/lock-groove-5-loop.mp3'),
-      ),
-      viz: new EllipseVisualization,
-      displayIcon: 'images/icon-8.svg',
-    },
-
-    lockGroove2: { //correct
-      sound: new LockGroove(
-        loadSound('sounds/noise/lock-groove-7-noise.mp3'),
-        loadSound('sounds/loops/lock-groove-7-loop.mp3'),
-      ),
-      viz: new LineVibrationVisualization,
-      displayIcon: 'images/icon-9.svg',
-    },
-
-    lockGroove3: { //correct
-      sound: new LockGroove(
-        loadSound('sounds/noise/lock-groove-14-noise.mp3'),
-        loadSound('sounds/loops/lock-groove-14-loop.mp3'),
-      ),
-      viz: new SpiralVisualization,
-      displayIcon: 'images/icon-10.svg',
-    },
-
-    lockGroove4: { //correct
+    lockGroove1: {
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-1-noise.mp3'),
         loadSound('sounds/loops/lock-groove-1-loop.mp3'),
       ),
-      viz: new AmpVisualization,
-      displayIcon: 'images/icon-11.svg',
+      viz: new EllipseVisualization,
+      displayIcon: 'images/icon-1.svg',
     },
 
-    lockGroove5: { //correct
+    lockGroove2: {
       sound: new LockGroove(
-        loadSound('sounds/noise/lock-groove-12-noise.mp3'),
-        loadSound('sounds/loops/lock-groove-12-loop.mp3'),
+        loadSound('sounds/noise/lock-groove-2-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-2-loop.mp3'),
       ),
-      viz: new SpectrumVisualization,
-      displayIcon: 'images/icon-12.svg',
+      viz: new LineVibrationVisualization,
+      displayIcon: 'images/icon-2.svg',
     },
 
-    lockGroove6: { //correct
+    lockGroove3: {
+      sound: new LockGroove(
+        loadSound('sounds/noise/lock-groove-3-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-3-loop.mp3'),
+      ),
+      viz: new SpiralVisualization,
+      displayIcon: 'images/icon-3.svg',
+    },
+
+    lockGroove4: {
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-4-noise.mp3'),
         loadSound('sounds/loops/lock-groove-4-loop.mp3'),
       ),
-      viz: new RadialVisualization,
-      displayIcon: 'images/icon-13.svg',
+      viz: new AmpVisualization,
+      displayIcon: 'images/icon-4.svg',
     },
 
-    lockGroove7: { //correct
+    lockGroove5: {
       sound: new LockGroove(
-        loadSound('sounds/noise/lock-groove-13-noise.mp3'),
-        loadSound('sounds/loops/lock-groove-13-loop.mp3'),
+        loadSound('sounds/noise/lock-groove-5-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-5-loop.mp3'),
       ),
-      viz: new ParticleScurryVisualization,
-      displayIcon: 'images/icon-14.svg',
+      viz: new SpectrumVisualization,
+      displayIcon: 'images/icon-5.svg',
     },
 
-    lockGroove8: { //correct
+    lockGroove6: {
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-6-noise.mp3'),
         loadSound('sounds/loops/lock-groove-6-loop.mp3'),
       ),
-      viz: new CurveVisualization,
-      displayIcon: 'images/icon-1.svg',
+      viz: new RadialVisualization,
+      displayIcon: 'images/icon-6.svg',
     },
 
-    lockGroove9: { //correct
+    lockGroove7: {
+      sound: new LockGroove(
+        loadSound('sounds/noise/lock-groove-7-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-7-loop.mp3'),
+      ),
+      viz: new ParticleScurryVisualization,
+      displayIcon: 'images/icon-7.svg',
+    },
+
+    lockGroove8: {
+      sound: new LockGroove(
+        loadSound('sounds/noise/lock-groove-8-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-8-loop.mp3'),
+      ),
+      viz: new CurveVisualization,
+      displayIcon: 'images/icon-8.svg',
+    },
+
+    lockGroove9: {
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-9-noise.mp3'),
         loadSound('sounds/loops/lock-groove-9-loop.mp3'),
       ),
       viz: new HelixVisualization,
-      displayIcon: 'images/icon-2.svg',
+      displayIcon: 'images/icon-9.svg',
     },
 
-    lockGroove10: { // ?
+    lockGroove10: {
       sound: new LockGroove(
-        loadSound('sounds/noise/lock-groove-2-noise.mp3'),
-        loadSound('sounds/loops/lock-groove-2-loop.mp3'),
+        loadSound('sounds/noise/lock-groove-10-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-10-loop.mp3'),
       ),
       viz: new StationaryCircleVisualization,
-      displayIcon: 'images/icon-3.svg',
+      displayIcon: 'images/icon-10.svg',
     },
 
-    lockGroove11: {  //correct
+    lockGroove11: {
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-11-noise.mp3'),
         loadSound('sounds/loops/lock-groove-11-loop.mp3'),
       ),
       viz: new FlowerVisualization,
-      displayIcon: 'images/icon-4.svg',
+      displayIcon: 'images/icon-11.svg',
     },
 
-    lockGroove12: {  //correct
+    lockGroove12: {
       sound: new LockGroove(
-        loadSound('sounds/noise/lock-groove-3-noise.mp3'),
-        loadSound('sounds/loops/lock-groove-3-loop.mp3'),
+        loadSound('sounds/noise/lock-groove-12-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-12-loop.mp3'),
       ),
       viz: new ArcVisualization,
-      displayIcon: 'images/icon-5.svg',
+      displayIcon: 'images/icon-12.svg',
     },
 
-    lockGroove13: { //correct
+    lockGroove13: {
       sound: new LockGroove(
-        loadSound('sounds/noise/lock-groove-10-noise.mp3'),
-        loadSound('sounds/loops/lock-groove-10-loop.mp3'),
+        loadSound('sounds/noise/lock-groove-13-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-13-loop.mp3'),
       ),
       viz: new SnowVisualization,
-      displayIcon: 'images/icon-6.svg',
+      displayIcon: 'images/icon-13.svg',
     },
 
     lockGroove14: {
       sound: new LockGroove(
-        loadSound('sounds/noise/lock-groove-8-noise.mp3'),
-        loadSound('sounds/loops/lock-groove-8-loop.mp3'),
+        loadSound('sounds/noise/lock-groove-14-noise.mp3'),
+        loadSound('sounds/loops/lock-groove-14-loop.mp3'),
       ),
       viz: new RotatingWaveVisualization,
-      displayIcon: 'images/icon-7.svg',
+      displayIcon: 'images/icon-14.svg',
     },
   };
 
