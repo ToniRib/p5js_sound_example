@@ -1,5 +1,6 @@
-// Credit to The Coding Train YouTube channel
-// and https://github.com/therewasaguy for some inspiration/code for these visualizations
+// Credit to The Coding Train YouTube channel, the p5js examples on p5js.org,
+// Saskia Freeke and Dexter Shepherd (https://blog.kadenze.com/creative-technology/p5-js-crash-course-recreate-art-you-love/),
+// and https://github.com/therewasaguy for some inspiration and code for these visualizations
 
 const black = '#010711';      // (1,   7,  17)
 const darkGray = '#13171F';   // (19,  23, 31)
@@ -13,7 +14,8 @@ class Visualization {
     this.levelHistory = [];
   }
 
-  visualize(level, spectrum) {}
+  visualize(level, spectrum) {
+  }
 
   reset() {
     this.levelHistory = [];
@@ -261,11 +263,54 @@ const SnowVisualization = class extends Visualization {
       const x = ((width / 2) / steps) * i;
       const y = (height / 12) + random(-rand, rand);
       const color = map(x, 0, width / 2, 80, 240);
+      strokeWeight(1);
       stroke(color, color, color);
       point(x, y);
 
       const range = map(spectrum[i], 0, 200, 1, 25);
       rand += random(-range, range);
+    }
+  }
+};
+
+
+const RotatingWaveVisualization = class extends Visualization {
+  constructor() {
+    super();
+    this.phase = 0;
+  }
+
+  visualize(level, spectrum) {
+    angleMode(RADIANS);
+    let speed = 0.03;
+    let maxCircleSize = 15;
+    let numRows = 10;
+    let numCols = 16;
+    let numStrands = 3;
+
+    let colorA = color(28,  32, 38, 50);
+    let colorB = color(120, 120, 120, 50);
+
+    this.phase = frameCount * speed;
+    const multiplier = map(level, 0,  0.3, 1, 10);
+
+    for (let strand = 0; strand < numStrands; strand += 1) {
+      let strandPhase = this.phase + map(strand, 0, numStrands, 0, TWO_PI);
+
+      for (let col = 0; col < numCols; col += 1) {
+        let colOffset = map(col, 0, numCols, 0, TWO_PI);
+        let x = map(col, 0, numCols, 50, width - 50);
+
+        for (let row = 0; row < numRows; row += 1) {
+          let y = height / 4 + row * 10 + sin(strandPhase + colOffset) * 150;
+          let sizeOffset = (cos(strandPhase - (row / numRows) + colOffset) + 1) * 0.7;
+          let circleSize = sizeOffset * maxCircleSize * multiplier;
+
+          noStroke();
+          fill(lerpColor(colorA, colorB, row / numRows));
+          ellipse(x, y, circleSize, circleSize);
+        }
+      }
     }
   }
 };
@@ -487,7 +532,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-1-noise.mp3'),
         loadSound('sounds/loops/lock-groove-1-loop.mp3'),
       ),
-      viz: new AmpVisualization,
+      viz: new EllipseVisualization,
       displayIcon: 'images/icon-1.svg',
     },
 
@@ -496,7 +541,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-2-noise.mp3'),
         loadSound('sounds/loops/lock-groove-2-loop.mp3'),
       ),
-      viz: new StationaryCircleVisualization,
+      viz: new LineVibrationVisualization,
       displayIcon: 'images/icon-2.svg',
     },
 
@@ -505,7 +550,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-3-noise.mp3'),
         loadSound('sounds/loops/lock-groove-3-loop.mp3'),
       ),
-      viz: new ArcVisualization,
+      viz: new SpiralVisualization,
       displayIcon: 'images/icon-3.svg',
     },
 
@@ -514,7 +559,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-4-noise.mp3'),
         loadSound('sounds/loops/lock-groove-4-loop.mp3'),
       ),
-      viz: new RadialVisualization,
+      viz: new AmpVisualization,
       displayIcon: 'images/icon-4.svg',
     },
 
@@ -523,7 +568,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-5-noise.mp3'),
         loadSound('sounds/loops/lock-groove-5-loop.mp3'),
       ),
-      viz: new EllipseVisualization,
+      viz: new SpectrumVisualization,
       displayIcon: 'images/icon-5.svg',
     },
 
@@ -532,7 +577,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-6-noise.mp3'),
         loadSound('sounds/loops/lock-groove-6-loop.mp3'),
       ),
-      viz: new CurveVisualization,
+      viz: new RadialVisualization,
       displayIcon: 'images/icon-6.svg',
     },
 
@@ -541,7 +586,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-7-noise.mp3'),
         loadSound('sounds/loops/lock-groove-7-loop.mp3'),
       ),
-      viz: new LineVibrationVisualization,
+      viz: new ParticleScurryVisualization,
       displayIcon: 'images/icon-7.svg',
     },
 
@@ -550,7 +595,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-8-noise.mp3'),
         loadSound('sounds/loops/lock-groove-8-loop.mp3'),
       ),
-      viz: new SpiralVisualization,
+      viz: new CurveVisualization,
       displayIcon: 'images/icon-8.svg',
     },
 
@@ -568,7 +613,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-10-noise.mp3'),
         loadSound('sounds/loops/lock-groove-10-loop.mp3'),
       ),
-      viz: new SnowVisualization,
+      viz: new StationaryCircleVisualization,
       displayIcon: 'images/icon-10.svg',
     },
 
@@ -586,7 +631,7 @@ function preload() {
         loadSound('sounds/noise/lock-groove-12-noise.mp3'),
         loadSound('sounds/loops/lock-groove-12-loop.mp3'),
       ),
-      viz: new SpectrumVisualization,
+      viz: new ArcVisualization,
       displayIcon: 'images/icon-12.svg',
     },
 
@@ -595,16 +640,16 @@ function preload() {
         loadSound('sounds/noise/lock-groove-13-noise.mp3'),
         loadSound('sounds/loops/lock-groove-13-loop.mp3'),
       ),
-      viz: new ParticleScurryVisualization,
+      viz: new SnowVisualization,
       displayIcon: 'images/icon-13.svg',
     },
 
-    lockGroove14: { // NEEDS VISUALIZATION
+    lockGroove14: {
       sound: new LockGroove(
         loadSound('sounds/noise/lock-groove-14-noise.mp3'),
         loadSound('sounds/loops/lock-groove-14-loop.mp3'),
       ),
-      viz: new SpiralVisualization,
+      viz: new RotatingWaveVisualization,
       displayIcon: 'images/icon-14.svg',
     },
   };
