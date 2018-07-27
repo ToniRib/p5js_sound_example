@@ -690,7 +690,7 @@ function setup() {
   soundBoardContainer = document.querySelector('#soundBoardContainer');
   const soundBoard = document.querySelector('#soundBoard');
 
-  Object.entries(soundDefs).forEach(([key, soundDefinition]) => {
+  Object.entries(soundDefs).slice(0, 7).forEach(([key, soundDefinition]) => {
     createSoundButton(key, soundDefinition.displayIcon)
   });
 
@@ -719,7 +719,7 @@ function updateSoundBoardLayout() {
     // #3 translate to spread items out
     // #4 reorient
     item.style.transform = `
-      translate(${(count/2 - index) * item.offsetWidth}px)
+      translate(${((count/2 - index) * item.offsetWidth) - item.offsetWidth/2}px)
       rotate(${rotateAngle}deg)
       translate(0, -375px)
       rotate(-${rotateAngle}deg)

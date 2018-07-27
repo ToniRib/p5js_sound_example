@@ -37,7 +37,11 @@ body {
         alternate
         none
         paused
-        soundBoardRotation
+        soundBoardRotation;
+
+    --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+    --ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 @-webkit-keyframes GradientAnimation {
@@ -98,7 +102,7 @@ body {
 
 @keyframes soundBoardBgImage {
     0% {
-        filter: brightness(45%);
+        filter: brightness(25%);
     }
     
     100% {
@@ -119,14 +123,12 @@ body {
 
 #topLayer {
     display: flex;
-    /* flex-direction: row; */
     position: absolute;
     width: 100%;
     height: 100%;
     z-index: 10;
     flex-wrap: wrap;
 
-    /* experimental */
     align-items: flex-start;
     overflow: hidden;
     flex-direction: column;
@@ -172,8 +174,6 @@ body {
     justify-content: center;
     z-index: var(--soundBoardContainerZIndex);
 
-    /* experimental */
-    /* height: calc(100% - var(--controls-height)); */
     margin-top: calc(var(--controls-height));
     position: absolute;
     top: 0;
@@ -205,15 +205,16 @@ body {
     align-items: center;
     justify-content: center;
     height: 100%;
-    width: 700px;
+    width: 800px;
 
     animation: var(--rotationAnimationDefinition);
 }
 
 #soundBoardBg img {
     width: 90%;
-    filter: brightness(45%);
-    animation: soundBoardBgImage 3s cubic-bezier(0.165, 0.84, 0.44, 1) alternate infinite paused;
+    /* filter: brightness(5%); */
+    transform: rotate(-14deg) translate(12px, -34px);
+    animation: soundBoardBgImage 5s ease-in-out alternate-reverse infinite paused;
 }
 
 #soundBoard {
@@ -246,8 +247,6 @@ body {
     left: 50%; */
     width: var(--sound-trigger-default-size);
     height: unset;
-
-    transform-origin: center center;
 }
 
 .soundTrigger {
