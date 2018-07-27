@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 textarea, input, button { outline: none; }
 
 @font-face {
@@ -7,10 +11,10 @@ textarea, input, button { outline: none; }
 }
 
 body {
-    background-color: black;
     /*font-family: 'CoutureBold';*/
     margin: 0;
     cursor: url(/images/cursor-pointer-inactive.png) 23 23, auto;
+    background-color: black;
 }
 
 :root {
@@ -19,6 +23,21 @@ body {
     --sound-trigger-color-active: rgba(148, 21, 42, 1);
     --sound-trigger-default-size: 50px;
     --sound-trigger-active-size: 60px;
+    --control-icon-font-size: 50px;
+    --controls-height: var(--control-icon-font-size) + 40px;
+
+    --soundBoardContainerZIndex: 20;
+    --controlsZIndex: var(--soundBoardContainerZIndex) + 10;
+
+    --rotationAnimationDuration: 72s;
+    --rotationAnimationDefinition:
+        var(--rotationAnimationDuration)
+        linear
+        infinite
+        normal
+        none
+        paused
+        soundBoardBgRotation
 }
 
 @keyframes activePathIcon {
@@ -41,6 +60,16 @@ body {
     }
 }
 
+@keyframes soundBoardBgRotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 #p5_loading {
     color: white;
     display: flex;
@@ -53,78 +82,144 @@ body {
 
 #topLayer {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    /* flex-direction: row; */
     position: absolute;
     width: 100%;
+    height: 100%;
     z-index: 10;
+    flex-wrap: wrap;
+
+    /* experimental */
+    align-items: flex-start;
+    overflow: hidden;
+    flex-direction: column;
+
+    transition: opacity 2s linear;
+}
+
+#topLayer.hideUntilLoaded {
+    opacity: 0;
+}
+
+#topLayer > section,
+#topLayer > div {
+    width: 100%;
 }
 
 #controls {
     display: flex;
     justify-content: center;
-    margin: 20px 0;
+    padding: 20px 0;
+    height: var(--controls-height);
+    z-index: var(--controlsZIndex);;
 }
 
 #controls button {
     background: transparent;
-    margin-right: 20px;
+    margin: 0 20px;
     border: none;
-    padding: 10px;
+    padding: 0;
     cursor: url(/images/cursor-pointer-active.png) 23 23, auto;
-}
-
-#controls button:last-child {
-    margin: 0;
 }
 
 #controls .icon {
     color: var(--text-color);
-    font-size: 50px;
-    width: 50px;
-    height: 50px;
+    font-size: var(--control-icon-font-size);
+    width: var(--control-icon-font-size);;
+    height: var(--control-icon-font-size);;
 }
 
 #soundBoardContainer {
     display: flex;
     justify-content: center;
-    margin: 5px 0;
+    z-index: var(--soundBoardContainerZIndex);
+
+    /* experimental */
+    /* height: calc(100% - var(--controls-height)); */
+    margin-top: calc(var(--controls-height));
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.active #soundBoardBg,
+.active #soundBoard,
+.active .soundTrigger {
+    animation-play-state: running;
+}
+
+#soundBoardBg {
+    background-image: url(/images/centerpiece-art.png);
+    background-repeat: no-repeat;
+    background-position: 23% 23%;
+    /* background-size: 75%; */
+    /* transform: translate(-4%, -4.5%); */
+
+    background-size: contain;
+    height: 100%;
+    width: 700px;
+
+    animation: var(--rotationAnimationDefinition);
 }
 
 #soundBoard {
+    border-radius: 50%;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    /* width: 900px;
+    height: 900px; */
+    z-index: 10;
+
+    /* background-image: url(/images/centerpiece-art.png);
+    background-repeat: no-repeat;
+    xbackground-position: center center;
+    background-position: 75% center;
+    background-size: 75%;
+    transform: translate(-4%, -4.5%); */
+
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
     justify-content: center;
+
+    animation: var(--rotationAnimationDefinition);
+    animation-direction: reverse;
 }
 
 .soundTriggerContainer {
-    display: flex;
-}
+    /* position: absolute;
+    top: 50%;
+    left: 50%; */
+    width: var(--sound-trigger-default-size);
+    height: unset;
 
-.soundTriggerContainer img {
-    width: 100%;
-    height: 100%;
+    transform-origin: center center;
 }
 
 .soundTrigger {
     background: transparent;
     border: none;
-    margin: 0 10px;
-    width: var(--sound-trigger-default-size);
+    margin: 0;
+    width: 100%;
+    height: 100%;
     cursor: url(/images/cursor-pointer-active.png) 23 23, auto;
+
+    animation: var(--rotationAnimationDefinition);
 }
 
 .soundTrigger path {
     fill: var(--sound-trigger-color);
 }
 
-.soundTrigger.active {
+/* .soundTrigger.active {
     animation-duration: 2s;
     animation-name: activeSoundTrigger;
     animation-iteration-count: infinite;
     animation-direction: alternate;
     animation-timing-function: ease-in;
-}
+} */
 
 .soundTrigger.active path {
     fill: red;

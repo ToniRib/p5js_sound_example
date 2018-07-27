@@ -329,6 +329,7 @@ const masterGain = new p5.Gain();
 masterGain.amp(1);
 masterGain.connect();
 
+// preload is called directly before setup()
 function preload() {
   soundDefs = {
     lockGroove1: {
@@ -486,6 +487,12 @@ const toggleSound = (id, fadeOut = 0) => {
  */
 const toggleSoundTrigger = (el, force) => {
     el.classList.toggle('active', force);
+
+    if (document.querySelector('.soundTrigger.active')) {
+      soundBoardContainer.classList.add('active');
+    } else {
+      soundBoardContainer.classList.remove('active');
+    }
 };
 
 function stopAll() {
@@ -529,6 +536,8 @@ function createSoundButton(key, displayName, displayIcon) {
   soundBoard.appendChild(container);
 };
 
+let soundBoardContainer;
+
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
   background('black');
@@ -537,11 +546,14 @@ function setup() {
   strokeWeight(4);
   fill('black');
 
+  soundBoardContainer = document.querySelector('#soundBoardContainer');
   const soundBoard = document.querySelector('#soundBoard');
 
-  Object.entries(soundDefs).forEach(([key, soundDefinition]) => {
+  Object.entries(soundDefs).slice(0, 7).forEach(([key, soundDefinition]) => {
     createSoundButton(key, soundDefinition.displayName, soundDefinition.displayIcon)
   });
+
+  updateSoundBoardLayout();
 
   // Move canvas into manipulable container
   document.querySelector('#canvasContainer')
@@ -550,7 +562,29 @@ function setup() {
   setCanvasDimensions()
 
   initEventListeners();
+
+  document.querySelector('#topLayer').classList.remove('hideUntilLoaded');
 }
+
+function updateSoundBoardLayout() {
+  const items = document.querySelectorAll('.soundTriggerContainer');
+  const count = items.length;
+
+  items.forEach((item, index) => {
+    const offsetAngle = 360 / count;
+    const rotateAngle = offsetAngle * index;
+    // #1 translate items to absolute center
+    // #2 rotate items to point in spread direction
+    // #3 translate to spread items out
+    // #4 reorient
+    item.style.transform = `
+      translate(${(count/2 - index) * item.offsetWidth}px)
+      rotate(${rotateAngle}deg)
+      translate(0, -375px)
+      rotate(-${rotateAngle}deg)
+    `;
+  });
+};
 
 function setCanvasDimensions() {
   const canvas = document.querySelector('#canvasContainer canvas');
