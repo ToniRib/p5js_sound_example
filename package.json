@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "yarn watchCSS & node ./bin/www",
+    "build": "yarn run buildCSS",
+    "buildCSS": "stylus src/stylesheets/ -o public/stylesheets/ -c",
+    "watchCSS": "yarn run buildCSS -- --watch"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
@@ -12,5 +15,8 @@
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
     "morgan": "~1.9.0"
+  },
+  "devDependencies": {
+    "stylus": "^0.54.5"
   }
 }
