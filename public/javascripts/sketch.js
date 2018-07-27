@@ -686,11 +686,6 @@ let soundBoardContainer;
 function setup() {
   pixelDensity(2);
   createCanvas(window.innerWidth, window.innerHeight);
-  background('black');
-
-  stroke('white');
-  strokeWeight(4);
-  fill('black');
 
   soundBoardContainer = document.querySelector('#soundBoardContainer');
   const soundBoard = document.querySelector('#soundBoard');
