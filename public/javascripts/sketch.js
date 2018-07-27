@@ -690,7 +690,7 @@ function setup() {
   soundBoardContainer = document.querySelector('#soundBoardContainer');
   const soundBoard = document.querySelector('#soundBoard');
 
-  Object.entries(soundDefs).slice(0, 7).forEach(([key, soundDefinition]) => {
+  Object.entries(soundDefs).forEach(([key, soundDefinition]) => {
     createSoundButton(key, soundDefinition.displayIcon)
   });
 
@@ -708,23 +708,39 @@ function setup() {
 }
 
 function updateSoundBoardLayout() {
-  const items = document.querySelectorAll('.soundTriggerContainer');
+  const itemsNodeList = document.querySelectorAll('.soundTriggerContainer');
+  const items = Array.prototype.slice.call(itemsNodeList)
   const count = items.length;
+  let ctr = 0
+  const baseTranslationPx = -325;
+  const layerDepthPx = 100;
 
-  items.forEach((item, index) => {
-    const offsetAngle = 360 / count;
-    const rotateAngle = offsetAngle * index;
-    // #1 translate items to absolute center
-    // #2 rotate items to point in spread direction
-    // #3 translate to spread items out
-    // #4 reorient
-    item.style.transform = `
-      translate(${((count/2 - index) * item.offsetWidth) - item.offsetWidth/2}px)
-      rotate(${rotateAngle}deg)
-      translate(0, -375px)
-      rotate(-${rotateAngle}deg)
-    `;
-  });
+  function updateButtonGroup(groupIndex, groupedItems) {
+    const groupedItemsCount = groupedItems.length
+    groupedItems.forEach((item, index) => {
+      const offsetAngle = (360 / groupedItemsCount);
+      const rotateAngle = offsetAngle * index + (groupIndex % 2 ? offsetAngle / 2 : 0);
+      // #1 translate items to absolute center
+      // #2 rotate items to point in spread direction
+      // #3 translate to spread items out
+      // #4 reorient
+      item.style.transform = `
+        ${item.style.transform}
+        rotate(${rotateAngle}deg)
+        translate(0, ${baseTranslationPx - (layerDepthPx * groupIndex)}px)
+        rotate(-${rotateAngle}deg)
+      `;
+    });
+  }
+
+  items.forEach((item, idx) => {
+    item.style.transform = `translate(${((count/2 - idx) * item.offsetWidth) - item.offsetWidth/2}px)`
+  })
+
+  for (let i=0, len=items.length; i<len; i+=7) {
+    updateButtonGroup(ctr, items.slice(i, i+7))
+    ctr++
+  }
 };
 
 function setCanvasDimensions() {
