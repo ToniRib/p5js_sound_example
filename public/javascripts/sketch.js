@@ -197,7 +197,7 @@ const SpiralVisualization = class extends Visualization {
   }
 
   visualize(level) {
-    this.levelHistory.push(level * 2.5);
+    this.levelHistory.push(level * 2);
 
     const color = map(this.startingPosition, 0, 2, 30, 255);
     stroke(color, color, color);
