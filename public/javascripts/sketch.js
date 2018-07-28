@@ -372,13 +372,17 @@ const FlowerVisualization = class extends Visualization {
 const StationaryCircleVisualization = class extends Visualization {
   visualize(level) {
     const size = map(level, 0, 0.5, 0, 300);
-    const r = map(level, 0, 0.5, 36, 36 * 3);
-    const g = map(level, 0, 0.5, 39, 39 * 3);
-    const b = map(level, 0, 0.5, 45, 45 * 3);
+    const r = map(level, 0, 0.5, 18, 36 * 3);
+    const g = map(level, 0, 0.5, 18, 39 * 3);
+    const b = map(level, 0, 0.5, 18, 45 * 3);
 
     strokeWeight(level * 150);
     stroke(r, g, b);
     ellipse((width / 4), (height / 4), size * 4, size * 4);
+    strokeWeight(level * 100);
+    ellipse((width / 4), (height / 4), size * 3, size * 3);
+    strokeWeight(level * 20);
+    ellipse((width / 4), (height / 4), size * 4.5, size * 4.5);
   }
 };
 
