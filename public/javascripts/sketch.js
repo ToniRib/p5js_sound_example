@@ -525,11 +525,14 @@ let recorder;
 let soundFile;
 let soundDefs;
 const defaultFadeDuration = 250;
+let soundBoardContainer;
+let triggerGroupSize = 7;
 
 const masterGain = new p5.Gain();
 masterGain.amp(1);
 masterGain.connect();
 
+// preload is called directly before setup()
 function preload() {
   soundDefs = {
     lockGroove1: {
@@ -684,6 +687,12 @@ const toggleSound = (id, fadeOut = 0) => {
  */
 const toggleSoundTrigger = (el, force) => {
   el.classList.toggle('active', force);
+
+  if (document.querySelector('.soundTrigger.active')) {
+    soundBoardContainer.classList.add('active');
+  } else {
+    soundBoardContainer.classList.remove('active');
+  }
 };
 
 function stopAll() {
@@ -724,23 +733,43 @@ function createSoundButton(key, displayIcon) {
   });
 
   container.appendChild(button);
-  soundBoard.appendChild(container);
+
+  return container
 }
 
 function setup() {
   pixelDensity(2);
   createCanvas(window.innerWidth, window.innerHeight);
-  background('black');
 
-  stroke('white');
-  strokeWeight(4);
-  fill('black');
+  soundBoardContainer = document.querySelector('#soundBoardContainer');
+  const soundBoardBg = document.querySelector('#soundBoardBg');
 
-  const soundBoard = document.querySelector('#soundBoard');
+  const soundButtons = Object.entries(soundDefs).map(([key, soundDefinition], index) =>
+    createSoundButton(key, soundDefinition.displayIcon));
 
-  Object.entries(soundDefs).forEach(([key, soundDefinition]) => {
-    createSoundButton(key, soundDefinition.displayIcon)
-  });
+  function groupSoundButtons(elements) {
+    let layer;
+
+    function createLayer(odd) {
+      const el = document.createElement('div');
+      
+      el.classList.add('soundBoardTriggerLayer', odd ? 'odd' : 'even');
+      
+      return el;
+    }
+
+    elements.forEach((el, idx) => {
+      if (idx % 7 === 0) {
+        layer = createLayer(Boolean((idx + 1) % 2));
+        soundBoardContainer.insertBefore(layer, soundBoardBg);
+      }
+
+      layer.appendChild(el);
+    })
+  }
+
+  groupSoundButtons(soundButtons);
+  updateSoundBoardLayout();
 
   // Move canvas into manipulable container
   document.querySelector('#canvasContainer')
@@ -749,7 +778,42 @@ function setup() {
   setCanvasDimensions();
 
   initEventListeners();
+
+  document.querySelector('#topLayer').classList.remove('hideUntilLoaded');
 }
+
+function updateSoundBoardLayout() {
+  const layerNodeList = document.querySelectorAll('.soundBoardTriggerLayer');
+  const layers = Array.prototype.slice.call(layerNodeList);
+  const baseTranslationPx = -275;
+  const layerDepthPx = 125;
+
+  layers.forEach((layer, idx) => {
+    const itemsNodeList = layer.querySelectorAll('.soundTriggerContainer');
+    const items = Array.prototype.slice.call(itemsNodeList);
+
+    updateButtonGroup(items, idx)
+  })
+
+  function updateButtonGroup(items, groupIndex) {
+    const itemCount = items.length;
+
+    items.forEach((item, itemIndex) => {
+      const offsetAngle = (360 / itemCount);
+      const rotateAngle = offsetAngle * itemIndex + (groupIndex % 2 ? offsetAngle / 2 : 0);
+      // #1 translate items to absolute center
+      // #2 rotate items to point in spread direction
+      // #3 translate to spread items out
+      // #4 reorient
+      item.style.transform = `
+        translate(${((itemCount/2 - itemIndex) * item.offsetWidth) - item.offsetWidth/2}px)
+        rotate(${rotateAngle}deg)
+        translate(0, ${baseTranslationPx - (layerDepthPx * groupIndex)}px)
+        rotate(-${rotateAngle}deg)
+      `;
+    });
+  }
+};
 
 function setCanvasDimensions() {
   const canvas = document.querySelector('#canvasContainer canvas');
