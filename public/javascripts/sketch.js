@@ -164,17 +164,18 @@ const HelixVisualization = class extends Visualization {
 
 const RadialVisualization = class extends Visualization {
   visualize(level) {
-    this.levelHistory.push(level * 2.5);
+    const color = level > 0.082 ? dullWhite : red;
+    this.levelHistory.push(level);
 
-    stroke(red);
+    stroke(color);
     strokeWeight(2);
     angleMode(DEGREES);
 
     beginShape();
     for (let i = 1; i < this.levelHistory.length; i++) {
-      const r = map(this.levelHistory[i], 0, 0.6, 10, 1000);
-      const x = (width / 2) + (r * cos(i));
-      const y = (height / 4) + (r * sin(i));
+      const r = map(this.levelHistory[i], 0, 0.2, 10, 1000);
+      const x = (width / 2) + (r * cos(i + 210));
+      const y = (height / 4) + (r * sin(i + 210));
 
       vertex(x, y);
     }
