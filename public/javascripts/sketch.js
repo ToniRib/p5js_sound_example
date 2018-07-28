@@ -6,6 +6,7 @@ const black = '#010711';      // (1,   7,  17)
 const darkGray = '#13171F';   // (19,  23, 31)
 const mediumGray = '#1C2026'; // (28,  32, 38)
 const lightGray = '#24272D';  // (36,  39, 45)
+const lighterGray = '#949ba2';  // (36,  39, 45)
 const red = '#94152A';        // (148, 21, 42)
 const dullWhite = '#b6b6b6';  // (182, 182, 182)
 
@@ -244,12 +245,14 @@ const AmpVisualization = class extends Visualization {
 
 const EllipseVisualization = class extends Visualization {
   visualize(level) {
-    const size = map(level, 0, 1, 0, 1100);
+    const weight = level > 0.2 ? 12 : 4;
+    const color = level > 0.2 ? dullWhite : lighterGray;
+    const size = map(level, 0, 0.3, 0, 200);
     const randomMultiplier = random(-(width / 2), width / 2);
     const x = width / 4;
 
-    stroke(dullWhite);
-    strokeWeight(4);
+    stroke(color);
+    strokeWeight(weight);
     ellipse(x + randomMultiplier, (height / 4) - (height / 6), size, size);
   }
 };
