@@ -525,8 +525,8 @@ let recorder;
 let soundFile;
 let soundDefs;
 const defaultFadeDuration = 250;
-let soundBoardContainer;
-let soundBoardBg;
+let soundBoardContainerEl;
+let soundBoardBgEl;
 let triggerGroupSize = isMobileDevice() ? 1 : 7;
 let recordButton;
 let stopAllButton
@@ -699,9 +699,9 @@ const toggleSoundTrigger = (el, force) => {
   el.classList.toggle('active', force);
 
   if (document.querySelector('.soundTrigger.active')) {
-    soundBoardContainer.classList.add('active');
+    soundBoardContainerEl.classList.add('active');
   } else {
-    soundBoardContainer.classList.remove('active');
+    soundBoardContainerEl.classList.remove('active');
   }
 };
 
@@ -763,8 +763,8 @@ function isSafari() {
 function selectElements() {
   recordButton = document.querySelector('#toggleRecord');
   stopAllButton = document.querySelector('#stopAll');
-  soundBoardContainer = document.querySelector('#soundBoardContainer');
-  soundBoardBg = document.querySelector('#soundBoardBg');
+  soundBoardContainerEl = document.querySelector('#soundBoardContainer');
+  soundBoardBgEl = document.querySelector('#soundBoardBg');
 }
 
 function setup() {
@@ -796,7 +796,7 @@ function setup() {
     elements.forEach((el, idx) => {
       if (idx % triggerGroupSize === 0) {
         layer = createLayer(Boolean((idx + 1) % 2));
-        soundBoardContainer.insertBefore(layer, soundBoardBg);
+        soundBoardContainerEl.insertBefore(layer, soundBoardBgEl);
       }
 
       layer.appendChild(el);
@@ -839,7 +839,7 @@ function updateSoundBoardLayout() {
 
   const soundBoardBgDimension = containerDiameterPx;
 
-  soundBoardBg.style.width = `${soundBoardBgDimension}px`;
+  soundBoardBgEl.style.width = `${soundBoardBgDimension}px`;
 
   function getExpansionTranslationY(groupIndex) {
     // 0 = 1 layers deep, 1 = 3 layers deep, 3 = 5 layers deep, etc...
