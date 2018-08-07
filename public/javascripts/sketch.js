@@ -617,7 +617,7 @@ function preload() {
       ),
       viz: new HelixVisualization,
       displayIcon: 'images/icon-9.svg',
-      displayIconScale: .9,
+      displayIconScale: .95,
     },
 
     lockGroove10: {
@@ -636,7 +636,7 @@ function preload() {
       ),
       viz: new FlowerVisualization,
       displayIcon: 'images/icon-11.svg',
-      displayIconScale: .9,
+      displayIconScale: .95,
     },
 
     lockGroove12: {
@@ -646,7 +646,7 @@ function preload() {
       ),
       viz: new ArcVisualization,
       displayIcon: 'images/icon-12.svg',
-      displayIconScale: 2,
+      displayIconScale: 1.75,
     },
 
     lockGroove13: {
