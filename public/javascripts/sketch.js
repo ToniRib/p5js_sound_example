@@ -887,7 +887,10 @@ function setCanvasDimensions() {
 }
 
 function initEventListeners() {
-  window.addEventListener('resize', setCanvasDimensions);
+  window.addEventListener('resize', () => {
+    setCanvasDimensions();
+    updateSoundBoardLayout();
+  });
   recordButton.addEventListener('click', toggleRecordState);
   stopAllButton.addEventListener('click', stopAll);
 }
