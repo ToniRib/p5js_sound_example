@@ -617,6 +617,7 @@ function preload() {
       ),
       viz: new HelixVisualization,
       displayIcon: 'images/icon-9.svg',
+      displayIconScale: .9,
     },
 
     lockGroove10: {
@@ -635,6 +636,7 @@ function preload() {
       ),
       viz: new FlowerVisualization,
       displayIcon: 'images/icon-11.svg',
+      displayIconScale: .9,
     },
 
     lockGroove12: {
