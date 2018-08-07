@@ -542,7 +542,7 @@ function preload() {
         loadSound('sounds/loops/lock-groove-1-loop.mp3'),
       ),
       viz: new EllipseVisualization,
-      displayIcon: 'images/icon-1.svg',
+      displayIcon: 'images/icon-1.svg'
     },
 
     lockGroove2: {
@@ -570,6 +570,7 @@ function preload() {
       ),
       viz: new AmpVisualization,
       displayIcon: 'images/icon-4.svg',
+      displayIconScale: 1.5,
     },
 
     lockGroove5: {
@@ -606,6 +607,7 @@ function preload() {
       ),
       viz: new CurveVisualization,
       displayIcon: 'images/icon-8.svg',
+      displayIconScale: 1.5,
     },
 
     lockGroove9: {
@@ -642,6 +644,7 @@ function preload() {
       ),
       viz: new ArcVisualization,
       displayIcon: 'images/icon-12.svg',
+      displayIconScale: 2,
     },
 
     lockGroove13: {
@@ -651,6 +654,7 @@ function preload() {
       ),
       viz: new SnowVisualization,
       displayIcon: 'images/icon-13.svg',
+      displayIconScale: 1.25,
     },
 
     lockGroove14: {
@@ -660,6 +664,7 @@ function preload() {
       ),
       viz: new RotatingWaveVisualization,
       displayIcon: 'images/icon-14.svg',
+      displayIconScale: 1.25,
     },
   };
 
@@ -701,10 +706,15 @@ function stopAll() {
   document.querySelectorAll('.soundTrigger').forEach((el) => toggleSoundTrigger(el, false));
 }
 
-function createSoundButton(key, displayIcon) {
+function createSoundButton(key, displayIcon, displayIconScale) {
   const container = document.createElement('div');
 
   container.classList.add('soundTriggerContainer');
+  container.dataset.soundFile = displayIcon;
+  
+  if (displayIconScale) {
+    container.dataset.displayIconScale = displayIconScale;
+  }
 
   const button = document.createElement('button');
 
@@ -746,7 +756,7 @@ function setup() {
   soundBoardBg = document.querySelector('#soundBoardBg');
 
   const soundButtons = Object.entries(soundDefs).map(([key, soundDefinition], index) =>
-    createSoundButton(key, soundDefinition.displayIcon));
+    createSoundButton(key, soundDefinition.displayIcon, soundDefinition.displayIconScale));
 
   function groupSoundButtons(elements) {
     let layer;
@@ -789,21 +799,23 @@ function updateSoundBoardLayout() {
   const layers = Array.prototype.slice.call(layerNodeList);
 
   // dynamic sizing concerns
-  const containerMinDimensionPx = containerEl.offsetHeight > containerEl.offsetWidth ?
+  const containerDiameterPx = containerEl.offsetHeight > containerEl.offsetWidth ?
     containerEl.offsetWidth : containerEl.offsetHeight;
+  const radiusPx = containerDiameterPx / 2;
+  const rowPaddingCoefficient = 1/3; // how much of a row width to add in padding
   const nbrIconRows = layers.length;
-  const nbrSpacerRows = nbrIconRows - 1;
-  const radiusPx = containerMinDimensionPx / 2;
-  const iconLayerPx = radiusPx / 2;
-  const rowWidthPx = iconLayerPx / (nbrSpacerRows + nbrIconRows);
+  const nbrIconRowsWithPadding = nbrIconRows + (nbrIconRows * rowPaddingCoefficient) + rowPaddingCoefficient; // final rowPaddingCoefficient is for outer padding
+  const usableIconAreaPx = radiusPx / nbrIconRowsWithPadding;
+  const rowWidthPx = usableIconAreaPx / nbrIconRows;
+  const paddingWidthPx = rowWidthPx * rowPaddingCoefficient;
 
-  const soundBoardBgDimension = containerMinDimensionPx;// * (2/3);
+  const soundBoardBgDimension = containerDiameterPx;
 
   soundBoardBg.style.width = soundBoardBg.style.height = `${soundBoardBgDimension}px`;
 
   function getExpansionTranslationY(groupIndex) {
     // 0 = 1 layers deep, 1 = 3 layers deep, 3 = 5 layers deep, etc...
-    return (groupIndex + 1) * iconLayerPx;
+    return (groupIndex + 1) * usableIconAreaPx + ((groupIndex + 1) * paddingWidthPx);
   }
 
   // outer point = (container radius - icon width * -1)
@@ -820,8 +832,10 @@ function updateSoundBoardLayout() {
     const itemCount = items.length;
 
     items.forEach((item, itemIndex) => {
-      item.style.width = `${rowWidthPx}px`;
-      item.style.height = `${rowWidthPx}px`;
+      const displayIconScale = parseFloat(item.dataset.displayIconScale) || 1;
+
+      item.style.width = `${rowWidthPx * displayIconScale}px`;
+      //item.style.height = `${rowWidthPx}px`;
 
       const offsetAngle = (360 / itemCount);
       const rotateAngle = offsetAngle * itemIndex + (groupIndex % 2 ? offsetAngle / 2 : 0);
