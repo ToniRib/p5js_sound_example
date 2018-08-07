@@ -753,7 +753,7 @@ function createSoundButton(key, displayIcon, displayIconScale) {
 }
 
 function isMobileDevice() {
-  return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+  return window.screen.availWidth < 500 || window.screen.availHeight < 500
 }
 
 function isSafari() {

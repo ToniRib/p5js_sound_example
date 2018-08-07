@@ -9,6 +9,12 @@ textarea, input, button
     src url('fonts/COUTURE-Bold.woff') format('woff'),
          url('fonts/COUTURE-Bold.ttf') format('truetype')
 
+mobilePhoneAndSmallerMediaQuery() {
+    @media only screen and (max-device-width: 500px) { 
+        {block}
+    }
+}
+
 body
     margin 0
     cursor url(../images/cursor-pointer-inactive.png) 23 23, auto
@@ -146,19 +152,14 @@ rotationAnimation()
     left 0
     right 0
 
-body.mobile #soundBoardContainer
-    // position relative
-    // top unset
-    // bottom unset
-    // left unset
-    // right unset
-    justify-content space-between
-    z-index var(--soundBoardContainerZIndex)
-    align-items flex-start
-    height calc(100% - var(--controls-height))
-    flex-wrap: wrap
-    flex-direction row
-    flex 1 1 0
+    +mobilePhoneAndSmallerMediaQuery()
+        justify-content space-between
+        z-index var(--soundBoardContainerZIndex)
+        align-items flex-start
+        height calc(100% - var(--controls-height))
+        flex-wrap: wrap
+        flex-direction row
+        flex 1 1 0
 
 #soundBoardBg
     animation soundBoardBgTranslation 12s infinite linear paused
@@ -184,6 +185,11 @@ body.mobile #soundBoardContainer
     height 100%
     width 800px
 
+    +mobilePhoneAndSmallerMediaQuery()
+        height auto
+        width auto
+        position absolute
+
     rotationAnimation()
 
     img
@@ -193,6 +199,9 @@ body.mobile #soundBoardContainer
         animation soundBoardBgImage 5s ease-in-out alternate-reverse infinite paused
         -webkit-animation-play-state running
 
+        +mobilePhoneAndSmallerMediaQuery()
+            width 300%
+
 .soundBoardTriggerLayer
     background: none;
     pointer-events: none;
@@ -200,7 +209,6 @@ body.mobile #soundBoardContainer
     position absolute
     width 100%
     z-index 10
-
     display flex
     align-items center
     justify-content center
@@ -221,15 +229,15 @@ body.mobile #soundBoardContainer
             animation-direction alternate-reverse
             animation-duration calc(var(--rotationAnimationDurationBase) * var(--evenLayerRotationMultiplier))
 
-body.mobile .soundBoardTriggerLayer
-    position relative
-    animation unset
-    height unset
-    width unset
-    justify-content center
-    flex-basis 30%
-    flex-shrink: 1;
-    flex-grow: 1;
+    +mobilePhoneAndSmallerMediaQuery()
+        position relative
+        animation unset
+        height unset
+        width unset
+        justify-content center
+        flex-basis 30%
+        flex-shrink 1
+        flex-grow 1
 
 .soundTriggerContainer
     width var(--sound-trigger-default-size)
@@ -260,8 +268,8 @@ body.mobile .soundBoardTriggerLayer
             animation-direction alternate
             animation-timing-function ease-in-out
 
-body.mobile .soundTrigger
-    animation unset
+    +mobilePhoneAndSmallerMediaQuery()
+        animation unset
 
 #toggleRecord
     .icon:after
@@ -270,6 +278,9 @@ body.mobile .soundTrigger
     &.active .icon:after
         content "⇝"
         color red
+
+    +mobilePhoneAndSmallerMediaQuery()
+        display none
 
 .icon
     display flex
@@ -284,17 +295,3 @@ body.mobile .soundTrigger
     width 100%
     height 100%
     z-index 0
-
-
-// mobile handling
-body.mobile
-    #toggleRecord
-        display none
-
-    #soundBoardBg
-        height auto
-        width auto
-        position absolute
-
-        img
-            width 300%
