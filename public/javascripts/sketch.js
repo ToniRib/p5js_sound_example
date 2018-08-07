@@ -527,7 +527,7 @@ let soundDefs;
 const defaultFadeDuration = 250;
 let soundBoardContainer;
 let soundBoardBg;
-let triggerGroupSize = 7;
+let triggerGroupSize = isMobileDevice() ? 1 : 7;
 let recordButton;
 let stopAllButton
 
@@ -794,7 +794,7 @@ function setup() {
     }
 
     elements.forEach((el, idx) => {
-      if (idx % 7 === 0) {
+      if (idx % triggerGroupSize === 0) {
         layer = createLayer(Boolean((idx + 1) % 2));
         soundBoardContainer.insertBefore(layer, soundBoardBg);
       }
@@ -818,6 +818,10 @@ function setup() {
 }
 
 function updateSoundBoardLayout() {
+  if (isMobileDevice()) {
+    return
+  }
+
   const containerEl = document.querySelector('#soundBoardContainer');
   const layerNodeList = document.querySelectorAll('.soundBoardTriggerLayer');
   const layers = Array.prototype.slice.call(layerNodeList);

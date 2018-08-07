@@ -146,6 +146,20 @@ rotationAnimation()
     left 0
     right 0
 
+body.mobile #soundBoardContainer
+    // position relative
+    // top unset
+    // bottom unset
+    // left unset
+    // right unset
+    justify-content space-between
+    z-index var(--soundBoardContainerZIndex)
+    align-items flex-start
+    height calc(100% - var(--controls-height))
+    flex-wrap: wrap
+    flex-direction row
+    flex 1 1 0
+
 #soundBoardBg
     animation soundBoardBgTranslation 12s infinite linear paused
     -webkit-animation-play-state running
@@ -174,7 +188,7 @@ rotationAnimation()
 
     img
         transform-origin 52% 36%
-        width 80%
+        width 100%
         transform rotate(-14deg) translate(-2%,-6%)
         animation soundBoardBgImage 5s ease-in-out alternate-reverse infinite paused
         -webkit-animation-play-state running
@@ -207,6 +221,16 @@ rotationAnimation()
             animation-direction alternate-reverse
             animation-duration calc(var(--rotationAnimationDurationBase) * var(--evenLayerRotationMultiplier))
 
+body.mobile .soundBoardTriggerLayer
+    position relative
+    animation unset
+    height unset
+    width unset
+    justify-content center
+    flex-basis 30%
+    flex-shrink: 1;
+    flex-grow: 1;
+
 .soundTriggerContainer
     width var(--sound-trigger-default-size)
     height unset
@@ -236,6 +260,9 @@ rotationAnimation()
             animation-direction alternate
             animation-timing-function ease-in-out
 
+body.mobile .soundTrigger
+    animation unset
+
 #toggleRecord
     .icon:after
         content "⊚"
@@ -263,3 +290,11 @@ rotationAnimation()
 body.mobile
     #toggleRecord
         display none
+
+    #soundBoardBg
+        height auto
+        width auto
+        position absolute
+
+        img
+            width 300%
