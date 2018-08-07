@@ -240,7 +240,7 @@ rotationAnimation()
         flex-grow 1
 
 .soundTriggerContainer
-    width var(--sound-trigger-default-size)
+    //width var(--sound-trigger-default-size)
     height unset
     pointer-events auto
 
@@ -271,9 +271,11 @@ rotationAnimation()
     +mobilePhoneAndSmallerMediaQuery()
         animation unset
 
-+mobilePhoneAndSmallerMediaQuery()
-    #stopAll
-        .icon:after
+#stopAll
+    .icon:after
+        content "⨳"
+
+        +mobilePhoneAndSmallerMediaQuery()
             content "≠"
 
 #toggleRecord
@@ -300,3 +302,8 @@ rotationAnimation()
     width 100%
     height 100%
     z-index 0
+
++mobilePhoneAndSmallerMediaQuery()
+    svg
+        width 90%
+        height 90%

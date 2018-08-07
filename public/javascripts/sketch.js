@@ -527,7 +527,7 @@ let soundDefs;
 const defaultFadeDuration = 250;
 let soundBoardContainerEl;
 let soundBoardBgEl;
-let triggerGroupSize = isMobileDevice() ? 1 : 7;
+let triggerGroupSize = 7;
 let recordButton;
 let stopAllButton
 
@@ -793,13 +793,19 @@ function setup() {
       return el;
     }
 
-    elements.forEach((el, idx) => {
-      if (idx % triggerGroupSize === 0) {
-        layer = createLayer(Boolean((idx + 1) % 2));
-        soundBoardContainerEl.insertBefore(layer, soundBoardBgEl);
-      }
+    const isMobile = isMobileDevice();
 
-      layer.appendChild(el);
+    elements.forEach((el, idx) => {
+      if (isMobile) {
+        soundBoardContainerEl.insertBefore(el, soundBoardBgEl);
+      } else {
+        if (idx % triggerGroupSize === 0) {
+          layer = createLayer(Boolean((idx + 1) % 2));
+          soundBoardContainerEl.insertBefore(layer, soundBoardBgEl);
+        }
+
+        layer.appendChild(el);
+      }
     })
   }
 
@@ -818,11 +824,22 @@ function setup() {
 }
 
 function updateSoundBoardLayout() {
+  const containerEl = document.querySelector('#soundBoardContainer');
+
   if (isMobileDevice()) {
+    const containerArea = (containerEl.offsetWidth * .85) * (containerEl.offsetHeight * .85);
+    const areaPerIcon = containerArea / Object.keys(soundDefs).length;
+    const iconDimension = Math.sqrt(areaPerIcon);
+    const elements = Array.prototype.slice.call(containerEl.querySelectorAll('.soundTriggerContainer'));
+
+    elements.forEach((el) => {
+      el.querySelector('button').style.width = `${iconDimension}px`;
+      el.querySelector('button').style.height = `${iconDimension}px`;
+    });
+
     return
   }
 
-  const containerEl = document.querySelector('#soundBoardContainer');
   const layerNodeList = document.querySelectorAll('.soundBoardTriggerLayer');
   const layers = Array.prototype.slice.call(layerNodeList);
 
