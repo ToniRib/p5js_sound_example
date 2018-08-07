@@ -6,6 +6,7 @@ const black = '#010711';      // (1,   7,  17)
 const darkGray = '#13171F';   // (19,  23, 31)
 const mediumGray = '#1C2026'; // (28,  32, 38)
 const lightGray = '#24272D';  // (36,  39, 45)
+const lighterGray = '#949ba2';  // (36,  39, 45)
 const red = '#94152A';        // (148, 21, 42)
 const dullWhite = '#b6b6b6';  // (182, 182, 182)
 
@@ -164,17 +165,18 @@ const HelixVisualization = class extends Visualization {
 
 const RadialVisualization = class extends Visualization {
   visualize(level) {
-    this.levelHistory.push(level * 2.5);
+    const color = level > 0.082 ? dullWhite : red;
+    this.levelHistory.push(level);
 
-    stroke(red);
+    stroke(color);
     strokeWeight(2);
     angleMode(DEGREES);
 
     beginShape();
     for (let i = 1; i < this.levelHistory.length; i++) {
-      const r = map(this.levelHistory[i], 0, 0.6, 10, 1000);
-      const x = (width / 2) + (r * cos(i));
-      const y = (height / 4) + (r * sin(i));
+      const r = map(this.levelHistory[i], 0, 0.2, 10, 1000);
+      const x = (width / 2) + (r * cos(i + 210));
+      const y = (height / 4) + (r * sin(i + 210));
 
       vertex(x, y);
     }
@@ -195,7 +197,7 @@ const SpiralVisualization = class extends Visualization {
   }
 
   visualize(level) {
-    this.levelHistory.push(level * 2.5);
+    this.levelHistory.push(level * 2);
 
     const color = map(this.startingPosition, 0, 2, 30, 255);
     stroke(color, color, color);
@@ -243,12 +245,14 @@ const AmpVisualization = class extends Visualization {
 
 const EllipseVisualization = class extends Visualization {
   visualize(level) {
-    const size = map(level, 0, 1, 0, 1100);
+    const weight = level > 0.2 ? 12 : 4;
+    const color = level > 0.2 ? dullWhite : lighterGray;
+    const size = map(level, 0, 0.3, 0, 200);
     const randomMultiplier = random(-(width / 2), width / 2);
     const x = width / 4;
 
-    stroke(dullWhite);
-    strokeWeight(4);
+    stroke(color);
+    strokeWeight(weight);
     ellipse(x + randomMultiplier, (height / 4) - (height / 6), size, size);
   }
 };
@@ -368,13 +372,17 @@ const FlowerVisualization = class extends Visualization {
 const StationaryCircleVisualization = class extends Visualization {
   visualize(level) {
     const size = map(level, 0, 0.5, 0, 300);
-    const r = map(level, 0, 0.5, 36, 36 * 3);
-    const g = map(level, 0, 0.5, 39, 39 * 3);
-    const b = map(level, 0, 0.5, 45, 45 * 3);
+    const r = map(level, 0, 0.5, 18, 36 * 3);
+    const g = map(level, 0, 0.5, 18, 39 * 3);
+    const b = map(level, 0, 0.5, 18, 45 * 3);
 
     strokeWeight(level * 150);
     stroke(r, g, b);
     ellipse((width / 4), (height / 4), size * 4, size * 4);
+    strokeWeight(level * 100);
+    ellipse((width / 4), (height / 4), size * 3, size * 3);
+    strokeWeight(level * 20);
+    ellipse((width / 4), (height / 4), size * 4.5, size * 4.5);
   }
 };
 
@@ -775,10 +783,20 @@ function setup() {
 }
 
 function updateSoundBoardLayout() {
+  const containerEl = document.querySelector('#soundBoardContainer');
   const layerNodeList = document.querySelectorAll('.soundBoardTriggerLayer');
   const layers = Array.prototype.slice.call(layerNodeList);
-  const baseTranslationPx = -275;
-  const layerDepthPx = 125;
+  const containerMinDimensionPx = containerEl.offsetHeight > containerEl.offsetWidth ?
+    containerEl.offsetWidth : containerEl.offsetHeight;
+  const radiusPx = containerMinDimensionPx / 2;
+  
+  const iconLayerPx = radiusPx / 2;
+  const nbrIconRows = Object.keys(soundDefs).length / triggerGroupSize;
+  const nbrSpacerRows = nbrIconRows * 2 - 1;
+  const rowWidthPx = iconLayerPx / (nbrSpacerRows + nbrIconRows);
+
+  // outer point = (container radius - icon width * -1)
+  // inner point = ((container radius - icon width - (icon width * 2))) * -1) // div by 2?
 
   layers.forEach((layer, idx) => {
     const itemsNodeList = layer.querySelectorAll('.soundTriggerContainer');
