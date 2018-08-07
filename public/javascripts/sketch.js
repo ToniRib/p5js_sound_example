@@ -528,6 +528,8 @@ const defaultFadeDuration = 250;
 let soundBoardContainer;
 let soundBoardBg;
 let triggerGroupSize = 7;
+let recordButton;
+let stopAllButton
 
 const masterGain = new p5.Gain();
 masterGain.amp(1);
@@ -750,12 +752,32 @@ function createSoundButton(key, displayIcon, displayIconScale) {
   return container
 }
 
-function setup() {
-  pixelDensity(2);
-  createCanvas(window.innerWidth, window.innerHeight);
+function isMobileDevice() {
+  return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+}
 
+function isSafari() {
+  return !!navigator.userAgent.match(/safari/i) && !navigator.userAgent.match(/chrome/i) && typeof document.body.style.webkitFilter !== "undefined" && !window.chrome;
+}
+
+function selectElements() {
+  recordButton = document.querySelector('#toggleRecord');
+  stopAllButton = document.querySelector('#stopAll');
   soundBoardContainer = document.querySelector('#soundBoardContainer');
   soundBoardBg = document.querySelector('#soundBoardBg');
+}
+
+function setup() {
+  selectElements();
+  
+  if (isMobileDevice()) {
+    document.body.classList.add('mobile');
+  } else if (isSafari()) {
+    document.body.classList.add('simple-animations');
+  }
+
+  pixelDensity(2);
+  createCanvas(window.innerWidth, window.innerHeight);
 
   const soundButtons = Object.entries(soundDefs).map(([key, soundDefinition], index) =>
     createSoundButton(key, soundDefinition.displayIcon, soundDefinition.displayIconScale));
@@ -866,11 +888,7 @@ function setCanvasDimensions() {
 
 function initEventListeners() {
   window.addEventListener('resize', setCanvasDimensions);
-
-  const recordButton = document.querySelector('#toggleRecord');
   recordButton.addEventListener('click', toggleRecordState);
-
-  const stopAllButton = document.querySelector('#stopAll');
   stopAllButton.addEventListener('click', stopAll);
 }
 
