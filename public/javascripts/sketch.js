@@ -526,6 +526,7 @@ let soundFile;
 let soundDefs;
 const defaultFadeDuration = 250;
 let soundBoardContainer;
+let soundBoardBg;
 let triggerGroupSize = 7;
 
 const masterGain = new p5.Gain();
@@ -742,7 +743,7 @@ function setup() {
   createCanvas(window.innerWidth, window.innerHeight);
 
   soundBoardContainer = document.querySelector('#soundBoardContainer');
-  const soundBoardBg = document.querySelector('#soundBoardBg');
+  soundBoardBg = document.querySelector('#soundBoardBg');
 
   const soundButtons = Object.entries(soundDefs).map(([key, soundDefinition], index) =>
     createSoundButton(key, soundDefinition.displayIcon));
@@ -786,14 +787,24 @@ function updateSoundBoardLayout() {
   const containerEl = document.querySelector('#soundBoardContainer');
   const layerNodeList = document.querySelectorAll('.soundBoardTriggerLayer');
   const layers = Array.prototype.slice.call(layerNodeList);
+
+  // dynamic sizing concerns
   const containerMinDimensionPx = containerEl.offsetHeight > containerEl.offsetWidth ?
     containerEl.offsetWidth : containerEl.offsetHeight;
+  const nbrIconRows = layers.length;
+  const nbrSpacerRows = nbrIconRows - 1;
   const radiusPx = containerMinDimensionPx / 2;
-  
   const iconLayerPx = radiusPx / 2;
-  const nbrIconRows = Object.keys(soundDefs).length / triggerGroupSize;
-  const nbrSpacerRows = nbrIconRows * 2 - 1;
   const rowWidthPx = iconLayerPx / (nbrSpacerRows + nbrIconRows);
+
+  const soundBoardBgDimension = containerMinDimensionPx;// * (2/3);
+
+  soundBoardBg.style.width = soundBoardBg.style.height = `${soundBoardBgDimension}px`;
+
+  function getExpansionTranslationY(groupIndex) {
+    // 0 = 1 layers deep, 1 = 3 layers deep, 3 = 5 layers deep, etc...
+    return (groupIndex + 1) * iconLayerPx;
+  }
 
   // outer point = (container radius - icon width * -1)
   // inner point = ((container radius - icon width - (icon width * 2))) * -1) // div by 2?
@@ -809,6 +820,9 @@ function updateSoundBoardLayout() {
     const itemCount = items.length;
 
     items.forEach((item, itemIndex) => {
+      item.style.width = `${rowWidthPx}px`;
+      item.style.height = `${rowWidthPx}px`;
+
       const offsetAngle = (360 / itemCount);
       const rotateAngle = offsetAngle * itemIndex + (groupIndex % 2 ? offsetAngle / 2 : 0);
       // #1 translate items to absolute center
@@ -816,9 +830,9 @@ function updateSoundBoardLayout() {
       // #3 translate to spread items out
       // #4 reorient
       item.style.transform = `
-        translate(${((itemCount/2 - itemIndex) * item.offsetWidth) - item.offsetWidth/2}px)
+        translate(${((itemCount/2 - itemIndex) * rowWidthPx) - rowWidthPx/2}px)
         rotate(${rotateAngle}deg)
-        translate(0, ${baseTranslationPx - (layerDepthPx * groupIndex)}px)
+        translate(0, ${getExpansionTranslationY(groupIndex)}px)
         rotate(-${rotateAngle}deg)
       `;
     });
