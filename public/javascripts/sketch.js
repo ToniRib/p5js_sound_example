@@ -813,7 +813,7 @@ function updateSoundBoardLayout() {
 
   const soundBoardBgDimension = containerDiameterPx;
 
-  soundBoardBg.style.width = soundBoardBg.style.height = `${soundBoardBgDimension}px`;
+  soundBoardBg.style.width = `${soundBoardBgDimension}px`;
 
   function getExpansionTranslationY(groupIndex) {
     // 0 = 1 layers deep, 1 = 3 layers deep, 3 = 5 layers deep, etc...
